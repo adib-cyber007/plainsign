@@ -1,0 +1,15 @@
+{
+  "11155111": {
+    "0x000000000022d473030f116ddee9f6b43ac78ba3": { "protocol": "Uniswap Permit2", "domains": ["app.uniswap.org","uniswap.org"] },
+    "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": { "protocol": "Uniswap Universal Router", "domains": ["app.uniswap.org","uniswap.org"] },
+    "0xfff9976782d46cc05630d1f6ebab18b2324d6b14": { "protocol": "Wrapped Ether (WETH)", "domains": ["*"] },
+    "0x0000000000000068f116a894984e2db1123eb395": { "protocol": "OpenSea Seaport 1.6", "domains": ["opensea.io","testnets.opensea.io"] }
+  },
+  "1": {
+    "0x000000000022d473030f116ddee9f6b43ac78ba3": { "protocol": "Uniswap Permit2", "domains": ["app.uniswap.org","uniswap.org"] },
+    "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": { "protocol": "Wrapped Ether (WETH)", "domains": ["*"] },
+    "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48": { "protocol": "USD Coin (USDC)", "domains": ["*"] },
+    "0x0000000000000068f116a894984e2db1123eb395": { "protocol": "OpenSea Seaport 1.6", "domains": ["opensea.io"] }
+  },
+  "31337": {}
+}

@@ -1,0 +1,24 @@
+import { createWriteStream } from "node:fs";
+import { access, mkdir } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import archiver from "archiver";
+import packageJson from "../package.json" with { type: "json" };
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const source = path.join(root, ".output", "chrome-mv3");
+const targetDir = path.join(root, "dist");
+const target = path.join(targetDir, `plainsign-${packageJson.version}.zip`);
+await access(source).catch(() => { throw new Error('Build output is missing. Run "npm run build" first.'); });
+await mkdir(targetDir, { recursive: true });
+const output = createWriteStream(target);
+const archive = archiver("zip", { zlib: { level: 9 } });
+const complete = new Promise((resolve, reject) => {
+  output.on("close", resolve);
+  output.on("error", reject);
+  archive.on("error", reject);
+});
+archive.pipe(output);
+archive.directory(source, false);
+await archive.finalize();
+await complete;
+console.info(`Created ${target}`);
