@@ -1,11 +1,6 @@
 import { deserialize, serialize } from "../src/bridge/protocol";
-import type {
-  AnalysisRequest,
-  AnalysisResult,
-  BgToContent,
-  ContentToBg,
-  IntentKind,
-} from "../src/types";
+import { analyze } from "../src/analyze";
+import type { BgToContent, ContentToBg } from "../src/types";
 
 export default defineBackground(() => {
   console.info("[PlainSign] background loaded");
@@ -28,10 +23,16 @@ export default defineBackground(() => {
     }
 
     const message = decoded as ContentToBg;
-    void stubAnalyze(message.payload).then((result) => {
-      const response: BgToContent = { type: "PS_BG_RESULT", payload: result };
-      sendResponse(serialize(response));
-    });
+    void analyze(message.payload).then(
+      (result) => {
+        const response: BgToContent = { type: "PS_BG_RESULT", payload: result };
+        sendResponse(serialize(response));
+      },
+      () => {
+        // analyze() owns its degraded fallback, but keep the channel from throwing
+        // if the service worker is stopped while an async response is pending.
+      },
+    );
     return true;
   });
 });
@@ -46,52 +47,4 @@ function isMessageType(
     "type" in value &&
     value.type === type
   );
-}
-
-async function stubAnalyze(request: AnalysisRequest): Promise<AnalysisResult> {
-  const startedAt = Date.now();
-  await new Promise((resolve) => setTimeout(resolve, 300));
-
-  return {
-    id: request.id,
-    intent: {
-      kind: stubIntentKind(request),
-      method: request.request.method,
-      raw: request.request.params,
-    },
-    simulation: {
-      ok: false,
-      changes: [],
-      provider: "none",
-    },
-    risk: {
-      score: 25,
-      verdict: "caution",
-      reasons: [],
-    },
-    explanation: {
-      summary: `Stub analysis for ${request.request.method}`,
-      beginner: [],
-      technical: [],
-      source: "template",
-    },
-    durationMs: Date.now() - startedAt,
-    degraded: "Phase 1 stub analysis",
-  };
-}
-
-function stubIntentKind(request: AnalysisRequest): IntentKind {
-  if (
-    request.request.method === "eth_signTypedData_v3" ||
-    request.request.method === "eth_signTypedData_v4"
-  ) {
-    return "unknown_typed_data";
-  }
-  if (request.request.method === "personal_sign") {
-    return "plain_message";
-  }
-  if (request.request.method === "eth_sign") {
-    return "raw_hash";
-  }
-  return "unknown_function";
 }

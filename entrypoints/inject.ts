@@ -41,8 +41,14 @@ declare global {
 
 const VERSION = "0.1.0";
 const DECISION_TIMEOUT_MS = 60_000;
+const CONTENT_READY_TIMEOUT_MS = 1_000;
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 const interceptedMethods = new Set<string>(INTERCEPTED_METHODS);
+let contentIsReady = false;
+let resolveContentReady: (() => void) | undefined;
+const contentReady = new Promise<void>((resolve) => {
+  resolveContentReady = resolve;
+});
 
 export default defineContentScript({
   matches: ["<all_urls>"],
@@ -59,6 +65,7 @@ export default defineContentScript({
 
 function installInterceptor(): void {
   console.info("[PlainSign] inject loaded");
+  installContentHandshake();
   window.__plainsign = {
     version: VERSION,
     wrapped: false,
@@ -189,6 +196,7 @@ async function analyzeThenRequest(
   }
 
   const request = await buildAnalysisRequest(provider, args);
+  await waitForContentReady();
   const decision = waitForDecision(request.id);
   const message: MainToContent = { type: "PS_ANALYZE", payload: request };
   window.postMessage(serialize(message), "*");
@@ -200,6 +208,33 @@ async function analyzeThenRequest(
   }
 
   return provider.request(args);
+}
+
+function installContentHandshake(): void {
+  window.addEventListener("message", (event: MessageEvent<unknown>) => {
+    if (event.source !== window || contentIsReady) return;
+    try {
+      const message = deserialize(event.data) as ContentToMain;
+      if (message.type === "PS_PONG") {
+        contentIsReady = true;
+        resolveContentReady?.();
+      }
+    } catch {
+      // Ignore unrelated page messages.
+    }
+  });
+  const ping: MainToContent = { type: "PS_PING" };
+  window.postMessage(serialize(ping), "*");
+}
+
+async function waitForContentReady(): Promise<void> {
+  if (contentIsReady) return;
+  await Promise.race([
+    contentReady,
+    new Promise<void>((resolve) => {
+      window.setTimeout(resolve, CONTENT_READY_TIMEOUT_MS);
+    }),
+  ]);
 }
 
 async function buildAnalysisRequest(

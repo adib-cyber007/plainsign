@@ -1,0 +1,109 @@
+import { useState } from "react";
+
+import type { AnalysisResult, Verdict } from "../types";
+import { AssetDiff } from "./AssetDiff";
+import { Reasons } from "./Reasons";
+
+export interface VerdictCardProps {
+  result: AnalysisResult;
+  onContinue: () => void;
+  onReject: () => void;
+}
+
+const verdictContent: Record<
+  Verdict,
+  { icon: string; label: string; cue: string }
+> = {
+  safe: { icon: "✓", label: "Safe", cue: "No major warning signs found" },
+  caution: { icon: "!", label: "Caution", cue: "Check this request carefully" },
+  danger: {
+    icon: "×",
+    label: "Danger",
+    cue: "This request can put your assets at risk",
+  },
+};
+
+export function VerdictCard({
+  result,
+  onContinue,
+  onReject,
+}: VerdictCardProps) {
+  const [view, setView] = useState<"beginner" | "technical">("beginner");
+  const content = verdictContent[result.risk.verdict];
+  const details =
+    view === "beginner"
+      ? result.explanation.beginner
+      : result.explanation.technical;
+
+  return (
+    <div className="ps-card">
+      <header className={`ps-verdict ps-verdict-${result.risk.verdict}`}>
+        <span className="ps-verdict-icon" aria-hidden="true">
+          {content.icon}
+        </span>
+        <div>
+          <h1>{content.label}</h1>
+          <p>{content.cue}</p>
+        </div>
+        <span
+          className="ps-score"
+          aria-label={`Risk score ${result.risk.score} out of 100`}
+        >
+          {result.risk.score}
+          <small>/100</small>
+        </span>
+      </header>
+
+      <div className="ps-body">
+        <p className="ps-summary">{result.explanation.summary}</p>
+        <AssetDiff changes={result.simulation.changes} />
+
+        <div className="ps-toggle" role="group" aria-label="Explanation detail">
+          <button
+            type="button"
+            aria-pressed={view === "beginner"}
+            onClick={() => setView("beginner")}
+          >
+            Beginner
+          </button>
+          <button
+            type="button"
+            aria-pressed={view === "technical"}
+            onClick={() => setView("technical")}
+          >
+            Technical
+          </button>
+        </div>
+
+        <ul
+          className={`ps-detail-list ${view === "technical" ? "ps-technical" : ""}`}
+        >
+          {details.map((detail, index) => (
+            <li key={`${view}-${index}`}>{detail}</li>
+          ))}
+        </ul>
+
+        <Reasons reasons={result.risk.reasons} />
+      </div>
+
+      <footer
+        className={`ps-actions ${result.risk.verdict === "danger" ? "ps-danger-actions" : ""}`}
+      >
+        <button
+          className="ps-button ps-reject"
+          type="button"
+          onClick={onReject}
+        >
+          Reject
+        </button>
+        <button
+          className="ps-button ps-continue"
+          type="button"
+          onClick={onContinue}
+        >
+          Continue to wallet
+        </button>
+      </footer>
+    </div>
+  );
+}

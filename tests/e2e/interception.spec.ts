@@ -6,7 +6,7 @@ import path from "node:path";
 const extensionPath = path.resolve(".output", "chrome-mv3");
 const mockWalletPath = path.resolve("tests", "e2e", "mock-wallet.js");
 const account = "0x1111111111111111111111111111111111111111";
-const target = "0x2222222222222222222222222222222222222222";
+const target = `0x${"2".repeat(38)}aa`;
 const fakeTransactionHash = `0x${"a".repeat(64)}`;
 const fakeSignature = `0x${"b".repeat(130)}`;
 const installModes = ["immediate", "delayed", "onload"] as const;
@@ -41,11 +41,8 @@ async function openTestPage(installMode: string): Promise<RunningPage> {
       await page.waitForFunction(
         () =>
           Boolean(
-            (
-              window as typeof window & {
-                __plainsign?: { wrapped: boolean };
-              }
-            ).__plainsign?.wrapped,
+            (window as typeof window & { __plainsign?: { wrapped: boolean } })
+              .__plainsign?.wrapped,
           ),
         undefined,
         { timeout: 5_000 },
@@ -58,7 +55,6 @@ async function openTestPage(installMode: string): Promise<RunningPage> {
         );
         reportedBrowserMode = true;
       }
-
       return {
         page,
         close: async () => {
@@ -71,7 +67,6 @@ async function openTestPage(installMode: string): Promise<RunningPage> {
       await rm(profilePath, { force: true, recursive: true });
     }
   }
-
   throw new Error(`PlainSign extension did not load. ${failures.join(" | ")}`);
 }
 
@@ -105,34 +100,72 @@ function walletState(page: Page) {
   });
 }
 
-function handleNextDialog(page: Page, accept: boolean) {
-  let walletEvents = 0;
-  const onConsole = (message: { text(): string }) => {
-    if (message.text().startsWith("[MockWallet] received")) {
-      walletEvents += 1;
-    }
-  };
-  page.on("console", onConsole);
+async function startAction(page: Page, buttonId: string): Promise<number> {
+  return page.evaluate(
+    (id) =>
+      new Promise<number>((resolve, reject) => {
+        const startedAt = performance.now();
+        const timeout = window.setTimeout(() => {
+          observer.disconnect();
+          reject(
+            new Error("Analyzing overlay did not mount within 5 seconds."),
+          );
+        }, 5_000);
+        const observer = new MutationObserver(() => {
+          const text = document
+            .getElementById("plainsign-root")
+            ?.shadowRoot?.querySelector(".ps-analyzing h1")?.textContent;
+          if (text === "Analyzing…") {
+            window.clearTimeout(timeout);
+            observer.disconnect();
+            resolve(performance.now() - startedAt);
+          }
+        });
+        observer.observe(document.documentElement, {
+          childList: true,
+          subtree: true,
+        });
+        (document.getElementById(id) as HTMLButtonElement).click();
+      }),
+    buttonId,
+  );
+}
 
-  const dialogHandled = new Promise<{
-    callsBeforeDialog: number;
-    message: string;
-  }>((resolve) => {
-    page.once("dialog", async (dialog) => {
-      const observation = {
-        callsBeforeDialog: walletEvents,
-        message: dialog.message(),
-      };
-      if (accept) {
-        await dialog.accept();
-      } else {
-        await dialog.dismiss();
-      }
-      resolve(observation);
-    });
-  });
+async function waitForVerdict(
+  page: Page,
+  verdict: "Safe" | "Caution" | "Danger",
+): Promise<void> {
+  await page.waitForFunction(
+    (expected) =>
+      document
+        .getElementById("plainsign-root")
+        ?.shadowRoot?.querySelector(".ps-verdict h1")?.textContent === expected,
+    verdict,
+  );
+}
 
-  return dialogHandled.finally(() => page.off("console", onConsole));
+async function shadowText(
+  page: Page,
+  selector: string,
+): Promise<string | null> {
+  return page.evaluate(
+    (value) =>
+      document
+        .getElementById("plainsign-root")
+        ?.shadowRoot?.querySelector(value)?.textContent ?? null,
+    selector,
+  );
+}
+
+async function clickShadow(page: Page, selector: string): Promise<void> {
+  await page.evaluate((value) => {
+    const element = document
+      .getElementById("plainsign-root")
+      ?.shadowRoot?.querySelector(value);
+    if (!(element instanceof HTMLElement))
+      throw new Error(`Missing shadow element: ${value}`);
+    element.click();
+  }, selector);
 }
 
 test.describe.configure({ mode: "serial" });
@@ -147,33 +180,25 @@ for (const mode of installModes) {
       });
     });
 
-    test("passes eth_chainId through without a dialog or counter increment", async () => {
+    test("passes eth_chainId through without an overlay", async () => {
       await withTestPage(mode, async (page) => {
-        let dialogs = 0;
-        page.on("dialog", async (dialog) => {
-          dialogs += 1;
-          await dialog.dismiss();
-        });
         const before = await walletState(page);
         await page.locator("#chain-id").click();
         await expect(page.locator("#out")).toHaveText("0x7a69");
         const after = await walletState(page);
-        expect(dialogs).toBe(0);
+        expect(await page.locator("#plainsign-root").count()).toBe(0);
         expect(after.count).toBe(before.count);
         expect(after.calls).toHaveLength(0);
       });
     });
 
-    test("accepts a transaction before forwarding identical params", async () => {
+    test("shows analyzing promptly and continues with identical transaction params", async () => {
       await withTestPage(mode, async (page) => {
-        const dialogHandled = handleNextDialog(page, true);
-        await page.locator("#send-transaction").click();
-        const dialog = await dialogHandled;
+        expect(await startAction(page, "send-transaction")).toBeLessThan(300);
+        await waitForVerdict(page, "Safe");
+        expect(await shadowText(page, ".ps-summary")).toContain("You'll send");
+        await clickShadow(page, ".ps-continue");
         await expect(page.locator("#out")).toHaveText(fakeTransactionHash);
-        expect(dialog.callsBeforeDialog).toBe(0);
-        expect(dialog.message).toContain(
-          "PlainSign [caution]: Stub analysis for eth_sendTransaction",
-        );
 
         const state = await walletState(page);
         expect(state.calls).toEqual([
@@ -183,63 +208,58 @@ for (const mode of installModes) {
           },
         ]);
         expect(state.sameReferences).toEqual([true]);
+        expect(await page.locator("#plainsign-root").count()).toBe(0);
       });
     });
 
-    test("rejects a transaction with EIP-1193 code 4001", async () => {
+    test("Reject returns EIP-1193 code 4001", async () => {
       await withTestPage(mode, async (page) => {
-        const dialogHandled = handleNextDialog(page, false);
-        await page.locator("#send-transaction").click();
-        const dialog = await dialogHandled;
+        await startAction(page, "send-transaction");
+        await waitForVerdict(page, "Safe");
+        await clickShadow(page, ".ps-reject");
         await expect(page.locator("#out")).toHaveText("error 4001");
-        expect(dialog.callsBeforeDialog).toBe(0);
-        const state = await walletState(page);
-        expect(state.calls).toHaveLength(0);
-        expect(state.count).toBe(1);
+        expect((await walletState(page)).calls).toHaveLength(0);
       });
     });
 
-    test("intercepts typed data and personal_sign but not chainId", async () => {
+    test("Escape rejects with EIP-1193 code 4001", async () => {
       await withTestPage(mode, async (page) => {
-        const typedDialog = handleNextDialog(page, true);
-        await page.locator("#sign-typed-data").click();
-        await typedDialog;
-        await expect(page.locator("#out")).toHaveText(fakeSignature);
-
-        const messageDialog = handleNextDialog(page, true);
-        await page.locator("#sign-message").click();
-        await messageDialog;
-        await expect(page.locator("#out")).toHaveText(fakeSignature);
-
-        await page.locator("#chain-id").click();
-        await expect(page.locator("#out")).toHaveText("0x7a69");
-        const state = await walletState(page);
-        expect(state.calls.map((call) => call.method)).toEqual([
-          "eth_signTypedData_v4",
-          "personal_sign",
-        ]);
-        expect(state.count).toBe(2);
+        await startAction(page, "send-transaction");
+        await waitForVerdict(page, "Safe");
+        await page.keyboard.press("Escape");
+        await expect(page.locator("#out")).toHaveText("error 4001");
+        expect((await walletState(page)).calls).toHaveLength(0);
       });
     });
 
-    test("handles two sequential intercepted requests", async () => {
+    test("shows a danger verdict and switches Beginner/Technical views", async () => {
       await withTestPage(mode, async (page) => {
-        const firstDialog = handleNextDialog(page, true);
-        await page.locator("#send-transaction").click();
-        await firstDialog;
+        await startAction(page, "sign-typed-data");
+        await waitForVerdict(page, "Danger");
+        expect(await shadowText(page, ".ps-reasons")).toContain(
+          "Permission goes to a personal wallet",
+        );
+        await clickShadow(page, ".ps-toggle button:last-child");
+        expect(await shadowText(page, ".ps-detail-list")).toContain(
+          "Method: eth_signTypedData_v4",
+        );
+        await clickShadow(page, ".ps-continue");
+        await expect(page.locator("#out")).toHaveText(fakeSignature);
+      });
+    });
+
+    test("handles a second intercepted request after the first unmounts", async () => {
+      await withTestPage(mode, async (page) => {
+        await startAction(page, "send-transaction");
+        await waitForVerdict(page, "Safe");
+        await clickShadow(page, ".ps-continue");
         await expect(page.locator("#out")).toHaveText(fakeTransactionHash);
 
-        const secondDialog = handleNextDialog(page, true);
-        await page.locator("#sign-message").click();
-        await secondDialog;
+        await startAction(page, "sign-message");
+        await waitForVerdict(page, "Safe");
+        await page.keyboard.press("Enter");
         await expect(page.locator("#out")).toHaveText(fakeSignature);
-
-        const state = await walletState(page);
-        expect(state.calls.map((call) => call.method)).toEqual([
-          "eth_sendTransaction",
-          "personal_sign",
-        ]);
-        expect(state.count).toBe(2);
+        expect((await walletState(page)).count).toBe(2);
       });
     });
   });
