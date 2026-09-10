@@ -86,10 +86,10 @@
       <pre id="out" aria-live="polite">No request yet.</pre>
     </main>
     <script>
-      const ACCOUNT = "0x1111111111111111111111111111111111111111";
       const TARGET = "0x2222222222222222222222222222222222222222";
       const out = document.querySelector("#out");
       const status = document.querySelector("#status");
+      let activeAccount;
       const permit2 = {
         domain: {
           name: "Permit2",
@@ -135,6 +135,7 @@
           out.textContent =
             typeof result === "string" ? result : JSON.stringify(result);
           status.textContent = "Request completed.";
+          return result;
         } catch (error) {
           const code =
             error && typeof error === "object" && "code" in error
@@ -142,38 +143,56 @@
               : "unknown";
           out.textContent = `error ${code}`;
           status.textContent = "Request rejected.";
+          return undefined;
         }
       }
 
-      document
-        .querySelector("#connect")
-        .addEventListener("click", () =>
-          request({ method: "eth_requestAccounts" }),
-        );
+      async function requestWithAccount(makeArgs) {
+        if (!activeAccount) {
+          const accounts = await window.ethereum.request({
+            method: "eth_accounts",
+          });
+          if (Array.isArray(accounts) && typeof accounts[0] === "string") {
+            activeAccount = accounts[0];
+          }
+        }
+
+        if (!activeAccount) {
+          out.textContent = "error wallet not connected";
+          status.textContent = "Click Connect first.";
+          return;
+        }
+
+        return request(makeArgs(activeAccount));
+      }
+
+      document.querySelector("#connect").addEventListener("click", async () => {
+        const accounts = await request({ method: "eth_requestAccounts" });
+        if (Array.isArray(accounts) && typeof accounts[0] === "string") {
+          activeAccount = accounts[0];
+          status.textContent = `Connected: ${activeAccount.slice(0, 8)}…${activeAccount.slice(-4)}`;
+        }
+      });
       document
         .querySelector("#send-transaction")
         .addEventListener("click", () =>
-          request({
+          requestWithAccount((account) => ({
             method: "eth_sendTransaction",
-            params: [{ from: ACCOUNT, to: TARGET, value: "0x1" }],
-          }),
+            params: [{ from: account, to: TARGET, value: "0x1" }],
+          })),
         );
-      document
-        .querySelector("#sign-typed-data")
-        .addEventListener("click", () =>
-          request({
-            method: "eth_signTypedData_v4",
-            params: [ACCOUNT, JSON.stringify(permit2)],
-          }),
-        );
-      document
-        .querySelector("#sign-message")
-        .addEventListener("click", () =>
-          request({
-            method: "personal_sign",
-            params: ["0x48656c6c6f2066726f6d20506c61696e5369676e", ACCOUNT],
-          }),
-        );
+      document.querySelector("#sign-typed-data").addEventListener("click", () =>
+        requestWithAccount((account) => ({
+          method: "eth_signTypedData_v4",
+          params: [account, JSON.stringify(permit2)],
+        })),
+      );
+      document.querySelector("#sign-message").addEventListener("click", () =>
+        requestWithAccount((account) => ({
+          method: "personal_sign",
+          params: ["0x48656c6c6f2066726f6d20506c61696e5369676e", account],
+        })),
+      );
       document
         .querySelector("#chain-id")
         .addEventListener("click", () => request({ method: "eth_chainId" }));
