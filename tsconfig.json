@@ -4,6 +4,6 @@
     "strict": true,
     "noEmit": true,
     "resolveJsonModule": true,
-    "types": ["node", "vitest/globals"]
+    "types": ["chrome", "node", "vitest/globals"]
   }
 }

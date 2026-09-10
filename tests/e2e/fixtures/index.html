@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PlainSign Wallet Test Page</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, system-ui, sans-serif;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: #07111f;
+        color: #eef6ff;
+        display: grid;
+        place-items: center;
+      }
+      main {
+        width: min(760px, calc(100% - 40px));
+        padding: 40px;
+        border: 1px solid #27415f;
+        border-radius: 24px;
+        background: #0c1b2e;
+        box-shadow: 0 24px 80px rgb(0 0 0 / 53%);
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(2rem, 6vw, 3.5rem);
+      }
+      p {
+        color: #aac0d8;
+        font-size: 1.1rem;
+      }
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 14px;
+        margin: 30px 0;
+      }
+      button {
+        min-height: 64px;
+        border: 0;
+        border-radius: 14px;
+        padding: 14px 18px;
+        background: #38d39f;
+        color: #04120d;
+        font: inherit;
+        font-size: 1.08rem;
+        font-weight: 750;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #6be5ba;
+      }
+      #status {
+        color: #8be8c5;
+        font-weight: 700;
+      }
+      #out {
+        min-height: 64px;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+        border-radius: 14px;
+        background: #030a13;
+        padding: 20px;
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: 800;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>PlainSign test page</h1>
+      <p>Use these buttons to confirm PlainSign appears before your wallet.</p>
+      <div id="status">Ready — choose an action below.</div>
+      <div class="buttons">
+        <button id="connect">Connect</button>
+        <button id="send-transaction">Send transaction</button>
+        <button id="sign-typed-data">Sign typed data</button>
+        <button id="sign-message">Sign message</button>
+        <button id="chain-id">Chain id</button>
+      </div>
+      <pre id="out" aria-live="polite">No request yet.</pre>
+    </main>
+    <script>
+      const ACCOUNT = "0x1111111111111111111111111111111111111111";
+      const TARGET = "0x2222222222222222222222222222222222222222";
+      const out = document.querySelector("#out");
+      const status = document.querySelector("#status");
+      const permit2 = {
+        domain: {
+          name: "Permit2",
+          chainId: 31337,
+          verifyingContract: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+        },
+        primaryType: "PermitSingle",
+        types: {
+          EIP712Domain: [
+            { name: "name", type: "string" },
+            { name: "chainId", type: "uint256" },
+            { name: "verifyingContract", type: "address" },
+          ],
+          PermitDetails: [
+            { name: "token", type: "address" },
+            { name: "amount", type: "uint160" },
+            { name: "expiration", type: "uint48" },
+            { name: "nonce", type: "uint48" },
+          ],
+          PermitSingle: [
+            { name: "details", type: "PermitDetails" },
+            { name: "spender", type: "address" },
+            { name: "sigDeadline", type: "uint256" },
+          ],
+        },
+        message: {
+          details: {
+            token: TARGET,
+            amount: "1461501637330902918203684832716283019655932542975",
+            expiration: 4102444800,
+            nonce: 0,
+          },
+          spender: TARGET,
+          sigDeadline: 4102444800,
+        },
+      };
+
+      async function request(args) {
+        status.textContent = `Requesting ${args.method}…`;
+        window.__lastRequestArgs = args;
+        try {
+          const result = await window.ethereum.request(args);
+          out.textContent =
+            typeof result === "string" ? result : JSON.stringify(result);
+          status.textContent = "Request completed.";
+        } catch (error) {
+          const code =
+            error && typeof error === "object" && "code" in error
+              ? error.code
+              : "unknown";
+          out.textContent = `error ${code}`;
+          status.textContent = "Request rejected.";
+        }
+      }
+
+      document
+        .querySelector("#connect")
+        .addEventListener("click", () =>
+          request({ method: "eth_requestAccounts" }),
+        );
+      document
+        .querySelector("#send-transaction")
+        .addEventListener("click", () =>
+          request({
+            method: "eth_sendTransaction",
+            params: [{ from: ACCOUNT, to: TARGET, value: "0x1" }],
+          }),
+        );
+      document
+        .querySelector("#sign-typed-data")
+        .addEventListener("click", () =>
+          request({
+            method: "eth_signTypedData_v4",
+            params: [ACCOUNT, JSON.stringify(permit2)],
+          }),
+        );
+      document
+        .querySelector("#sign-message")
+        .addEventListener("click", () =>
+          request({
+            method: "personal_sign",
+            params: ["0x48656c6c6f2066726f6d20506c61696e5369676e", ACCOUNT],
+          }),
+        );
+      document
+        .querySelector("#chain-id")
+        .addEventListener("click", () => request({ method: "eth_chainId" }));
+    </script>
+  </body>
+</html>

@@ -38,4 +38,10 @@ export default tseslint.config(
       globals: globals.node,
     },
   },
+  {
+    files: ["tests/e2e/mock-wallet.js"],
+    languageOptions: {
+      globals: globals.browser,
+    },
+  },
 );

@@ -5,6 +5,7 @@ dist/
 .wxt/
 coverage/
 playwright-report/
+test-results/
 contracts/.env
 demo-dapp/.env
 *.log
