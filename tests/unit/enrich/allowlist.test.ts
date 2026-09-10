@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
+import type { Address } from "viem";
 
+import localDeployment from "../../../contracts/deployments/31337.json";
 import {
   domainMatches,
   getAllowlistEntry,
@@ -13,8 +15,22 @@ describe("enrichment allowlist", () => {
     );
     expect(entry?.protocol).toBe("Wrapped Ether (WETH)");
     expect(
-      getAllowlistEntry(31337, "0xC02AAa39b223FE8D0A0E5C4F27eAD9083C756Cc2"),
-    ).toBeUndefined();
+      getAllowlistEntry(31337, localDeployment.WETH9 as Address),
+    ).toEqual({
+      protocol: "Wrapped Ether (WETH, local)",
+      domains: ["*"],
+    });
+  });
+
+  it("does not allowlist any local demo or attacker address", () => {
+    for (const address of [
+      localDeployment.DemoNFT,
+      localDeployment.ClaimToken,
+      localDeployment.FakeMint,
+      localDeployment.attacker,
+    ]) {
+      expect(getAllowlistEntry(31337, address as Address)).toBeUndefined();
+    }
   });
 
   it("matches exact domains, subdomains, and the wildcard without suffix tricks", () => {

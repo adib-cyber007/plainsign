@@ -12,10 +12,18 @@ export default defineConfig({
   use: {
     trace: "retain-on-failure",
   },
-  webServer: {
-    command: "node tests/e2e/serve.js",
-    url: "http://127.0.0.1:5174",
-    reuseExistingServer: true,
-    timeout: 10_000,
-  },
+  webServer: [
+    {
+      command: "node tests/e2e/serve.js",
+      url: "http://127.0.0.1:5174",
+      reuseExistingServer: true,
+      timeout: 10_000,
+    },
+    {
+      command: "npm run demo:local",
+      url: "http://127.0.0.1:5173",
+      reuseExistingServer: true,
+      timeout: 120_000,
+    },
+  ],
 });

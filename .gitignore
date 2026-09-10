@@ -7,5 +7,9 @@ coverage/
 playwright-report/
 test-results/
 contracts/.env
+contracts/artifacts/
+contracts/cache/
+contracts/typechain-types/
 demo-dapp/.env
+demo-dapp/dist/
 *.log

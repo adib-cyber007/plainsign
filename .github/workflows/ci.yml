@@ -11,6 +11,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm --prefix contracts ci
+      - run: npm --prefix demo-dapp ci
+      - run: npm --prefix contracts test
+      - run: npm --prefix demo-dapp run build
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
@@ -24,5 +28,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm --prefix contracts ci
+      - run: npm --prefix demo-dapp ci
       - run: npx playwright install --with-deps chromium
       - run: xvfb-run --auto-servernum npm run test:e2e

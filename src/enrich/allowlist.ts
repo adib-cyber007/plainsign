@@ -1,5 +1,6 @@
 import type { Address } from "viem";
 
+import localDeployment from "../../contracts/deployments/31337.json";
 import allowlistJson from "../config/allowlist.json";
 
 export interface AllowlistEntry {
@@ -9,7 +10,19 @@ export interface AllowlistEntry {
 
 type AllowlistConfig = Record<string, Record<string, AllowlistEntry>>;
 
-const allowlist = allowlistJson as AllowlistConfig;
+const configuredAllowlist = allowlistJson as AllowlistConfig;
+const localWeth = localDeployment.WETH9?.toLowerCase();
+const allowlist: AllowlistConfig = {
+  ...configuredAllowlist,
+  "31337": localWeth
+    ? {
+        [localWeth]: {
+          protocol: "Wrapped Ether (WETH, local)",
+          domains: ["*"],
+        },
+      }
+    : {},
+};
 
 export function getAllowlistEntry(
   chainId: number,
