@@ -166,6 +166,17 @@
         return request(makeArgs(activeAccount));
       }
 
+      async function getActiveChainId() {
+        const chainId = await window.ethereum.request({
+          method: "eth_chainId",
+        });
+        const parsed =
+          typeof chainId === "string"
+            ? Number.parseInt(chainId, 16)
+            : Number(chainId);
+        return Number.isSafeInteger(parsed) ? parsed : permit2.domain.chainId;
+      }
+
       document.querySelector("#connect").addEventListener("click", async () => {
         const accounts = await request({ method: "eth_requestAccounts" });
         if (Array.isArray(accounts) && typeof accounts[0] === "string") {
@@ -181,12 +192,21 @@
             params: [{ from: account, to: TARGET, value: "0x1" }],
           })),
         );
-      document.querySelector("#sign-typed-data").addEventListener("click", () =>
-        requestWithAccount((account) => ({
-          method: "eth_signTypedData_v4",
-          params: [account, JSON.stringify(permit2)],
-        })),
-      );
+      document
+        .querySelector("#sign-typed-data")
+        .addEventListener("click", async () => {
+          const chainId = await getActiveChainId();
+          return requestWithAccount((account) => ({
+            method: "eth_signTypedData_v4",
+            params: [
+              account,
+              JSON.stringify({
+                ...permit2,
+                domain: { ...permit2.domain, chainId },
+              }),
+            ],
+          }));
+        });
       document.querySelector("#sign-message").addEventListener("click", () =>
         requestWithAccount((account) => ({
           method: "personal_sign",
