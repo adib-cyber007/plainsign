@@ -1,0 +1,21 @@
+{
+  "input": {
+    "primaryType": "Mystery",
+    "domain": {
+      "name": "Test",
+      "chainId": 11155111,
+      "verifyingContract": "0x1111111111111111111111111111111111111111"
+    },
+    "message": {}
+  },
+  "expected": {
+    "method": "eth_signTypedData_v4",
+    "primaryType": "Mystery",
+    "domain": {
+      "name": "Test",
+      "verifyingContract": "0x1111111111111111111111111111111111111111",
+      "chainId": 11155111
+    },
+    "kind": "unknown_typed_data"
+  }
+}

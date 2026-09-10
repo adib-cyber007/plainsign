@@ -1,0 +1,17 @@
+{
+  "input": [
+    "example.com wants you to sign in with your Ethereum account:\n0x1111111111111111111111111111111111111111\n\nSign in\n\nURI: https://example.com\nVersion: 1\nChain ID: 11155111\nNonce: 12345678\nIssued At: 2027-01-15T00:00:00.000Z\nExpiration Time: 2027-01-16T00:00:00.000Z",
+    "0x1111111111111111111111111111111111111111"
+  ],
+  "method": "personal_sign",
+  "expected": {
+    "kind": "siwe",
+    "method": "personal_sign",
+    "domain": {
+      "name": "example.com",
+      "chainId": 11155111
+    },
+    "deadline": 1800057600,
+    "functionName": "personal_sign"
+  }
+}

@@ -5,7 +5,10 @@ export default defineConfig({
     environment: "node",
     include: ["tests/unit/**/*.test.ts"],
     coverage: {
+      provider: "v8",
       reporter: ["text", "html"],
+      include: ["src/decoder/**/*.ts", "src/risk/**/*.ts", "src/explain/**/*.ts"],
+      thresholds: { lines: 90 },
     },
   },
 });

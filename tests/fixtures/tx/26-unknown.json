@@ -1,0 +1,15 @@
+{
+  "input": {
+    "to": "0x1111111111111111111111111111111111111111",
+    "data": "0xdeadbeef"
+  },
+  "expected": {
+    "kind": "unknown_function",
+    "method": "eth_sendTransaction",
+    "to": "0x1111111111111111111111111111111111111111",
+    "value": {
+      "__bigint": "0"
+    },
+    "functionSig": "0xdeadbeef"
+  }
+}

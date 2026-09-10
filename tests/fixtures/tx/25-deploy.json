@@ -1,0 +1,16 @@
+{
+  "input": {
+    "value": {
+      "__bigint": "0"
+    },
+    "data": "0x6000"
+  },
+  "expected": {
+    "kind": "contract_deploy",
+    "method": "eth_sendTransaction",
+    "value": {
+      "__bigint": "0"
+    },
+    "functionName": "contract deployment"
+  }
+}

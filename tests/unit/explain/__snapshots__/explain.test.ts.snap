@@ -1,0 +1,81 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`explanation templates > snapshots msg/01-siwe.json 1`] = `"You're signing a login message for example.com."`;
+
+exports[`explanation templates > snapshots msg/02-siwe-hex.json 1`] = `"You're signing a login message for example.com."`;
+
+exports[`explanation templates > snapshots msg/03-hash.json 1`] = `"You're being asked to sign an unreadable code."`;
+
+exports[`explanation templates > snapshots msg/04-plain.json 1`] = `"You're signing a readable message."`;
+
+exports[`explanation templates > snapshots msg/05-eth-sign.json 1`] = `"You're being asked to sign an unreadable code."`;
+
+exports[`explanation templates > snapshots tx/01-erc20-approve-limited.json 1`] = `"This gives 0x2222…2222 permission to take 1000 tokens."`;
+
+exports[`explanation templates > snapshots tx/02-erc20-approve-unlimited.json 1`] = `"This gives 0x2222…2222 permission to take all of your tokens, forever."`;
+
+exports[`explanation templates > snapshots tx/03-erc20-approve-uint96.json 1`] = `"This gives 0x2222…2222 permission to take 79228162514264337593543950335 tokens."`;
+
+exports[`explanation templates > snapshots tx/04-erc20-increase.json 1`] = `"This gives 0x2222…2222 permission to take 10 tokens."`;
+
+exports[`explanation templates > snapshots tx/05-erc20-transfer.json 1`] = `"You'll send 20 tokens to 0x2222…2222."`;
+
+exports[`explanation templates > snapshots tx/06-erc20-transfer-from.json 1`] = `"This moves 30 tokens to 0x2222…2222."`;
+
+exports[`explanation templates > snapshots tx/07-erc721-approve.json 1`] = `"This lets 0x2222…2222 move NFT 7."`;
+
+exports[`explanation templates > snapshots tx/08-erc721-all-true.json 1`] = `"This gives 0x2222…2222 permission to move every NFT you own in this collection."`;
+
+exports[`explanation templates > snapshots tx/09-erc721-all-false.json 1`] = `"This removes 0x2222…2222's permission to move NFTs in this collection."`;
+
+exports[`explanation templates > snapshots tx/10-erc721-transfer-from.json 1`] = `"You'll send NFT 8 to 0x2222…2222."`;
+
+exports[`explanation templates > snapshots tx/11-erc721-safe-transfer.json 1`] = `"You'll send NFT 9 to 0x2222…2222."`;
+
+exports[`explanation templates > snapshots tx/12-erc721-safe-transfer-data.json 1`] = `"You'll send NFT 10 to 0x2222…2222."`;
+
+exports[`explanation templates > snapshots tx/13-erc1155-all.json 1`] = `"This gives 0x2222…2222 permission to move every item you own in this collection."`;
+
+exports[`explanation templates > snapshots tx/14-erc1155-transfer.json 1`] = `"You'll send collection item 11 to 0x2222…2222."`;
+
+exports[`explanation templates > snapshots tx/15-erc1155-batch.json 1`] = `"You'll send collection item 1, 2 to 0x2222…2222."`;
+
+exports[`explanation templates > snapshots tx/16-permit2-approve.json 1`] = `"This gives 0x2222…2222 permission to take all of your tokens, forever."`;
+
+exports[`explanation templates > snapshots tx/17-permit2-permit.json 1`] = `"This signature lets 0x2222…2222 move all of your tokens, forever with no practical expiry."`;
+
+exports[`explanation templates > snapshots tx/18-permit2-transfer.json 1`] = `"This signature can move 12 tokens to 0x2222…2222."`;
+
+exports[`explanation templates > snapshots tx/19-weth-deposit.json 1`] = `"You'll turn 0.01 ETH into the same amount of WETH."`;
+
+exports[`explanation templates > snapshots tx/20-weth-withdraw.json 1`] = `"You'll turn 10000000000000000 tokens WETH into ETH."`;
+
+exports[`explanation templates > snapshots tx/21-router.json 1`] = `"You'll exchange one asset for another until its expired deadline."`;
+
+exports[`explanation templates > snapshots tx/22-seaport.json 1`] = `"This signs a marketplace listing for NFT unknown."`;
+
+exports[`explanation templates > snapshots tx/23-multicall.json 1`] = `"This groups 1 actions into one transaction."`;
+
+exports[`explanation templates > snapshots tx/24-native.json 1`] = `"You'll send 1 ETH to 0x2222…2222."`;
+
+exports[`explanation templates > snapshots tx/25-deploy.json 1`] = `"You'll create a new smart contract."`;
+
+exports[`explanation templates > snapshots tx/26-unknown.json 1`] = `"PlainSign cannot identify what this transaction will do."`;
+
+exports[`explanation templates > snapshots typed/01-permit-object.json 1`] = `"This signature lets 0x2222…2222 move all of your tokens, forever."`;
+
+exports[`explanation templates > snapshots typed/02-permit-json.json 1`] = `"This signature lets 0x2222…2222 move 100 tokens."`;
+
+exports[`explanation templates > snapshots typed/03-permit-single.json 1`] = `"This signature lets 0x2222…2222 move all of your tokens, forever with no practical expiry."`;
+
+exports[`explanation templates > snapshots typed/04-permit-batch.json 1`] = `"This signature gives 0x2222…2222 permission for 2 tokens."`;
+
+exports[`explanation templates > snapshots typed/05-transfer.json 1`] = `"This signature can move 20 tokens to 0x2222…2222."`;
+
+exports[`explanation templates > snapshots typed/06-transfer-batch.json 1`] = `"This signature can move an unknown amount to 0x2222…2222."`;
+
+exports[`explanation templates > snapshots typed/07-seaport-zero.json 1`] = `"This lists NFT 1 for almost nothing."`;
+
+exports[`explanation templates > snapshots typed/08-seaport-paid.json 1`] = `"This signs a marketplace listing for NFT 1."`;
+
+exports[`explanation templates > snapshots typed/09-unknown.json 1`] = `"PlainSign cannot identify what this signature will allow."`;

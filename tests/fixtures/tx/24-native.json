@@ -1,0 +1,19 @@
+{
+  "input": {
+    "to": "0x2222222222222222222222222222222222222222",
+    "value": {
+      "__bigint": "1000000000000000000"
+    },
+    "data": "0x"
+  },
+  "expected": {
+    "kind": "native_transfer",
+    "method": "eth_sendTransaction",
+    "to": "0x2222222222222222222222222222222222222222",
+    "recipient": "0x2222222222222222222222222222222222222222",
+    "value": {
+      "__bigint": "1000000000000000000"
+    },
+    "functionName": "native transfer"
+  }
+}

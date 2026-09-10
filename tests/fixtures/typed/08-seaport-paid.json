@@ -1,0 +1,52 @@
+{
+  "input": {
+    "primaryType": "OrderComponents",
+    "domain": {
+      "name": "Test",
+      "chainId": 11155111,
+      "verifyingContract": "0x1111111111111111111111111111111111111111"
+    },
+    "message": {
+      "offer": [
+        {
+          "itemType": 2,
+          "token": "0x1111111111111111111111111111111111111111",
+          "identifierOrCriteria": {
+            "__bigint": "1"
+          },
+          "startAmount": {
+            "__bigint": "1"
+          }
+        }
+      ],
+      "consideration": [
+        {
+          "itemType": 0,
+          "token": "0x1111111111111111111111111111111111111111",
+          "startAmount": {
+            "__bigint": "1000000000000000000"
+          }
+        }
+      ],
+      "endTime": 1800000000
+    }
+  },
+  "expected": {
+    "kind": "seaport_order",
+    "method": "eth_signTypedData_v4",
+    "token": "0x1111111111111111111111111111111111111111",
+    "tokenIds": [
+      {
+        "__bigint": "1"
+      }
+    ],
+    "deadline": 1800000000,
+    "primaryType": "OrderComponents",
+    "domain": {
+      "name": "Test",
+      "verifyingContract": "0x1111111111111111111111111111111111111111",
+      "chainId": 11155111
+    },
+    "considerationNearZero": false
+  }
+}

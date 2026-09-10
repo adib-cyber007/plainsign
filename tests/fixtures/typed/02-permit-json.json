@@ -1,0 +1,23 @@
+{
+  "input": [
+    "0x2222222222222222222222222222222222222222",
+    "{\"primaryType\":\"Permit\",\"domain\":{\"name\":\"Test\",\"chainId\":11155111,\"verifyingContract\":\"0x1111111111111111111111111111111111111111\"},\"message\":{\"spender\":\"0x2222222222222222222222222222222222222222\",\"value\":\"100\",\"deadline\":1800000000}}"
+  ],
+  "expected": {
+    "method": "eth_signTypedData_v4",
+    "primaryType": "Permit",
+    "domain": {
+      "name": "Test",
+      "verifyingContract": "0x1111111111111111111111111111111111111111",
+      "chainId": 11155111
+    },
+    "kind": "permit_erc2612",
+    "token": "0x1111111111111111111111111111111111111111",
+    "spender": "0x2222222222222222222222222222222222222222",
+    "amount": {
+      "__bigint": "100"
+    },
+    "deadline": 1800000000,
+    "isUnlimited": false
+  }
+}

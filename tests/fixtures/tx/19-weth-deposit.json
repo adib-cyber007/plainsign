@@ -1,0 +1,20 @@
+{
+  "input": {
+    "to": "0x1111111111111111111111111111111111111111",
+    "value": {
+      "__bigint": "10000000000000000"
+    },
+    "data": "0xd0e30db0"
+  },
+  "expected": {
+    "method": "eth_sendTransaction",
+    "to": "0x1111111111111111111111111111111111111111",
+    "functionSig": "0xd0e30db0",
+    "kind": "weth_wrap",
+    "token": "0x1111111111111111111111111111111111111111",
+    "value": {
+      "__bigint": "10000000000000000"
+    },
+    "functionName": "deposit"
+  }
+}

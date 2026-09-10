@@ -1,0 +1,77 @@
+{
+  "input": {
+    "primaryType": "PermitBatchTransferFrom",
+    "domain": {
+      "name": "Test",
+      "chainId": 11155111,
+      "verifyingContract": "0x1111111111111111111111111111111111111111"
+    },
+    "message": {
+      "permitted": [
+        {
+          "token": "0x1111111111111111111111111111111111111111",
+          "amount": {
+            "__bigint": "20"
+          }
+        },
+        {
+          "token": "0x3333333333333333333333333333333333333333",
+          "amount": {
+            "__bigint": "30"
+          }
+        }
+      ],
+      "spender": "0x2222222222222222222222222222222222222222",
+      "deadline": 1800000000
+    }
+  },
+  "expected": {
+    "kind": "permit2_transferFrom",
+    "method": "eth_signTypedData_v4",
+    "spender": "0x2222222222222222222222222222222222222222",
+    "deadline": 1800000000,
+    "isUnlimited": false,
+    "primaryType": "PermitBatchTransferFrom",
+    "domain": {
+      "name": "Test",
+      "verifyingContract": "0x1111111111111111111111111111111111111111",
+      "chainId": 11155111
+    },
+    "children": [
+      {
+        "kind": "permit2_transferFrom",
+        "method": "eth_signTypedData_v4",
+        "token": "0x1111111111111111111111111111111111111111",
+        "spender": "0x2222222222222222222222222222222222222222",
+        "amount": {
+          "__bigint": "20"
+        },
+        "deadline": 1800000000,
+        "isUnlimited": false,
+        "primaryType": "PermitTransferFrom",
+        "domain": {
+          "name": "Test",
+          "verifyingContract": "0x1111111111111111111111111111111111111111",
+          "chainId": 11155111
+        }
+      },
+      {
+        "kind": "permit2_transferFrom",
+        "method": "eth_signTypedData_v4",
+        "token": "0x3333333333333333333333333333333333333333",
+        "spender": "0x2222222222222222222222222222222222222222",
+        "amount": {
+          "__bigint": "30"
+        },
+        "deadline": 1800000000,
+        "isUnlimited": false,
+        "primaryType": "PermitTransferFrom",
+        "domain": {
+          "name": "Test",
+          "verifyingContract": "0x1111111111111111111111111111111111111111",
+          "chainId": 11155111
+        }
+      }
+    ]
+  }
+}

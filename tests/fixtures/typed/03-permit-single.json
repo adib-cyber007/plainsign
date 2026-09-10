@@ -1,0 +1,42 @@
+{
+  "input": [
+    {
+      "primaryType": "PermitSingle",
+      "domain": {
+        "name": "Test",
+        "chainId": 11155111,
+        "verifyingContract": "0x1111111111111111111111111111111111111111"
+      },
+      "message": {
+        "details": {
+          "token": "0x1111111111111111111111111111111111111111",
+          "amount": {
+            "__bigint": "1461501637330902918203684832716283019655932542975"
+          },
+          "expiration": 2115360000,
+          "nonce": 0
+        },
+        "spender": "0x2222222222222222222222222222222222222222",
+        "sigDeadline": 2115360000
+      }
+    },
+    "0x1111111111111111111111111111111111111111"
+  ],
+  "expected": {
+    "method": "eth_signTypedData_v4",
+    "primaryType": "PermitSingle",
+    "domain": {
+      "name": "Test",
+      "verifyingContract": "0x1111111111111111111111111111111111111111",
+      "chainId": 11155111
+    },
+    "kind": "permit2_single",
+    "token": "0x1111111111111111111111111111111111111111",
+    "spender": "0x2222222222222222222222222222222222222222",
+    "amount": {
+      "__bigint": "1461501637330902918203684832716283019655932542975"
+    },
+    "deadline": 2115360000,
+    "isUnlimited": true
+  }
+}

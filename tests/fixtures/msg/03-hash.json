@@ -1,0 +1,12 @@
+{
+  "input": [
+    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "0x1111111111111111111111111111111111111111"
+  ],
+  "method": "personal_sign",
+  "expected": {
+    "kind": "raw_hash",
+    "method": "personal_sign",
+    "functionName": "personal_sign"
+  }
+}
