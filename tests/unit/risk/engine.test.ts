@@ -27,6 +27,20 @@ describe("risk engine", () => {
     });
   });
 
+  it("treats an opaque personal_sign hash as instant danger", () => {
+    const result = evaluate(
+      riskContext({ kind: "raw_hash", method: "personal_sign" }),
+    );
+    expect(result).toMatchObject({
+      verdict: "danger",
+      instantVerdict: "danger",
+      score: 45,
+    });
+    expect(result.reasons.map((reason) => reason.id)).toContain(
+      "personal_sign_hash",
+    );
+  });
+
   it("forceMin raises a zero score", () => {
     expect(evaluate(riskContext({}, { reverted: true })).verdict).toBe(
       "caution",

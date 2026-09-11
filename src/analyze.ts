@@ -49,6 +49,7 @@ export async function analyze(
   const pipeline = (async (): Promise<AnalysisResult> => {
     const decodeStartedAt = now(deps);
     latestIntent = await (deps.decode ?? decode)(request);
+    const decodedMs = now(deps) - decodeStartedAt;
     report(deps, "decode", decodeStartedAt);
 
     const parallelStartedAt = now(deps);
@@ -57,6 +58,7 @@ export async function analyze(
       (deps.enrich ?? enrich)(addresses, request.chainId, request.origin),
       (deps.simulate ?? simulate)(request),
     ]);
+    const enrichedMs = now(deps) - parallelStartedAt;
     report(deps, "enrich+simulate", parallelStartedAt);
 
     const evaluateStartedAt = now(deps);
@@ -67,6 +69,7 @@ export async function analyze(
       addresses: addressInfo,
       now: Math.floor(now(deps) / 1_000),
     });
+    const rulesMs = now(deps) - evaluateStartedAt;
     report(deps, "evaluate", evaluateStartedAt);
 
     const explainStartedAt = now(deps);
@@ -86,6 +89,7 @@ export async function analyze(
       risk,
       explanation,
       durationMs: now(deps) - startedAt,
+      timings: { decodedMs, enrichedMs, rulesMs },
     };
   })();
 

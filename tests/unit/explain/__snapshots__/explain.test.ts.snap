@@ -1,14 +1,14 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`explanation templates > snapshots msg/01-siwe.json 1`] = `"You're signing a login message for example.com."`;
+exports[`explanation templates > snapshots msg/01-siwe.json 1`] = `"You're signing a login message for example.com. This can't move any assets."`;
 
-exports[`explanation templates > snapshots msg/02-siwe-hex.json 1`] = `"You're signing a login message for example.com."`;
+exports[`explanation templates > snapshots msg/02-siwe-hex.json 1`] = `"You're signing a login message for example.com. This can't move any assets."`;
 
-exports[`explanation templates > snapshots msg/03-hash.json 1`] = `"You're being asked to sign an unreadable code."`;
+exports[`explanation templates > snapshots msg/03-hash.json 1`] = `"You're being asked to sign an unreadable code. This could authorize anything."`;
 
 exports[`explanation templates > snapshots msg/04-plain.json 1`] = `"You're signing a readable message."`;
 
-exports[`explanation templates > snapshots msg/05-eth-sign.json 1`] = `"You're being asked to sign an unreadable code."`;
+exports[`explanation templates > snapshots msg/05-eth-sign.json 1`] = `"You're being asked to sign an unreadable code. This could authorize anything."`;
 
 exports[`explanation templates > snapshots tx/01-erc20-approve-limited.json 1`] = `"This gives 0x2222…2222 permission to take 1000 tokens."`;
 
@@ -74,7 +74,7 @@ exports[`explanation templates > snapshots typed/05-transfer.json 1`] = `"This s
 
 exports[`explanation templates > snapshots typed/06-transfer-batch.json 1`] = `"This signature can move an unknown amount to 0x2222…2222."`;
 
-exports[`explanation templates > snapshots typed/07-seaport-zero.json 1`] = `"This lists NFT 1 for almost nothing."`;
+exports[`explanation templates > snapshots typed/07-seaport-zero.json 1`] = `"This lists your NFT #1 for sale for 0 ETH — anyone can take it for free."`;
 
 exports[`explanation templates > snapshots typed/08-seaport-paid.json 1`] = `"This signs a marketplace listing for NFT 1."`;
 

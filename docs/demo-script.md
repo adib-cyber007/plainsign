@@ -1,47 +1,59 @@
-# PlainSign local demo script
+# PlainSign Sepolia demo script
 
-This is the five-click Phase 4 recording path. It runs entirely on the local Hardhat
-chain, so it needs no faucet and spends no real funds.
+The primary Phase 5 demo runs on public Sepolia at
+`https://adib-cyber007.github.io/plainsign/`. The local Hardhat version remains the
+no-faucet fallback.
 
-## Start the demo
+## Prepare the Sepolia demo
 
-1. In the PlainSign project folder, run `npm run demo:local`.
-2. Wait for all four green lines: `✅ Chain ready`, `✅ Contracts deployed`,
-   `✅ Victim funded`, and `✅ Demo dApp: http://localhost:5173`.
-3. In MetaMask, select **Hardhat Local** (RPC `http://127.0.0.1:8545`, chain ID
-   `31337`, currency `ETH`). The page's **Switch network** button can add it for you.
-4. Open `http://localhost:5173`, click **Connect wallet**, and connect the victim wallet.
+1. Download `plainsign-0.1.0.zip` from the repository's latest GitHub Release and
+   extract it. In Chrome, open `chrome://extensions`, enable **Developer mode**, choose
+   **Load unpacked**, and select the extracted folder.
+2. In MetaMask, select **Sepolia**, connect the configured victim wallet, and keep a
+   small amount of Sepolia ETH available for the WETH transaction.
+3. Open the Pages URL and click **Connect wallet**. The page must show **Sepolia** in
+   the header.
 
-If `VICTIM_ADDRESS` and `ATTACKER_ADDRESS` are absent, the command prints and uses
-Hardhat account #1 as the victim and account #19 as the attacker. To use your own
-wallet as the funded victim, set its address in the root `.env` and restart the command.
-Any wallet connected on chain 31337 also receives local-only demo gas automatically, so
-the five-button flow still works without importing a Hardhat account.
+## Record the seven requests
 
-## Record the five requests
+The first three requests are deliberately disguised approvals, the next two are safe,
+and the two requests under **More tests** are dangerous signatures.
 
-The abbreviated default attacker shown below is `0x8626…1199`. When a custom attacker
-is configured, PlainSign displays that address instead.
-
-1. Click **Free Mint**. PlainSign must show **Danger** with this exact summary:
-   “This gives 0x8626…1199 — a personal wallet, not an app — permission to move every
-   NFT you own in this collection.” Expand **Why?** to show the personal-wallet and
-   full-collection warnings, then click **Reject**. The page shows `Rejected (4001)`.
-2. Click **Claim 1000 CLAIM**. PlainSign must show **Danger** with this exact summary:
-   “This gives 0x8626…1199 — a personal wallet, not an app — permission to take all of
-   your tokens, forever.” Click **Reject**; the page shows `Rejected (4001)`.
-3. Click **Sign to verify wallet**. PlainSign must show **Danger** with this exact
-   summary: “This signature lets 0x8626…1199 — a personal wallet, not an app — move all
-   of your tokens, forever with no practical expiry.” Click **Reject**; the page shows
+1. Click **Free Mint**. Expect **Danger**. Open **Why?** to show the personal-wallet
+   and full-collection warnings. Switch to **Technical** and show `created 0 days ago`
+   plus the decoded/enriched/rules timings. Click **Reject**; the page shows
    `Rejected (4001)`.
-4. Click **Sign in**. PlainSign must show **Safe** with this exact summary: “You're
-   signing a login message for localhost.” For the H10 click-through, click **Reject**
-   and confirm `Rejected (4001)`. The automated test separately continues this request
-   and verifies that the dApp receives a signature.
-5. Click **Wrap 0.01 ETH**. PlainSign must show **Safe** with this exact summary:
-   “You'll turn 0.01 ETH into the same amount of WETH.” Click **Continue to wallet**,
-   confirm in MetaMask, and wait for the transaction hash beneath the button.
+2. Click **Claim 1000 CLAIM**. Expect **Danger** and the reason **Unverified contract
+   source**. Click **Reject**.
+3. Click **Sign to verify wallet**. Expect **Danger** because the Permit2 signature
+   grants the attacker a long-lived, unlimited token permission. Click **Reject**.
+4. Click **Sign in**. Expect **Safe** and a plain SIWE login explanation. Continue only
+   for the demo, sign in MetaMask, and confirm the page receives a signature.
+5. Click **Wrap 0.01 ETH**. Expect **Safe** because the request targets Sepolia WETH.
+   Click **Continue to wallet**, confirm in MetaMask, and wait for the transaction hash.
+6. Expand **More tests**, then click **Sign hash**. Expect **Danger** and the reason
+   **Signing an opaque 32-byte hash**. Click **Reject**.
+7. Click **List my NFT for 0**. Expect **Danger** and the reason **Listing your NFTs
+   for ~0**. Click **Reject**.
 
-The expected verdict sequence is **🔴 🔴 🔴 🟢 🟢**. The first three requests are
-deliberately disguised approvals; the final two are ordinary login and local WETH
-operations.
+The expected verdict sequence is **🔴 🔴 🔴 🟢 🟢 🔴 🔴**.
+
+## Local fallback
+
+1. Run `npm run demo:local` from the project folder.
+2. Wait for `✅ Chain ready`, `✅ Contracts deployed`, `✅ Victim funded`, and
+   `✅ Demo dApp: http://localhost:5173`.
+3. Open `http://localhost:5173`, connect MetaMask to **Hardhat Local** (RPC
+   `http://127.0.0.1:8545`, chain ID `31337`), and repeat the seven-button sequence.
+
+Any connected local wallet receives demo-only gas automatically. The local WETH
+deployment is recognized as the safe wrap target; DemoNFT, ClaimToken, and FakeMint are
+never allowlisted.
+
+## Automated verification
+
+- `npm run test:e2e` runs the seven-button local fallback plus interception coverage,
+  including an instant-danger `eth_sign` request.
+- `npm run test:e2e:sepolia` runs the seven-button page against the committed Sepolia
+  deployment with the configured victim mock wallet. It checks live contract age and
+  verification signals, a sub-2-second uncached analysis, and a sub-200-ms cache hit.

@@ -56,9 +56,12 @@ export interface RiskContext {
 export interface Explanation {
   summary: string; beginner: string[]; technical: string[]; whatCouldGoWrong?: string; source: "template" | "llm";
 }
+export interface AnalysisTimings {
+  decodedMs: number; enrichedMs: number; rulesMs: number;
+}
 export interface AnalysisResult {
   id: string; intent: Intent; simulation: SimulationResult; risk: RiskResult;
-  explanation: Explanation; durationMs: number; degraded?: string;
+  explanation: Explanation; durationMs: number; timings?: AnalysisTimings; degraded?: string;
 }
 
 // Bridge messages (all payloads pass through bridge/protocol serialize/deserialize)

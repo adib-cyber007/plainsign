@@ -84,6 +84,17 @@ export function VerdictCard({
         </ul>
 
         <Reasons reasons={result.risk.reasons} />
+
+        {view === "technical" && result.timings && (
+          <p
+            className="ps-stage-timings"
+            data-total-ms={Math.round(result.durationMs)}
+          >
+            decoded {Math.round(result.timings.decodedMs)} ms · enriched{" "}
+            {Math.round(result.timings.enrichedMs)} ms · rules{" "}
+            {Math.round(result.timings.rulesMs)} ms
+          </p>
+        )}
       </div>
 
       <footer

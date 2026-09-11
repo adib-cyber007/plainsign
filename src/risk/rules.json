@@ -4,7 +4,7 @@
   "rules": [
     { "id": "eth_sign", "signal": "isEthSign", "instant": "danger", "severity": "critical",
       "title": "Raw hash signing (eth_sign)", "detail": "This can authorize almost anything. Almost no legitimate app needs it." },
-    { "id": "personal_sign_hash", "signal": "isPersonalSignHexHash", "weight": 45, "severity": "critical",
+    { "id": "personal_sign_hash", "signal": "isPersonalSignHexHash", "weight": 45, "instant": "danger", "severity": "critical",
       "title": "Signing an opaque 32-byte hash", "detail": "The message is a raw hash, which could be a disguised transaction or order." },
     { "id": "spender_is_eoa", "signal": "isSpenderEOA", "instant": "danger", "severity": "critical",
       "title": "Permission goes to a personal wallet, not an app", "detail": "Legitimate apps use contracts. Giving a personal wallet permission over your assets is the #1 drainer pattern." },

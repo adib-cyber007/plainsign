@@ -81,6 +81,7 @@
         <button id="send-transaction">Send transaction</button>
         <button id="sign-typed-data">Sign typed data</button>
         <button id="sign-message">Sign message</button>
+        <button id="eth-sign">Raw eth_sign</button>
         <button id="chain-id">Chain id</button>
       </div>
       <pre id="out" aria-live="polite">No request yet.</pre>
@@ -211,6 +212,12 @@
         requestWithAccount((account) => ({
           method: "personal_sign",
           params: ["0x48656c6c6f2066726f6d20506c61696e5369676e", account],
+        })),
+      );
+      document.querySelector("#eth-sign").addEventListener("click", () =>
+        requestWithAccount((account) => ({
+          method: "eth_sign",
+          params: [account, `0x${"ff".repeat(32)}`],
         })),
       );
       document

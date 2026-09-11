@@ -1,0 +1,11 @@
+{
+  "hash": "0xa02b133950b74105c7f7b7fe2c008e38fc601b6d3ac1ef3a900fdd0fc2002f3a",
+  "status": "ok",
+  "timestamp": "2023-05-19T16:41:24.000000Z",
+  "created_contract": {
+    "hash": "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
+    "is_contract": true,
+    "is_verified": true,
+    "name": "Wrapped Ether"
+  }
+}

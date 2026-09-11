@@ -1,5 +1,7 @@
 import { defineConfig } from "@playwright/test";
 
+const sepoliaDemo = process.env.PLAIN_SIGN_E2E_DEMO_CHAIN === "11155111";
+
 export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: false,
@@ -20,10 +22,12 @@ export default defineConfig({
       timeout: 10_000,
     },
     {
-      command: "npm run demo:local",
+      command: sepoliaDemo
+        ? "npm --prefix demo-dapp run dev"
+        : "npm run demo:local",
       url: "http://127.0.0.1:5173",
       reuseExistingServer: true,
-      timeout: 120_000,
+      timeout: sepoliaDemo ? 30_000 : 120_000,
     },
   ],
 });

@@ -1,4 +1,5 @@
 import "@nomicfoundation/hardhat-toolbox-viem";
+import "@nomicfoundation/hardhat-verify";
 
 import { config as loadEnv } from "dotenv";
 import type { HardhatUserConfig } from "hardhat/config";
@@ -29,6 +30,20 @@ const config: HardhatUserConfig = {
       chainId: 11155111,
     },
   },
+  etherscan: {
+    apiKey: { sepolia: "blockscout-keyless" },
+    customChains: [
+      {
+        network: "sepolia",
+        chainId: 11155111,
+        urls: {
+          apiURL: "https://eth-sepolia.blockscout.com/api",
+          browserURL: "https://eth-sepolia.blockscout.com",
+        },
+      },
+    ],
+  },
+  sourcify: { enabled: false },
 };
 
 export default config;

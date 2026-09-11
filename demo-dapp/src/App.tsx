@@ -4,6 +4,7 @@ import {
   maxUint256,
   parseEther,
   toHex,
+  zeroAddress,
   type Address,
   type Hex,
 } from "viem";
@@ -13,8 +14,11 @@ import { getDeployment } from "./addresses";
 import { demoChain } from "./config";
 
 const permit2 = "0x000000000022D473030F116dDEE9F6B43aC78BA3" as Address;
+const seaport = "0x0000000000000068f116a894984e2db1123eb395" as Address;
 const sepoliaWeth = "0xfff9976782d46cc05630d1f6ebab18b2324d6b14" as Address;
 const maxUint160 = (1n << 160n) - 1n;
+const opaqueHash = `0x${"ff".repeat(32)}` as Hex;
+const zeroHash = `0x${"00".repeat(32)}` as Hex;
 
 const erc721ApprovalAbi = [
   {
@@ -52,7 +56,14 @@ const wethAbi = [
   },
 ] as const;
 
-type ActionId = "free-mint" | "claim" | "verify" | "sign-in" | "wrap";
+type ActionId =
+  | "free-mint"
+  | "claim"
+  | "verify"
+  | "sign-in"
+  | "wrap"
+  | "sign-hash"
+  | "list-zero";
 type Outcomes = Partial<Record<ActionId, string>>;
 
 interface ProviderRequest {
@@ -60,12 +71,14 @@ interface ProviderRequest {
   params: unknown[];
 }
 
-const actions: Array<{
+interface DemoAction {
   id: ActionId;
   title: string;
   note: string;
   tone: "hot" | "ink" | "calm";
-}> = [
+}
+
+const primaryActions: DemoAction[] = [
   {
     id: "free-mint",
     title: "Free Mint",
@@ -93,10 +106,28 @@ const actions: Array<{
   {
     id: "wrap",
     title: "Wrap 0.01 ETH",
-    note: "Use the known local WETH contract",
+    note: "Use the known WETH contract",
     tone: "calm",
   },
 ];
+
+const moreActions: DemoAction[] = [
+  {
+    id: "sign-hash",
+    title: "Sign hash",
+    note: "Opaque personal_sign payload",
+    tone: "ink",
+  },
+  {
+    id: "list-zero",
+    title: "List my NFT for 0",
+    note: "Seaport 1.6 order for zero ETH",
+    tone: "hot",
+  },
+];
+
+const releaseZipUrl =
+  "https://github.com/adib-cyber007/plainsign/releases/latest/download/plainsign-0.1.0.zip";
 
 export function App() {
   const { address, chainId, isConnected } = useAccount();
@@ -208,6 +239,28 @@ export function App() {
     }
   }
 
+  const actionRows = (items: readonly DemoAction[]) =>
+    items.map((action) => (
+      <div className={`action-row action-${action.tone}`} key={action.id}>
+        <button
+          id={action.id}
+          type="button"
+          disabled={!isConnected || !deployment || pending !== undefined}
+          onClick={() => void runAction(action.id)}
+        >
+          <span>{pending === action.id ? "Check your wallet…" : action.title}</span>
+          <small>{action.note}</small>
+        </button>
+        <output
+          className="action-outcome"
+          data-testid={`${action.id}-outcome`}
+          aria-live="polite"
+        >
+          {outcomes[action.id] || "No request yet"}
+        </output>
+      </div>
+    ));
+
   return (
     <div className="site-shell">
       <header className="site-header">
@@ -289,31 +342,23 @@ export function App() {
           )}
 
           <div className="action-list">
-            {actions.map((action) => (
-              <div className={`action-row action-${action.tone}`} key={action.id}>
-                <button
-                  id={action.id}
-                  type="button"
-                  disabled={!isConnected || !deployment || pending !== undefined}
-                  onClick={() => void runAction(action.id)}
-                >
-                  <span>{pending === action.id ? "Check your wallet…" : action.title}</span>
-                  <small>{action.note}</small>
-                </button>
-                <output
-                  className="action-outcome"
-                  data-testid={`${action.id}-outcome`}
-                  aria-live="polite"
-                >
-                  {outcomes[action.id] || "No request yet"}
-                </output>
-              </div>
-            ))}
+            {actionRows(primaryActions)}
           </div>
 
+          <details className="more-tests">
+            <summary>
+              <span>More tests</span>
+              <small>2 signature checks</small>
+            </summary>
+            <div className="action-list action-list-more">
+              {actionRows(moreActions)}
+            </div>
+          </details>
+
           <p className="fine-print">
-            Local demo only. Three requests are intentionally dangerous; two are safe.
-            PlainSign should tell you which is which before MetaMask opens.
+            Three core requests are intentionally dangerous; two are safe. Both extra
+            signature tests are dangerous. PlainSign should tell you which is which
+            before MetaMask opens.
           </p>
           {isConnected && demoChain.id === 31337 && (
             <p className={`local-gas local-gas-${localGas ?? "funding"}`} aria-live="polite">
@@ -332,6 +377,10 @@ export function App() {
         <p>“The countdown restarted, so I knew it was legit.” <span>— 0xDiamondHands</span></p>
         <p>“Five stars. Still waiting for the cat.” <span>— mintmaxi</span></p>
       </section>
+      <footer className="site-footer">
+        <span>Want to test the guardrail?</span>
+        <a href={releaseZipUrl}>Download the PlainSign extension (.zip)</a>
+      </footer>
     </div>
   );
 }
@@ -412,6 +461,91 @@ function buildRequest(
       `Issued At: ${new Date().toISOString()}`,
     ].join("\n");
     return { method: "personal_sign", params: [toHex(message), account] };
+  }
+  if (id === "sign-hash") {
+    return { method: "personal_sign", params: [opaqueHash, account] };
+  }
+  if (id === "list-zero") {
+    const now = Math.floor(Date.now() / 1_000);
+    const typedData = {
+      domain: {
+        name: "Seaport",
+        version: "1.6",
+        chainId: demoChain.id,
+        verifyingContract: seaport,
+      },
+      primaryType: "OrderComponents",
+      types: {
+        EIP712Domain: [
+          { name: "name", type: "string" },
+          { name: "version", type: "string" },
+          { name: "chainId", type: "uint256" },
+          { name: "verifyingContract", type: "address" },
+        ],
+        OfferItem: [
+          { name: "itemType", type: "uint8" },
+          { name: "token", type: "address" },
+          { name: "identifierOrCriteria", type: "uint256" },
+          { name: "startAmount", type: "uint256" },
+          { name: "endAmount", type: "uint256" },
+        ],
+        ConsiderationItem: [
+          { name: "itemType", type: "uint8" },
+          { name: "token", type: "address" },
+          { name: "identifierOrCriteria", type: "uint256" },
+          { name: "startAmount", type: "uint256" },
+          { name: "endAmount", type: "uint256" },
+          { name: "recipient", type: "address" },
+        ],
+        OrderComponents: [
+          { name: "offerer", type: "address" },
+          { name: "zone", type: "address" },
+          { name: "offer", type: "OfferItem[]" },
+          { name: "consideration", type: "ConsiderationItem[]" },
+          { name: "orderType", type: "uint8" },
+          { name: "startTime", type: "uint256" },
+          { name: "endTime", type: "uint256" },
+          { name: "zoneHash", type: "bytes32" },
+          { name: "salt", type: "uint256" },
+          { name: "conduitKey", type: "bytes32" },
+          { name: "counter", type: "uint256" },
+        ],
+      },
+      message: {
+        offerer: account,
+        zone: zeroAddress,
+        offer: [
+          {
+            itemType: 2,
+            token: deployment.DemoNFT,
+            identifierOrCriteria: "1",
+            startAmount: "1",
+            endAmount: "1",
+          },
+        ],
+        consideration: [
+          {
+            itemType: 0,
+            token: zeroAddress,
+            identifierOrCriteria: "0",
+            startAmount: "0",
+            endAmount: "0",
+            recipient: account,
+          },
+        ],
+        orderType: 0,
+        startTime: now,
+        endTime: now + 30 * 24 * 60 * 60,
+        zoneHash: zeroHash,
+        salt: Date.now().toString(),
+        conduitKey: zeroHash,
+        counter: "0",
+      },
+    };
+    return {
+      method: "eth_signTypedData_v4",
+      params: [account, JSON.stringify(typedData)],
+    };
   }
   const wethAddress =
     deployment.WETH9 ?? (demoChain.id === 11155111 ? sepoliaWeth : undefined);

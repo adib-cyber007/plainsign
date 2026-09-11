@@ -13,6 +13,7 @@
     "fixtures:generate": "tsx tests/fixtures/generate.ts",
     "verify:free-mint": "tsx scripts/verify-free-mint.ts",
     "test:e2e": "cross-env VITE_E2E=1 npm run build && playwright test",
+    "test:e2e:sepolia": "node scripts/test-sepolia-e2e.js",
     "testpage": "node tests/e2e/serve.js",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
@@ -22,6 +23,7 @@
     "deploy:local": "node scripts/run-workspace-script.js contracts deploy:local",
     "seed:local": "node scripts/run-workspace-script.js contracts seed:local",
     "deploy:sepolia": "node scripts/run-workspace-script.js contracts deploy:sepolia",
+    "preflight:sepolia": "node scripts/run-workspace-script.js contracts preflight:sepolia",
     "dapp:addresses": "node scripts/sync-dapp-addresses.js",
     "demo:local": "node scripts/demo-local.js",
     "postinstall": "wxt prepare"

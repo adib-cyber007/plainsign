@@ -342,6 +342,59 @@ blockquote cite {
   margin-top: 24px;
 }
 
+.more-tests {
+  margin-top: 20px;
+  border: 3px solid #101014;
+  background: #fff9ed;
+  box-shadow: 4px 4px 0 #101014;
+}
+
+.more-tests summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 15px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.more-tests summary::-webkit-details-marker {
+  display: none;
+}
+
+.more-tests summary span {
+  font-family: "Arial Black", Impact, sans-serif;
+  font-size: 1rem;
+}
+
+.more-tests summary span::before {
+  content: "+";
+  display: inline-block;
+  width: 20px;
+}
+
+.more-tests[open] summary span::before {
+  content: "−";
+}
+
+.more-tests summary small {
+  color: #5e586b;
+  font-weight: 900;
+}
+
+.more-tests summary:focus-visible,
+.site-footer a:focus-visible {
+  outline: 3px solid #6c3bff;
+  outline-offset: 3px;
+}
+
+.action-list-more {
+  margin-top: 0;
+  border-top: 3px solid #101014;
+  padding: 16px;
+}
+
 .action-row button {
   display: flex;
   align-items: center;
@@ -461,6 +514,24 @@ blockquote cite {
   font-size: 0.82rem;
 }
 
+.site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-top: 3px solid #101014;
+  padding: 20px;
+  background: #101014;
+  color: #fff9ed;
+  font-weight: 800;
+}
+
+.site-footer a {
+  color: #ffcc33;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
 @keyframes pulse {
   50% {
     background: #ffcc33;
@@ -530,6 +601,11 @@ blockquote cite {
   .testimonials p {
     border-right: 0;
     border-bottom: 3px solid #101014;
+  }
+
+  .site-footer {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 

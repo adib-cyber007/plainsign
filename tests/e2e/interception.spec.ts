@@ -248,6 +248,19 @@ for (const mode of installModes) {
       });
     });
 
+    test("blocks eth_sign with an instant danger verdict", async () => {
+      await withTestPage(mode, async (page) => {
+        await startAction(page, "eth-sign");
+        await waitForVerdict(page, "Danger");
+        expect(await shadowText(page, ".ps-reasons")).toContain(
+          "Raw hash signing (eth_sign)",
+        );
+        await clickShadow(page, ".ps-reject");
+        await expect(page.locator("#out")).toHaveText("error 4001");
+        expect((await walletState(page)).calls).toHaveLength(0);
+      });
+    });
+
     test("handles a second intercepted request after the first unmounts", async () => {
       await withTestPage(mode, async (page) => {
         await startAction(page, "send-transaction");

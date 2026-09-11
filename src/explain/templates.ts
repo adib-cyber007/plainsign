@@ -83,7 +83,7 @@ export const templates: Record<IntentKind, ExplanationTemplate> = {
   seaport_order: simple(
     (i, c) =>
       i.considerationNearZero
-        ? `This lists NFT ${c.tokenIds} for almost nothing.`
+        ? `This lists your NFT #${c.tokenIds} for sale for 0 ETH — anyone can take it for free.`
         : `This signs a marketplace listing for NFT ${c.tokenIds}.`,
     (_, c) => `The listing is valid ${c.deadline}.`,
   ),
@@ -114,7 +114,7 @@ export const templates: Record<IntentKind, ExplanationTemplate> = {
   ),
   siwe: simple(
     (i) =>
-      `You're signing a login message for ${i.domain?.name ?? "this site"}.`,
+      `You're signing a login message for ${i.domain?.name ?? "this site"}. This can't move any assets.`,
     () => "This login message cannot move assets by itself.",
   ),
   plain_message: simple(
@@ -122,7 +122,7 @@ export const templates: Record<IntentKind, ExplanationTemplate> = {
     () => "Check that the displayed message matches what you expect.",
   ),
   raw_hash: simple(
-    () => "You're being asked to sign an unreadable code.",
+    () => "You're being asked to sign an unreadable code. This could authorize anything.",
     () => "This could authorize something the page has not shown clearly.",
   ),
   unknown_function: simple(

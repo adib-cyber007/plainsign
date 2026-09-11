@@ -203,6 +203,17 @@ button {
   font-size: 14px;
   line-height: 1.45;
 }
+
+.ps-stage-timings {
+  margin: 14px 0 0;
+  border-top: 1px solid #d8dee9;
+  padding-top: 10px;
+  color: #657083;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.45;
+  text-align: center;
+}
 .ps-detail-list li {
   position: relative;
   padding-left: 15px;

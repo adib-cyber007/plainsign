@@ -45,6 +45,11 @@ describe("analyze", () => {
     expect(result.risk.verdict).toBe("safe");
     expect(result.explanation.summary).toBe("Safe summary.");
     expect(result.degraded).toBeUndefined();
+    expect(result.timings).toEqual({
+      decodedMs: expect.any(Number),
+      enrichedMs: expect.any(Number),
+      rulesMs: expect.any(Number),
+    });
     expect(stages).toEqual([
       "decode",
       "enrich+simulate",

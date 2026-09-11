@@ -38,6 +38,7 @@ function result(verdict: Verdict): AnalysisResult {
       source: "template",
     },
     durationMs: 1,
+    timings: { decodedMs: 12, enrichedMs: 640, rulesMs: 1 },
   };
 }
 
@@ -71,6 +72,9 @@ describe("Overlay", () => {
     expect(screen.getByText("Beginner detail")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Technical" }));
     expect(screen.getByText("Method: eth_sendTransaction")).toBeInTheDocument();
+    expect(
+      screen.getByText("decoded 12 ms · enriched 640 ms · rules 1 ms"),
+    ).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Continue to wallet" }));
     fireEvent.click(screen.getByRole("button", { name: "Reject" }));
     expect(decide).toHaveBeenNthCalledWith(1, "continue");

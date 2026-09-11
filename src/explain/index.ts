@@ -42,7 +42,7 @@ export function explain(
   return {
     summary: template.summary(intent, context),
     beginner,
-    technical: technicalDetails(intent, options.chainId),
+    technical: technicalDetails(intent, options.chainId, addresses),
     whatCouldGoWrong: risk.reasons[0]?.detail,
     source: "template",
   };
@@ -122,6 +122,7 @@ function simulationBullets(simulation: SimulationResult): string[] {
 function technicalDetails(
   intent: Intent,
   chainId: number | undefined,
+  addresses: Record<string, AddressInfo>,
 ): string[] {
   const details = [
     `Method: ${intent.method}`,
@@ -140,6 +141,25 @@ function technicalDetails(
   if (intent.value !== undefined) details.push(`Raw value: ${intent.value}`);
   if (intent.tokenIds)
     details.push(`Raw token IDs: ${intent.tokenIds.join(",")}`);
+  const described = new Set<string>();
+  for (const address of [
+    intent.to,
+    intent.token,
+    intent.spender,
+    intent.operator,
+    intent.recipient,
+  ]) {
+    if (!address || described.has(address.toLowerCase())) continue;
+    described.add(address.toLowerCase());
+    const info = addresses[address.toLowerCase()] ?? addresses[address];
+    if (!info) continue;
+    const facts = [info.contractName, info.isContract ? "contract" : "personal wallet"];
+    if (info.isContract && info.isVerified !== undefined) {
+      facts.push(info.isVerified ? "verified source" : "unverified source");
+    }
+    if (info.ageDays !== undefined) facts.push(`created ${info.ageDays} days ago`);
+    details.push(`${address}: ${facts.filter(Boolean).join(" · ")}`);
+  }
   return details;
 }
 
