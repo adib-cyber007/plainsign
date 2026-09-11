@@ -4,6 +4,7 @@ import type { AddressInfo, Intent } from "../types";
 import { getAllowlistEntry } from "./allowlist";
 import { getBlockscoutInfo } from "./blockscout";
 import { EnrichmentCache } from "./cache";
+import { findCommunityDenylistEntry, getCommunityDenylist } from "./denylist";
 import { getCode } from "./getCode";
 
 const PER_ADDRESS_TIMEOUT_MS = 1_500;
@@ -12,6 +13,7 @@ export interface EnrichDeps {
   cache?: Pick<EnrichmentCache, "get" | "set">;
   getCode?: typeof getCode;
   getBlockscoutInfo?: typeof getBlockscoutInfo;
+  getCommunityDenylist?: typeof getCommunityDenylist;
   now?: () => number;
   timeoutMs?: number;
   mock?: boolean;
@@ -48,6 +50,9 @@ export async function enrich(
   );
   const mock = deps.mock ?? import.meta.env?.VITE_E2E_MOCK_ENRICH === "1";
 
+  const denylistPromise = (
+    deps.getCommunityDenylist ?? getCommunityDenylist
+  )().catch(() => []);
   const entries = await Promise.all(
     [...unique.values()].map(async (address) => {
       const key = address.toLowerCase();
@@ -68,11 +73,28 @@ export async function enrich(
       }
     }),
   );
+  const denylist = await denylistPromise;
 
+  const successful = entries.filter(
+    (entry): entry is readonly [string, AddressInfo] => entry !== undefined,
+  );
   return Object.fromEntries(
-    entries.filter(
-      (entry): entry is readonly [string, AddressInfo] => entry !== undefined,
-    ),
+    successful.map(([key, info]) => {
+      const listed = findCommunityDenylistEntry(
+        denylist,
+        info.address,
+        chainId,
+      );
+      return [
+        key,
+        listed
+          ? {
+              ...info,
+              denylisted: { label: listed.label, source: listed.source },
+            }
+          : info,
+      ] as const;
+    }),
   );
 }
 

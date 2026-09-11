@@ -32,6 +32,18 @@ const cases = [
     { kind: "seaport_order", considerationNearZero: true },
     {},
   ],
+  [
+    "isKnownDrainer",
+    { to: TARGET },
+    {
+      info: {
+        denylisted: {
+          label: "Reported drainer",
+          source: "Community report #1",
+        },
+      },
+    },
+  ],
   ["isTargetYoungerThanDays", { to: TARGET }, { info: { ageDays: 6 } }, "7"],
   ["isTargetUnverified", { to: TARGET }, { info: { isVerified: false } }],
   [

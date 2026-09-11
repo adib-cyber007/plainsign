@@ -18,6 +18,8 @@
       "title": "Gasless token transfer signature", "detail": "Once relayed, this signature moves your tokens immediately." },
     { "id": "order_near_zero", "signal": "isMarketplaceOrderNearZero", "instant": "danger", "severity": "critical",
       "title": "Listing your NFTs for ~0", "detail": "This order sells your assets for almost nothing." },
+    { "id": "known_drainer", "signal": "isKnownDrainer", "instant": "danger", "severity": "critical",
+      "title": "Known drainer address", "detail": "This address appears on PlainSign's community-maintained drainer list." },
     { "id": "contract_new", "signal": "isTargetYoungerThanDays:7", "weight": 25, "severity": "warn",
       "title": "Contract is less than 7 days old", "detail": "Brand-new contracts are common in scams." },
     { "id": "unverified", "signal": "isTargetUnverified", "weight": 15, "severity": "info",

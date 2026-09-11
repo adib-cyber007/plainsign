@@ -85,4 +85,28 @@ describe("enrich", () => {
     expect(result[eoa].isContract).toBe(false);
     expect(result[contract].isContract).toBe(true);
   });
+
+  it("adds a community drainer match even when address metadata is cached", async () => {
+    const cached: AddressInfo = {
+      address: one,
+      isContract: false,
+      fetchedAt: 10,
+    };
+    const result = await enrich([one], 11155111, "https://example.test", {
+      cache: { get: async () => cached, set: async () => undefined },
+      getCommunityDenylist: async () => [
+        {
+          address: one,
+          label: "Reported drainer",
+          chains: [11155111],
+          source: "Community report #1",
+        },
+      ],
+    });
+
+    expect(result[one].denylisted).toEqual({
+      label: "Reported drainer",
+      source: "Community report #1",
+    });
+  });
 });

@@ -29,6 +29,8 @@ jobs:
         env:
           VITE_DEMO_CHAIN: "11155111"
           VITE_SEPOLIA_RPC: https://ethereum-sepolia-rpc.publicnode.com
+      - name: Publish community denylist
+        run: cp docs/denylist.json demo-dapp/dist/denylist.json
       - uses: actions/upload-pages-artifact@v3
         with:
           path: demo-dapp/dist

@@ -43,7 +43,8 @@ export interface SimulationResult {
 }
 export interface AddressInfo {
   address: Address; isContract: boolean; isVerified?: boolean; contractName?: string;
-  ageDays?: number; allowlisted?: { protocol: string; domains: string[] }; fetchedAt: number;
+  ageDays?: number; allowlisted?: { protocol: string; domains: string[] };
+  denylisted?: { label: string; source: string }; fetchedAt: number;
 }
 export interface RiskReason {
   id: string; weight: number; severity: "info" | "warn" | "critical"; title: string; detail: string;

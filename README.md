@@ -80,6 +80,7 @@ Thresholds: **Safe 0-24**, **Caution 25-59**, **Danger 60-100**. Any critical re
 | `permit_long_or_unlimited` | Long-lived or unlimited permit | warn | +35 |
 | `permit2_transfer` | Gasless token transfer signature | critical | +40 |
 | `order_near_zero` | Listing your NFTs for ~0 | critical | Instant danger |
+| `known_drainer` | Known drainer address | critical | Instant danger |
 | `contract_new` | Contract is less than 7 days old | warn | +25 |
 | `unverified` | Unverified contract source | info | +15 |
 | `domain_mismatch` | Website doesn't match the protocol | warn | +25 |
@@ -125,7 +126,7 @@ npm run package
 ## Roadmap
 
 - Dangerous token and NFT permission warnings offer **Revoke instead**, which proposes a zero-permission transaction while rejecting the original request.
-- Consume community-maintained drainer lists with auditable provenance.
+- PlainSign fetches its auditable [community drainer list](docs/denylist.json) from GitHub Pages and falls back to the bundled seed if the network is unavailable.
 - Add more chains while preserving the same open-rule and no-backend design.
 
 ## Team

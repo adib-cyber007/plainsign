@@ -56,6 +56,15 @@ export const isMarketplaceOrderNearZero: Signal = ({ intent }) =>
       item.kind === "seaport_order" && item.considerationNearZero === true,
   );
 
+export const isKnownDrainer: Signal = (context) =>
+  flattenIntents(context.intent).some((intent) =>
+    [intent.to, intent.spender, intent.operator, intent.recipient]
+      .filter((address): address is `0x${string}` => address !== undefined)
+      .some(
+        (address) => addressInfo(context, address)?.denylisted !== undefined,
+      ),
+  );
+
 export const isTargetYoungerThanDays: Signal = (context, argument) => {
   const days = Number(argument);
   return targetInfos(context).some(
@@ -106,6 +115,7 @@ export const signalRegistry: Record<string, Signal> = {
   isPermitLongOrUnlimited,
   isPermit2TransferFrom,
   isMarketplaceOrderNearZero,
+  isKnownDrainer,
   isTargetYoungerThanDays,
   isTargetUnverified,
   isDomainMismatch,

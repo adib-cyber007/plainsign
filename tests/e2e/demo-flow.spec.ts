@@ -63,6 +63,11 @@ test("the demo produces danger, danger, danger, safe, safe, danger, danger", asy
       await page.locator(`#${action}`).click();
       verdicts.push(await verdictLabel(page));
       expect(await shadowText(page, ".ps-summary")).toBe(dangerSummaries[action]);
+      if (action === "free-mint") {
+        expect(await shadowText(page, ".ps-reasons")).toContain(
+          "Known drainer address",
+        );
+      }
       if (sepoliaMode && action === "free-mint") {
         await clickShadow(page, ".ps-toggle button:last-child");
         expect(await shadowText(page, ".ps-detail-list")).toContain(

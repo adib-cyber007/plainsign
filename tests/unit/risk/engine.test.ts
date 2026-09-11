@@ -27,6 +27,30 @@ describe("risk engine", () => {
     });
   });
 
+  it("makes a community-listed drainer instant danger", () => {
+    const result = evaluate(
+      riskContext(
+        {},
+        {
+          info: {
+            denylisted: {
+              label: "Reported drainer",
+              source: "Community report #1",
+            },
+          },
+        },
+      ),
+    );
+    expect(result).toMatchObject({
+      verdict: "danger",
+      instantVerdict: "danger",
+      score: 0,
+    });
+    expect(result.reasons.map((reason) => reason.id)).toContain(
+      "known_drainer",
+    );
+  });
+
   it("treats an opaque personal_sign hash as instant danger", () => {
     const result = evaluate(
       riskContext({ kind: "raw_hash", method: "personal_sign" }),
