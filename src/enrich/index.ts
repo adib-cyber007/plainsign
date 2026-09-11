@@ -46,7 +46,7 @@ export async function enrich(
   const unique = new Map(
     addresses.map((address) => [address.toLowerCase(), address] as const),
   );
-  const mock = deps.mock ?? import.meta.env.VITE_E2E_MOCK_ENRICH === "1";
+  const mock = deps.mock ?? import.meta.env?.VITE_E2E_MOCK_ENRICH === "1";
 
   const entries = await Promise.all(
     [...unique.values()].map(async (address) => {

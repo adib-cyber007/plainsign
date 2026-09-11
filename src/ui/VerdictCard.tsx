@@ -6,6 +6,7 @@ import { Reasons } from "./Reasons";
 
 export interface VerdictCardProps {
   result: AnalysisResult;
+  showTechnicalByDefault?: boolean;
   onContinue: () => void;
   onReject: () => void;
 }
@@ -25,10 +26,13 @@ const verdictContent: Record<
 
 export function VerdictCard({
   result,
+  showTechnicalByDefault = false,
   onContinue,
   onReject,
 }: VerdictCardProps) {
-  const [view, setView] = useState<"beginner" | "technical">("beginner");
+  const [view, setView] = useState<"beginner" | "technical">(
+    showTechnicalByDefault ? "technical" : "beginner",
+  );
   const content = verdictContent[result.risk.verdict];
   const details =
     view === "beginner"

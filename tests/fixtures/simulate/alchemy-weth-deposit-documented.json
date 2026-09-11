@@ -1,0 +1,31 @@
+{
+  "jsonrpc": "2.0",
+  "id": "weth-deposit",
+  "result": {
+    "changes": [
+      {
+        "assetType": "NATIVE",
+        "changeType": "TRANSFER",
+        "from": "0x58F678D1cbCea837821EF615985fa12C4a638132",
+        "to": "0xfff9976782d46cc05630d1f6ebab18b2324d6b14",
+        "rawAmount": "10000000000000000",
+        "decimals": 18,
+        "symbol": "ETH",
+        "amount": "0.01"
+      },
+      {
+        "assetType": "ERC20",
+        "changeType": "TRANSFER",
+        "from": "0x0000000000000000000000000000000000000000",
+        "to": "0x58F678D1cbCea837821EF615985fa12C4a638132",
+        "rawAmount": "10000000000000000",
+        "contractAddress": "0xfff9976782d46cc05630d1f6ebab18b2324d6b14",
+        "decimals": 18,
+        "symbol": "WETH",
+        "amount": "0.01"
+      }
+    ],
+    "gasUsed": "0x5f28",
+    "error": null
+  }
+}

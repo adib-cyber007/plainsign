@@ -56,13 +56,42 @@
     },
   };
 
+  window.__walletRawProvider = provider;
+
   const install = () => {
     window.ethereum = provider;
   };
   const mode =
     new URL(window.location.href).searchParams.get("mode") ?? "immediate";
 
-  if (mode === "delayed") {
+  if (mode === "eip6963") {
+    const info = Object.freeze({
+      uuid: "350670db-19fa-4704-a166-e52e178b59d2",
+      name: "PlainSign Mock Wallet",
+      icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'/>",
+      rdns: "dev.plainsign.mock",
+    });
+    const announce = () =>
+      window.dispatchEvent(
+        new CustomEvent("eip6963:announceProvider", {
+          detail: Object.freeze({ info, provider }),
+        }),
+      );
+    window.addEventListener("eip6963:requestProvider", announce);
+  } else if (mode === "frozen") {
+    window.addEventListener(
+      "DOMContentLoaded",
+      () => {
+        Object.defineProperty(window, "ethereum", {
+          configurable: false,
+          enumerable: true,
+          writable: false,
+          value: provider,
+        });
+      },
+      { once: true },
+    );
+  } else if (mode === "delayed") {
     window.setTimeout(install, 50);
   } else if (mode === "onload") {
     window.addEventListener("DOMContentLoaded", install, { once: true });

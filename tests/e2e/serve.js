@@ -5,11 +5,21 @@ import { fileURLToPath } from "node:url";
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const fixturePath = path.join(directory, "fixtures", "index.html");
+const fixtureScriptPath = path.join(directory, "fixtures", "app.js");
 const port = 5174;
 
 const server = createServer(async (request, response) => {
-  const pathname = new URL(request.url ?? "/", `http://${request.headers.host}`)
-    .pathname;
+  const url = new URL(request.url ?? "/", `http://${request.headers.host}`);
+  const pathname = url.pathname;
+  if (pathname === "/app.js") {
+    const script = await readFile(fixtureScriptPath);
+    response.writeHead(200, {
+      "Cache-Control": "no-store",
+      "Content-Type": "text/javascript; charset=utf-8",
+    });
+    response.end(script);
+    return;
+  }
   if (pathname !== "/" && pathname !== "/index.html") {
     response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
     response.end("Not found");
@@ -21,6 +31,12 @@ const server = createServer(async (request, response) => {
     response.writeHead(200, {
       "Cache-Control": "no-store",
       "Content-Type": "text/html; charset=utf-8",
+      ...(url.searchParams.get("csp") === "strict"
+        ? {
+            "Content-Security-Policy":
+              "default-src 'none'; script-src 'self'; style-src 'unsafe-inline'; base-uri 'none'; object-src 'none'",
+          }
+        : {}),
     });
     response.end(html);
   } catch (error) {

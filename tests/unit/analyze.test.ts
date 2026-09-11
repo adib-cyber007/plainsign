@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 
 import { analyze, DEGRADED_EXPLANATION } from "../../src/analyze";
+import { enrich } from "../../src/enrich";
+import { EnrichmentCache, MemoryCacheStore } from "../../src/enrich/cache";
 import type { AnalysisRequest, Intent } from "../../src/types";
 
 const request: AnalysisRequest = {
@@ -21,6 +23,7 @@ const intent: Intent = {
 describe("analyze", () => {
   it("runs the happy path in order and records stage diagnostics", async () => {
     const stages: string[] = [];
+    const debugTable = vi.fn();
     const result = await analyze(request, {
       decode: async () => intent,
       collectAddresses: () => [intent.to!],
@@ -40,6 +43,7 @@ describe("analyze", () => {
         source: "template",
       }),
       debug: (stage) => stages.push(stage),
+      debugTable,
     });
 
     expect(result.risk.verdict).toBe("safe");
@@ -56,6 +60,50 @@ describe("analyze", () => {
       "evaluate",
       "explain",
     ]);
+    expect(debugTable).toHaveBeenCalledWith({
+      decodedMs: expect.any(Number),
+      enrichedMs: expect.any(Number),
+      rulesMs: expect.any(Number),
+      totalMs: expect.any(Number),
+    });
+  });
+
+  it("completes a warm-cache analysis in under 300 ms", async () => {
+    const recipient = "0x2222222222222222222222222222222222222222" as const;
+    const cache = new EnrichmentCache(new MemoryCacheStore());
+    await cache.set(11_155_111, {
+      address: recipient,
+      isContract: false,
+      fetchedAt: Date.now(),
+    });
+    const cachedRequest: AnalysisRequest = {
+      ...request,
+      id: "warm-cache-analysis",
+      chainId: 11_155_111,
+      request: {
+        method: "eth_sendTransaction",
+        params: [
+          {
+            from: request.from,
+            to: recipient,
+            value: "0x0",
+          },
+        ],
+      },
+    };
+
+    const startedAt = performance.now();
+    const result = await analyze(cachedRequest, {
+      enrich: (addresses, chainId, origin) =>
+        enrich(addresses, chainId, origin, { cache }),
+      simulate: async () => ({ ok: false, provider: "none", changes: [] }),
+      debug: vi.fn(),
+    });
+    const wallMs = performance.now() - startedAt;
+
+    expect(result.degraded).toBeUndefined();
+    expect(result.durationMs).toBeLessThan(300);
+    expect(wallMs).toBeLessThan(300);
   });
 
   it("returns the defined caution result when a stage throws", async () => {

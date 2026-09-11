@@ -7,7 +7,7 @@ import { Overlay } from "./Overlay";
 import styles from "./styles.css?inline";
 
 export interface OverlayController {
-  showResult(result: AnalysisResult): void;
+  showResult(result: AnalysisResult, showTechnicalByDefault?: boolean): void;
   unmount(): void;
 }
 
@@ -28,7 +28,7 @@ export function mountOverlay(
   document.documentElement.append(host);
 
   const shadow = host.attachShadow({
-    mode: import.meta.env.VITE_E2E === "1" ? "open" : "closed",
+    mode: import.meta.env?.VITE_E2E === "1" ? "open" : "closed",
   });
   const style = document.createElement("style");
   style.textContent = styles;
@@ -48,9 +48,15 @@ export function mountOverlay(
   });
 
   return {
-    showResult(result) {
+    showResult(result, showTechnicalByDefault = false) {
       if (!decided && mounted?.host === host) {
-        root.render(createElement(Overlay, { result, onDecision: decide }));
+        root.render(
+          createElement(Overlay, {
+            result,
+            showTechnicalByDefault,
+            onDecision: decide,
+          }),
+        );
       }
     },
     unmount() {

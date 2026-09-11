@@ -1,0 +1,49 @@
+{
+  "recordedAt": "2026-09-11T09:16:00Z",
+  "network": "ethereum-sepolia",
+  "request": {
+    "method": "eth_simulateV1",
+    "transaction": {
+      "from": "0x58F678D1cbCea837821EF615985fa12C4a638132",
+      "to": "0xfff9976782d46cc05630d1f6ebab18b2324d6b14",
+      "value": "0x2386f26fc10000",
+      "data": "0xd0e30db0",
+      "gas": "0x1e8480"
+    }
+  },
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 4,
+    "result": [
+      {
+        "number": "0xb23cca",
+        "gasUsed": "0xafee",
+        "transactions": [
+          "0x68963fc047ffb38bab135a8f8848f755fec70d5ea6056c7341fd277ffa453dc8"
+        ],
+        "calls": [
+          {
+            "returnData": "0x",
+            "logs": [
+              {
+                "address": "0xfff9976782d46cc05630d1f6ebab18b2324d6b14",
+                "topics": [
+                  "0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c",
+                  "0x00000000000000000000000058f678d1cbcea837821ef615985fa12c4a638132"
+                ],
+                "data": "0x000000000000000000000000000000000000000000000000002386f26fc10000",
+                "blockNumber": "0xb23cca",
+                "transactionHash": "0x68963fc047ffb38bab135a8f8848f755fec70d5ea6056c7341fd277ffa453dc8",
+                "transactionIndex": "0x0",
+                "logIndex": "0x0",
+                "removed": false
+              }
+            ],
+            "gasUsed": "0xafee",
+            "status": "0x1"
+          }
+        ]
+      }
+    ]
+  }
+}

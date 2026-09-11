@@ -21,6 +21,11 @@ interface EthereumProvider {
   selectedAddress?: string;
 }
 
+interface Eip6963ProviderDetail {
+  info: Record<string, unknown>;
+  provider: EthereumProvider;
+}
+
 interface JsonRpcPayload extends ProviderRequestArguments {
   id?: string | number;
   jsonrpc?: string;
@@ -84,16 +89,18 @@ function installInterceptor(): void {
       return existing;
     }
 
+    const forwardRequest = provider.request.bind(provider);
     const interceptedRequest = (
       args: ProviderRequestArguments,
     ): Promise<unknown> => {
       if (!interceptedMethods.has(args.method)) {
-        return provider.request(args);
+        return forwardRequest(args);
       }
 
       return analyzeThenRequest(
         provider,
         args as ProviderRequestArguments & { method: InterceptedMethod },
+        forwardRequest,
       );
     };
 
@@ -121,6 +128,8 @@ function installInterceptor(): void {
     return proxy;
   };
 
+  installEip6963Interceptor(wrap);
+
   const replaceWithWrappedProvider = (): void => {
     try {
       const current = window.ethereum;
@@ -143,6 +152,8 @@ function installInterceptor(): void {
         });
       } else if ("writable" in descriptor && descriptor.writable) {
         window.ethereum = wrapped;
+      } else {
+        installWrappedMethodsInPlace(current, wrapped);
       }
     } catch {
       // Wallets control this property; a DOM-ready retry handles common redefine races.
@@ -179,6 +190,71 @@ function installInterceptor(): void {
     },
     { once: true },
   );
+
+  window.dispatchEvent(new Event("eip6963:requestProvider"));
+}
+
+function installEip6963Interceptor(
+  wrap: (provider: EthereumProvider) => EthereumProvider,
+): void {
+  const redispatched = new WeakSet<Event>();
+  window.addEventListener(
+    "eip6963:announceProvider",
+    (event) => {
+      if (redispatched.has(event)) return;
+      event.stopImmediatePropagation();
+      if (!(event instanceof CustomEvent) || !isEip6963Detail(event.detail)) {
+        return;
+      }
+
+      const replacement = new CustomEvent<Eip6963ProviderDetail>(
+        "eip6963:announceProvider",
+        {
+          detail: {
+            info: event.detail.info,
+            provider: wrap(event.detail.provider),
+          },
+          bubbles: event.bubbles,
+          cancelable: event.cancelable,
+          composed: event.composed,
+        },
+      );
+      redispatched.add(replacement);
+      window.dispatchEvent(replacement);
+    },
+    true,
+  );
+}
+
+function isEip6963Detail(value: unknown): value is Eip6963ProviderDetail {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "info" in value &&
+    typeof value.info === "object" &&
+    value.info !== null &&
+    "provider" in value &&
+    isObject(value.provider)
+  );
+}
+
+function installWrappedMethodsInPlace(
+  provider: EthereumProvider,
+  wrapped: EthereumProvider,
+): void {
+  for (const property of ["request", "send", "sendAsync"] as const) {
+    const method = wrapped[property];
+    if (typeof method !== "function") continue;
+    try {
+      Object.defineProperty(provider, property, {
+        configurable: true,
+        writable: true,
+        value: method,
+      });
+    } catch {
+      // A fully frozen provider cannot be patched, but EIP-6963 remains available.
+    }
+  }
 }
 
 function isObject(value: unknown): value is EthereumProvider & object {
@@ -190,6 +266,7 @@ function isObject(value: unknown): value is EthereumProvider & object {
 async function analyzeThenRequest(
   provider: EthereumProvider,
   args: ProviderRequestArguments & { method: InterceptedMethod },
+  forwardRequest: (args: ProviderRequestArguments) => Promise<unknown>,
 ): Promise<unknown> {
   if (window.__plainsign) {
     window.__plainsign.interceptedCalls += 1;
@@ -207,7 +284,7 @@ async function analyzeThenRequest(
     });
   }
 
-  return provider.request(args);
+  return forwardRequest(args);
 }
 
 function installContentHandshake(): void {

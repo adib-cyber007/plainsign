@@ -7,6 +7,7 @@ import { simulate } from "./simulate";
 import type {
   AnalysisRequest,
   AnalysisResult,
+  AnalysisTimings,
   Explanation,
   Intent,
   RiskReason,
@@ -36,6 +37,7 @@ export interface AnalyzeDeps {
   now?: () => number;
   budgetMs?: number;
   debug?: (stage: string, data: { durationMs: number }) => void;
+  debugTable?: (timings: AnalysisTimings & { totalMs: number }) => void;
 }
 
 export async function analyze(
@@ -82,14 +84,17 @@ export async function analyze(
     );
     report(deps, "explain", explainStartedAt);
 
+    const durationMs = now(deps) - startedAt;
+    const timings = { decodedMs, enrichedMs, rulesMs };
+    reportTable(deps, { ...timings, totalMs: durationMs });
     return {
       id: request.id,
       intent: latestIntent,
       simulation,
       risk,
       explanation,
-      durationMs: now(deps) - startedAt,
-      timings: { decodedMs, enrichedMs, rulesMs },
+      durationMs,
+      timings,
     };
   })();
 
@@ -178,6 +183,24 @@ function now(deps: AnalyzeDeps): number {
 function report(deps: AnalyzeDeps, stage: string, startedAt: number): void {
   const data = { durationMs: now(deps) - startedAt };
   (deps.debug ?? ((name, value) => log(`analyze:${name}`, value)))(stage, data);
+}
+
+function reportTable(
+  deps: AnalyzeDeps,
+  timings: AnalysisTimings & { totalMs: number },
+): void {
+  if (deps.debugTable) {
+    deps.debugTable(timings);
+    return;
+  }
+  if (
+    import.meta.env?.DEV ||
+    import.meta.env?.VITE_PLAINSIGN_DEBUG === "1"
+  ) {
+    console.table(
+      Object.entries(timings).map(([stage, durationMs]) => ({ stage, durationMs })),
+    );
+  }
 }
 
 function errorMessage(error: unknown): string | undefined {

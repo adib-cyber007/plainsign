@@ -43,7 +43,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ["tests/e2e/mock-wallet.js"],
+    files: ["tests/e2e/mock-wallet.js", "tests/e2e/fixtures/app.js"],
     languageOptions: {
       globals: globals.browser,
     },

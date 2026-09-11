@@ -1,9 +1,15 @@
 import { deserialize, serialize } from "../src/bridge/protocol";
+import { withServiceWorkerKeepAlive } from "../src/bridge/keepAlive";
 import { analyze } from "../src/analyze";
+import { warmAllowlistedAddresses } from "../src/enrich/warmup";
 import type { BgToContent, ContentToBg } from "../src/types";
 
 export default defineBackground(() => {
   console.info("[PlainSign] background loaded");
+
+  chrome.runtime.onInstalled.addListener(() => {
+    void warmAllowlistedAddresses();
+  });
 
   chrome.runtime.onMessage.addListener((rawMessage, _sender, sendResponse) => {
     if (isMessageType(rawMessage, "PS_PING")) {
@@ -23,7 +29,7 @@ export default defineBackground(() => {
     }
 
     const message = decoded as ContentToBg;
-    void analyze(message.payload).then(
+    void withServiceWorkerKeepAlive(() => analyze(message.payload)).then(
       (result) => {
         const response: BgToContent = { type: "PS_BG_RESULT", payload: result };
         sendResponse(serialize(response));

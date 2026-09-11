@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-09-11T07:38:00Z",
+  "network": "ethereum-sepolia",
+  "request": {
+    "method": "alchemy_simulateAssetChanges",
+    "transaction": {
+      "from": "0x58F678D1cbCea837821EF615985fa12C4a638132",
+      "to": "0x3B497AE93753967D3eA96cf04a517C3da0e66003",
+      "value": "0xffffffffffffffffffffffffffffffff",
+      "gas": "0x1e8480"
+    }
+  },
+  "response": {
+    "jsonrpc": "2.0",
+    "id": "over-balance-recording",
+    "error": {
+      "code": -32003,
+      "message": "insufficient funds for gas * price + value: have 30000000000000000 want 340282366920938463463374607431768211455"
+    }
+  }
+}

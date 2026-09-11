@@ -1,8 +1,8 @@
 import { deserialize, serialize } from "../src/bridge/protocol";
+import { createRuntimeDegradedResult } from "../src/bridge/degraded";
+import { loadSettings, type PlainSignSettings } from "../src/config/settings";
 import { mountOverlay, type OverlayController } from "../src/ui/mount";
 import type {
-  AnalysisRequest,
-  AnalysisResult,
   BgToContent,
   ContentToBg,
   ContentToMain,
@@ -10,9 +10,6 @@ import type {
 } from "../src/types";
 
 const BACKGROUND_TIMEOUT_MS = 4_500;
-const DEGRADED_TEXT =
-  "PlainSign could not fully analyze this request. Only continue if you trust this site.";
-
 interface ActiveRequest {
   id: string;
   controller: OverlayController;
@@ -20,12 +17,15 @@ interface ActiveRequest {
 }
 
 let active: ActiveRequest | undefined;
+let settingsPromise: Promise<PlainSignSettings> | undefined;
+const seenIdsByOrigin = new Map<string, string[]>();
 
 export default defineContentScript({
   matches: ["<all_urls>"],
   runAt: "document_start",
   main() {
     console.info("[PlainSign] content loaded");
+    settingsPromise = loadSettings();
 
     window.addEventListener("message", (event: MessageEvent<unknown>) => {
       if (event.source !== window) {
@@ -48,6 +48,8 @@ export default defineContentScript({
       if (!isAnalyzeMessage(decoded)) {
         return;
       }
+
+      if (!rememberRequest(decoded.payload.origin, decoded.payload.id)) return;
 
       void analyzeAndDecide(decoded).catch((error: unknown) => {
         console.error("[PlainSign] content analysis failed", error);
@@ -88,6 +90,7 @@ async function analyzeAndDecide(
   });
 
   let result: BgToContent | undefined;
+  let backgroundError: string | undefined;
   try {
     const response = await Promise.race([
       chrome.runtime.sendMessage(serialize(backgroundMessage)),
@@ -102,15 +105,18 @@ async function analyzeAndDecide(
         result = decoded;
       }
     }
-  } catch {
+  } catch (error) {
+    backgroundError = runtimeErrorMessage(error);
     result = undefined;
   } finally {
     if (timeoutId !== undefined) window.clearTimeout(timeoutId);
   }
 
   if (!current.decided) {
+    const settings = await (settingsPromise ?? loadSettings());
     current.controller.showResult(
-      result?.payload ?? degradedResult(message.payload),
+      result?.payload ?? createRuntimeDegradedResult(message.payload, backgroundError),
+      settings.showTechnicalByDefault,
     );
   }
 }
@@ -128,56 +134,17 @@ function finish(request: ActiveRequest, decision: "continue" | "reject"): void {
   if (active === request) active = undefined;
 }
 
-function degradedResult(request: AnalysisRequest): AnalysisResult {
-  const method = request.request.method;
-  return {
-    id: request.id,
-    intent: {
-      kind:
-        method === "eth_sendTransaction"
-          ? "unknown_function"
-          : method === "eth_signTypedData_v3" ||
-              method === "eth_signTypedData_v4"
-            ? "unknown_typed_data"
-            : method === "eth_sign"
-              ? "raw_hash"
-              : "plain_message",
-      method,
-      raw: request.request.params,
-      decodeError:
-        "The background analysis did not respond within 4.5 seconds.",
-    },
-    simulation: {
-      ok: false,
-      provider: "none",
-      changes: [],
-      error: "Background analysis timed out.",
-    },
-    risk: {
-      score: 25,
-      verdict: "caution",
-      reasons: [
-        {
-          id: "analysis_failed",
-          weight: 0,
-          severity: "warn",
-          title: "Analysis could not finish",
-          detail:
-            "PlainSign could not complete every safety check before the request timed out.",
-        },
-      ],
-    },
-    explanation: {
-      summary: DEGRADED_TEXT,
-      beginner: [DEGRADED_TEXT],
-      technical: [`Method: ${method}`, `Chain ID: ${request.chainId}`],
-      whatCouldGoWrong:
-        "PlainSign could not complete every safety check before the request timed out.",
-      source: "template",
-    },
-    durationMs: BACKGROUND_TIMEOUT_MS,
-    degraded: "Background analysis timed out.",
-  };
+function rememberRequest(origin: string, id: string): boolean {
+  const ids = seenIdsByOrigin.get(origin) ?? [];
+  if (ids.includes(id)) return false;
+  ids.push(id);
+  if (ids.length > 256) ids.shift();
+  seenIdsByOrigin.set(origin, ids);
+  return true;
+}
+
+function runtimeErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
 }
 
 function isAnalyzeMessage(

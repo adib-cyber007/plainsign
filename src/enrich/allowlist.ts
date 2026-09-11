@@ -31,6 +31,12 @@ export function getAllowlistEntry(
   return allowlist[String(chainId)]?.[address.toLowerCase()];
 }
 
+export function getAllowlistedAddresses(chainId: number): Address[] {
+  return Object.keys(allowlist[String(chainId)] ?? {}).filter((address): address is Address =>
+    /^0x[0-9a-fA-F]{40}$/.test(address),
+  );
+}
+
 export function domainMatches(
   origin: string,
   domains: readonly string[],

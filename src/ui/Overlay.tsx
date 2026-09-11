@@ -5,10 +5,15 @@ import { VerdictCard } from "./VerdictCard";
 
 export interface OverlayProps {
   result?: AnalysisResult;
+  showTechnicalByDefault?: boolean;
   onDecision: (decision: "continue" | "reject") => void;
 }
 
-export function Overlay({ result, onDecision }: OverlayProps) {
+export function Overlay({
+  result,
+  showTechnicalByDefault = false,
+  onDecision,
+}: OverlayProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -50,7 +55,9 @@ export function Overlay({ result, onDecision }: OverlayProps) {
       >
         {result ? (
           <VerdictCard
+            key={`${result.id}:${showTechnicalByDefault ? "technical" : "beginner"}`}
             result={result}
+            showTechnicalByDefault={showTechnicalByDefault}
             onContinue={() => onDecision("continue")}
             onReject={() => onDecision("reject")}
           />

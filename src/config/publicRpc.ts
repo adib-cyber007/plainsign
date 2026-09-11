@@ -11,7 +11,7 @@ export function createPlainSignPublicClient(chainId: SupportedChainId) {
   const config = CHAINS[chainId];
   const configuredSepoliaRpc =
     chainId === SEPOLIA_CHAIN_ID
-      ? import.meta.env.VITE_SEPOLIA_RPC?.trim()
+      ? import.meta.env?.VITE_SEPOLIA_RPC?.trim()
       : undefined;
   const rpcUrls = configuredSepoliaRpc
     ? [configuredSepoliaRpc, ...config.rpcUrls]

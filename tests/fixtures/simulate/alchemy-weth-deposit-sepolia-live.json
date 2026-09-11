@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-09-11T09:03:00Z",
+  "network": "ethereum-sepolia",
+  "request": {
+    "method": "alchemy_simulateAssetChanges",
+    "transaction": {
+      "from": "0x58F678D1cbCea837821EF615985fa12C4a638132",
+      "to": "0xfff9976782d46cc05630d1f6ebab18b2324d6b14",
+      "value": "0x2386f26fc10000",
+      "data": "0xd0e30db0",
+      "gas": "0x1e8480"
+    }
+  },
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "error": {
+      "code": -32603,
+      "message": "ReferenceError: bigInt is not defined\n    at result (unknown at :39:20)"
+    }
+  }
+}
