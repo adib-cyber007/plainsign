@@ -344,6 +344,14 @@ button {
   background: transparent;
   border-color: #64748b;
 }
+.ps-revoke-actions {
+  grid-template-columns: 0.8fr 1.15fr 1.35fr;
+}
+.ps-revoke {
+  color: #1d1200;
+  background: #fbbf24;
+  border-color: #fbbf24;
+}
 .ps-button:hover {
   filter: brightness(1.08);
 }

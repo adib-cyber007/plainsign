@@ -124,7 +124,7 @@ npm run package
 
 ## Roadmap
 
-- Offer a revoke action for dangerous token and NFT permissions.
+- Dangerous token and NFT permission warnings offer **Revoke instead**, which proposes a zero-permission transaction while rejecting the original request.
 - Consume community-maintained drainer lists with auditable provenance.
 - Add more chains while preserving the same open-rule and no-backend design.
 

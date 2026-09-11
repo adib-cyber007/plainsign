@@ -64,8 +64,16 @@ export interface AnalysisResult {
   explanation: Explanation; durationMs: number; timings?: AnalysisTimings; degraded?: string;
 }
 
+export interface RevokeTransaction {
+  from: Address;
+  to: Address;
+  data: Hex;
+}
+
+export type UserDecision = "continue" | "reject" | "revoke";
+
 // Bridge messages (all payloads pass through bridge/protocol serialize/deserialize)
 export type MainToContent   = { type: "PS_ANALYZE"; payload: AnalysisRequest } | { type: "PS_PING" };
-export type ContentToMain   = { type: "PS_DECISION"; id: string; decision: "continue" | "reject" } | { type: "PS_PONG" };
+export type ContentToMain   = { type: "PS_DECISION"; id: string; decision: UserDecision; transaction?: RevokeTransaction } | { type: "PS_PONG" };
 export type ContentToBg     = { type: "PS_BG_ANALYZE"; payload: AnalysisRequest };
 export type BgToContent     = { type: "PS_BG_RESULT"; payload: AnalysisResult };

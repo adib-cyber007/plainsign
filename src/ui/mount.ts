@@ -2,19 +2,23 @@ import { createElement } from "react";
 import { flushSync } from "react-dom";
 import { createRoot, type Root } from "react-dom/client";
 
-import type { AnalysisResult } from "../types";
+import type { AnalysisResult, UserDecision } from "../types";
 import { Overlay } from "./Overlay";
 import styles from "./styles.css?inline";
 
 export interface OverlayController {
-  showResult(result: AnalysisResult, showTechnicalByDefault?: boolean): void;
+  showResult(
+    result: AnalysisResult,
+    showTechnicalByDefault?: boolean,
+    canRevoke?: boolean,
+  ): void;
   unmount(): void;
 }
 
 let mounted: { host: HTMLDivElement; root: Root } | undefined;
 
 export function mountOverlay(
-  onDecision: (decision: "continue" | "reject") => void,
+  onDecision: (decision: UserDecision) => void,
 ): OverlayController {
   removeMountedOverlay();
 
@@ -38,7 +42,7 @@ export function mountOverlay(
   const root = createRoot(mountPoint);
   mounted = { host, root };
   let decided = false;
-  const decide = (decision: "continue" | "reject"): void => {
+  const decide = (decision: UserDecision): void => {
     if (decided) return;
     decided = true;
     onDecision(decision);
@@ -48,12 +52,13 @@ export function mountOverlay(
   });
 
   return {
-    showResult(result, showTechnicalByDefault = false) {
+    showResult(result, showTechnicalByDefault = false, canRevoke = false) {
       if (!decided && mounted?.host === host) {
         root.render(
           createElement(Overlay, {
             result,
             showTechnicalByDefault,
+            canRevoke,
             onDecision: decide,
           }),
         );

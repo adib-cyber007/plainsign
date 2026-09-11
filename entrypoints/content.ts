@@ -1,12 +1,15 @@
 import { deserialize, serialize } from "../src/bridge/protocol";
 import { createRuntimeDegradedResult } from "../src/bridge/degraded";
 import { loadSettings, type PlainSignSettings } from "../src/config/settings";
+import { buildRevokeTransaction } from "../src/revoke";
 import { mountOverlay, type OverlayController } from "../src/ui/mount";
 import type {
   BgToContent,
   ContentToBg,
   ContentToMain,
   MainToContent,
+  RevokeTransaction,
+  UserDecision,
 } from "../src/types";
 
 const BACKGROUND_TIMEOUT_MS = 4_500;
@@ -14,6 +17,7 @@ interface ActiveRequest {
   id: string;
   controller: OverlayController;
   decided: boolean;
+  revokeTransaction?: RevokeTransaction;
 }
 
 let active: ActiveRequest | undefined;
@@ -72,7 +76,11 @@ async function analyzeAndDecide(
   const controller = mountOverlay((decision) => {
     if (holder.current) finish(holder.current, decision);
   });
-  const current = { id: message.payload.id, decided: false, controller };
+  const current: ActiveRequest = {
+    id: message.payload.id,
+    decided: false,
+    controller,
+  };
   holder.current = current;
   active = current;
 
@@ -114,20 +122,31 @@ async function analyzeAndDecide(
 
   if (!current.decided) {
     const settings = await (settingsPromise ?? loadSettings());
+    const revokeTransaction = result
+      ? buildRevokeTransaction(message.payload, result.payload.intent)
+      : undefined;
+    current.revokeTransaction = revokeTransaction;
     current.controller.showResult(
       result?.payload ?? createRuntimeDegradedResult(message.payload, backgroundError),
       settings.showTechnicalByDefault,
+      Boolean(revokeTransaction),
     );
   }
 }
 
-function finish(request: ActiveRequest, decision: "continue" | "reject"): void {
+function finish(request: ActiveRequest, decision: UserDecision): void {
   if (request.decided) return;
   request.decided = true;
   const message: ContentToMain = {
     type: "PS_DECISION",
     id: request.id,
-    decision,
+    decision:
+      decision === "revoke" && !request.revokeTransaction
+        ? "reject"
+        : decision,
+    ...(decision === "revoke" && request.revokeTransaction
+      ? { transaction: request.revokeTransaction }
+      : {}),
   };
   window.postMessage(serialize(message), "*");
   request.controller.unmount();

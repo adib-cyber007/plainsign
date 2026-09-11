@@ -6,6 +6,7 @@ import type {
   ContentToMain,
   InterceptedMethod,
   MainToContent,
+  RevokeTransaction,
 } from "../src/types";
 
 interface ProviderRequestArguments {
@@ -278,13 +279,28 @@ async function analyzeThenRequest(
   const message: MainToContent = { type: "PS_ANALYZE", payload: request };
   window.postMessage(serialize(message), "*");
 
-  if ((await decision) !== "continue") {
-    throw Object.assign(new Error("User rejected the request."), {
-      code: 4001,
-    });
+  const userDecision = await decision;
+  if (userDecision.decision === "continue") {
+    return forwardRequest(args);
   }
 
-  return forwardRequest(args);
+  if (
+    userDecision.decision === "revoke" &&
+    isRevokeTransaction(userDecision.transaction)
+  ) {
+    try {
+      await forwardRequest({
+        method: "eth_sendTransaction",
+        params: [userDecision.transaction],
+      });
+    } catch {
+      // The original request is rejected whether the user confirms the revoke or not.
+    }
+  }
+
+  throw Object.assign(new Error("User rejected the request."), {
+    code: 4001,
+  });
 }
 
 function installContentHandshake(): void {
@@ -391,9 +407,13 @@ function isAddress(value: unknown): value is `0x${string}` {
   return typeof value === "string" && /^0x[0-9a-fA-F]{40}$/.test(value);
 }
 
-function waitForDecision(id: string): Promise<"continue" | "reject"> {
+function waitForDecision(
+  id: string,
+): Promise<Extract<ContentToMain, { type: "PS_DECISION" }>> {
   return new Promise((resolve) => {
-    const finish = (decision: "continue" | "reject"): void => {
+    const finish = (
+      decision: Extract<ContentToMain, { type: "PS_DECISION" }>,
+    ): void => {
       window.removeEventListener("message", onMessage);
       window.clearTimeout(timeoutId);
       resolve(decision);
@@ -407,7 +427,7 @@ function waitForDecision(id: string): Promise<"continue" | "reject"> {
       try {
         const message = deserialize(event.data) as ContentToMain;
         if (message.type === "PS_DECISION" && message.id === id) {
-          finish(message.decision);
+          finish(message);
         }
       } catch {
         // Ignore unrelated or malformed page messages.
@@ -415,11 +435,21 @@ function waitForDecision(id: string): Promise<"continue" | "reject"> {
     };
 
     const timeoutId = window.setTimeout(
-      () => finish("reject"),
+      () => finish({ type: "PS_DECISION", id, decision: "reject" }),
       DECISION_TIMEOUT_MS,
     );
     window.addEventListener("message", onMessage);
   });
+}
+
+function isRevokeTransaction(value: unknown): value is RevokeTransaction {
+  return (
+    isRecord(value) &&
+    isAddress(value.from) &&
+    isAddress(value.to) &&
+    typeof value.data === "string" &&
+    /^0x(?:[0-9a-fA-F]{2})+$/.test(value.data)
+  );
 }
 
 function handleLegacyCall(

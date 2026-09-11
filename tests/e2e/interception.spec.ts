@@ -7,6 +7,7 @@ const extensionPath = path.resolve(".output", "chrome-mv3");
 const mockWalletPath = path.resolve("tests", "e2e", "mock-wallet.js");
 const account = "0x1111111111111111111111111111111111111111";
 const target = `0x${"2".repeat(38)}aa`;
+const token = `0x${"3".repeat(40)}`;
 const fakeTransactionHash = `0x${"a".repeat(64)}`;
 const fakeSignature = `0x${"b".repeat(130)}`;
 const eip6963Uuid = "350670db-19fa-4704-a166-e52e178b59d2";
@@ -324,6 +325,34 @@ for (const mode of installModes) {
     });
   });
 }
+
+test("Revoke instead rejects the original approval and proposes approve(spender, 0)", async () => {
+  await withTestPage("immediate", async (page) => {
+    await startAction(page, "danger-approval");
+    await waitForVerdict(page, "Danger");
+    expect(await shadowText(page, ".ps-reasons")).toContain(
+      "Unlimited token permission",
+    );
+
+    await clickShadow(page, ".ps-revoke");
+    await expect(page.locator("#out")).toHaveText("error 4001");
+
+    const state = await walletState(page);
+    expect(state.calls).toEqual([
+      {
+        method: "eth_sendTransaction",
+        params: [
+          {
+            from: account,
+            to: token,
+            data: `0x095ea7b3${target.slice(2).padStart(64, "0")}${"0".repeat(64)}`,
+          },
+        ],
+      },
+    ]);
+    expect(state.sameReferences).toEqual([false]);
+  });
+});
 
 for (const layout of ["overflow-hidden", "fixed-header"] as const) {
   test(`keeps the overlay above a host page with ${layout}`, async () => {

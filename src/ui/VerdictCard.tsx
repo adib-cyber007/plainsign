@@ -7,8 +7,10 @@ import { Reasons } from "./Reasons";
 export interface VerdictCardProps {
   result: AnalysisResult;
   showTechnicalByDefault?: boolean;
+  canRevoke?: boolean;
   onContinue: () => void;
   onReject: () => void;
+  onRevoke: () => void;
 }
 
 const verdictContent: Record<
@@ -27,8 +29,10 @@ const verdictContent: Record<
 export function VerdictCard({
   result,
   showTechnicalByDefault = false,
+  canRevoke = false,
   onContinue,
   onReject,
+  onRevoke,
 }: VerdictCardProps) {
   const [view, setView] = useState<"beginner" | "technical">(
     showTechnicalByDefault ? "technical" : "beginner",
@@ -102,7 +106,7 @@ export function VerdictCard({
       </div>
 
       <footer
-        className={`ps-actions ${result.risk.verdict === "danger" ? "ps-danger-actions" : ""}`}
+        className={`ps-actions ${result.risk.verdict === "danger" ? "ps-danger-actions" : ""} ${canRevoke && result.risk.verdict === "danger" ? "ps-revoke-actions" : ""}`}
       >
         <button
           className="ps-button ps-reject"
@@ -111,6 +115,15 @@ export function VerdictCard({
         >
           Reject
         </button>
+        {canRevoke && result.risk.verdict === "danger" && (
+          <button
+            className="ps-button ps-revoke"
+            type="button"
+            onClick={onRevoke}
+          >
+            Revoke instead
+          </button>
+        )}
         <button
           className="ps-button ps-continue"
           type="button"

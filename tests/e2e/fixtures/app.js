@@ -1,5 +1,6 @@
 const options = new URL(window.location.href).searchParams;
 const TARGET = `0x${"2".repeat(38)}aa`;
+const TOKEN = `0x${"3".repeat(40)}`;
 const out = document.querySelector("#out");
 const status = document.querySelector("#status");
 let activeAccount;
@@ -120,6 +121,16 @@ document.querySelector("#connect").addEventListener("click", async () => {
 });
 document.querySelector("#send-transaction").addEventListener("click", () =>
   requestWithAccount((account) => ({ method: "eth_sendTransaction", params: [{ from: account, to: TARGET, value: "0x1" }] })),
+);
+document.querySelector("#danger-approval").addEventListener("click", () =>
+  requestWithAccount((account) => ({
+    method: "eth_sendTransaction",
+    params: [{
+      from: account,
+      to: TOKEN,
+      data: `0x095ea7b3${TARGET.slice(2).padStart(64, "0")}${"f".repeat(64)}`,
+    }],
+  })),
 );
 document.querySelector("#sign-typed-data").addEventListener("click", async () => {
   const chainId = await getActiveChainId();

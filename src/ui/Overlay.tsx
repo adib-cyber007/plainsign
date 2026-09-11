@@ -1,17 +1,19 @@
 import { useEffect, useRef } from "react";
 
-import type { AnalysisResult } from "../types";
+import type { AnalysisResult, UserDecision } from "../types";
 import { VerdictCard } from "./VerdictCard";
 
 export interface OverlayProps {
   result?: AnalysisResult;
   showTechnicalByDefault?: boolean;
-  onDecision: (decision: "continue" | "reject") => void;
+  canRevoke?: boolean;
+  onDecision: (decision: UserDecision) => void;
 }
 
 export function Overlay({
   result,
   showTechnicalByDefault = false,
+  canRevoke = false,
   onDecision,
 }: OverlayProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -58,8 +60,10 @@ export function Overlay({
             key={`${result.id}:${showTechnicalByDefault ? "technical" : "beginner"}`}
             result={result}
             showTechnicalByDefault={showTechnicalByDefault}
+            canRevoke={canRevoke}
             onContinue={() => onDecision("continue")}
             onReject={() => onDecision("reject")}
+            onRevoke={() => onDecision("revoke")}
           />
         ) : (
           <div className="ps-card ps-analyzing" aria-live="assertive">

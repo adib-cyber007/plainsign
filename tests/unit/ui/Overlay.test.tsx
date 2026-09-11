@@ -5,14 +5,21 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Overlay } from "../../../src/ui/Overlay";
-import type { AnalysisResult, Verdict } from "../../../src/types";
+import type { AnalysisResult, Intent, Verdict } from "../../../src/types";
 
 afterEach(cleanup);
 
-function result(verdict: Verdict): AnalysisResult {
+function result(
+  verdict: Verdict,
+  intent: Intent = {
+    kind: "native_transfer",
+    method: "eth_sendTransaction",
+    raw: {},
+  },
+): AnalysisResult {
   return {
     id: verdict,
-    intent: { kind: "native_transfer", method: "eth_sendTransaction", raw: {} },
+    intent,
     simulation: {
       ok: true,
       provider: "none",
@@ -79,6 +86,37 @@ describe("Overlay", () => {
     fireEvent.click(screen.getByRole("button", { name: "Reject" }));
     expect(decide).toHaveBeenNthCalledWith(1, "continue");
     expect(decide).toHaveBeenNthCalledWith(2, "reject");
+  });
+
+  it("offers revoke only for an eligible danger result", () => {
+    const decide = vi.fn();
+    const permissionIntent: Intent = {
+      kind: "erc20_approve",
+      method: "eth_sendTransaction",
+      to: "0x2222222222222222222222222222222222222222",
+      token: "0x2222222222222222222222222222222222222222",
+      spender: "0x3333333333333333333333333333333333333333",
+      amount: 1n,
+      raw: {},
+    };
+    const view = render(
+      <Overlay
+        result={result("danger", permissionIntent)}
+        canRevoke
+        onDecision={decide}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Revoke instead" }));
+    expect(decide).toHaveBeenCalledWith("revoke");
+    view.unmount();
+
+    render(
+      <Overlay result={result("danger", permissionIntent)} onDecision={vi.fn()} />,
+    );
+    expect(
+      screen.queryByRole("button", { name: "Revoke instead" }),
+    ).not.toBeInTheDocument();
   });
 
   it("maps Escape to reject and Enter to continue only for safe verdicts", () => {
