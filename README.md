@@ -12,6 +12,8 @@ PlainSign is a Chrome extension that pauses supported Ethereum transaction and s
 
 There is no backend, paid service, account, or telemetry. Optional Alchemy simulation can add expected balance changes; the rest works with public Sepolia RPC and Blockscout.
 
+Optional Gemini rewording can simplify only the explanation text; verdicts, scores, and reasons remain deterministic, and its bundled `VITE_LLM_KEY` must be a restricted disposable demo key.
+
 ## See it catch the trick
 
 | “Free Mint” is a full NFT permission | Permit2 grants a long-lived token permission | Wrapping ETH uses known WETH |

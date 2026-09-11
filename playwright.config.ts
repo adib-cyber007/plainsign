@@ -1,6 +1,7 @@
 import { defineConfig } from "@playwright/test";
 
 const sepoliaDemo = process.env.PLAIN_SIGN_E2E_DEMO_CHAIN === "11155111";
+const demoAttacker = "0x3B497AE93753967D3eA96cf04a517C3da0e66003";
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -24,7 +25,7 @@ export default defineConfig({
     {
       command: sepoliaDemo
         ? "npm --prefix demo-dapp run dev"
-        : "npm run demo:local",
+        : `cross-env ATTACKER_ADDRESS=${demoAttacker} npm run demo:local`,
       url: "http://127.0.0.1:5173",
       reuseExistingServer: true,
       timeout: sepoliaDemo ? 30_000 : 120_000,

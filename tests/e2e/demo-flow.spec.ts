@@ -67,6 +67,9 @@ test("the demo produces danger, danger, danger, safe, safe, danger, danger", asy
         expect(await shadowText(page, ".ps-reasons")).toContain(
           "Known drainer address",
         );
+        expect(await shadowText(page, ".ps-explanation-source")).toBe(
+          "AI-reworded explanation · verdict remains rule-based",
+        );
       }
       if (sepoliaMode && action === "free-mint") {
         await clickShadow(page, ".ps-toggle button:last-child");

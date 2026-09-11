@@ -64,6 +64,11 @@ export function VerdictCard({
 
       <div className="ps-body">
         <p className="ps-summary">{result.explanation.summary}</p>
+        {result.explanation.source === "llm" && (
+          <p className="ps-explanation-source">
+            AI-reworded explanation · verdict remains rule-based
+          </p>
+        )}
         <AssetDiff changes={result.simulation.changes} />
 
         <div className="ps-toggle" role="group" aria-label="Explanation detail">

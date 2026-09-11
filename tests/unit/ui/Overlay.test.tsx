@@ -119,6 +119,15 @@ describe("Overlay", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("labels AI wording without implying an AI verdict", () => {
+    const llmResult = result("danger");
+    llmResult.explanation.source = "llm";
+    render(<Overlay result={llmResult} onDecision={vi.fn()} />);
+    expect(
+      screen.getByText("AI-reworded explanation · verdict remains rule-based"),
+    ).toBeInTheDocument();
+  });
+
   it("maps Escape to reject and Enter to continue only for safe verdicts", () => {
     const decide = vi.fn();
     const view = render(

@@ -122,6 +122,12 @@ button {
   line-height: 1.47;
   letter-spacing: -0.01em;
 }
+.ps-explanation-source {
+  margin: -8px 0 18px;
+  color: #9fb2ca;
+  font-size: 12px;
+  line-height: 1.4;
+}
 .ps-section {
   margin: 0 0 18px;
   padding: 13px 14px;

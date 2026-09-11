@@ -1,6 +1,7 @@
 import { decode } from "./decoder";
 import { collectAddresses, enrich } from "./enrich";
 import { explain } from "./explain";
+import { rewordExplanation } from "./explain/llm";
 import { log } from "./lib/log";
 import { evaluate } from "./risk/engine";
 import { simulate } from "./simulate";
@@ -34,6 +35,7 @@ export interface AnalyzeDeps {
   simulate?: typeof simulate;
   evaluate?: typeof evaluate;
   explain?: typeof explain;
+  reword?: typeof rewordExplanation;
   now?: () => number;
   budgetMs?: number;
   debug?: (stage: string, data: { durationMs: number }) => void;
@@ -75,12 +77,18 @@ export async function analyze(
     report(deps, "evaluate", evaluateStartedAt);
 
     const explainStartedAt = now(deps);
-    const explanation = (deps.explain ?? explain)(
+    const templateExplanation = (deps.explain ?? explain)(
       latestIntent,
       simulation,
       risk,
       addressInfo,
       { chainId: request.chainId, now: Math.floor(now(deps) / 1_000) },
+    );
+    const explanation = await (deps.reword ?? rewordExplanation)(
+      latestIntent,
+      simulation,
+      risk,
+      templateExplanation,
     );
     report(deps, "explain", explainStartedAt);
 
