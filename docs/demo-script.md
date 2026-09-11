@@ -1,59 +1,41 @@
-# PlainSign Sepolia demo script
+# PlainSign demo video script
 
-The primary Phase 5 demo runs on public Sepolia at
-`https://adib-cyber007.github.io/plainsign/`. The local Hardhat version remains the
-no-faucet fallback.
+Target runtime: **2:00**. Record at 1080p in the dedicated PlainSign Chrome profile. Use a throwaway MetaMask account on Sepolia. Close personal tabs and notifications before recording.
 
-## Prepare the Sepolia demo
+## Before recording
 
-1. Download `plainsign-0.1.0.zip` from the repository's latest GitHub Release and
-   extract it. In Chrome, open `chrome://extensions`, enable **Developer mode**, choose
-   **Load unpacked**, and select the extracted folder.
-2. In MetaMask, select **Sepolia**, connect the configured victim wallet, and keep a
-   small amount of Sepolia ETH available for the WETH transaction.
-3. Open the Pages URL and click **Connect wallet**. The page must show **Sepolia** in
-   the header.
+1. Extract the latest release ZIP and load it from `chrome://extensions` with **Developer mode** on.
+2. Open [the public CatDrop demo](https://adib-cyber007.github.io/plainsign/) and connect the throwaway wallet on Sepolia.
+3. Open [`src/risk/rules.json` on GitHub](https://github.com/adib-cyber007/plainsign/blob/master/src/risk/rules.json) in a second tab for optional judge questions.
+4. Set browser zoom to 90% if the full card does not fit. Hide bookmarks and close DevTools.
 
-## Record the seven requests
+## Two-minute narration and shot list
 
-The first three requests are deliberately disguised approvals, the next two are safe,
-and the two requests under **More tests** are dangerous signatures.
+| Time | Screen and exact clicks | Narration |
+|---:|---|---|
+| 0:00-0:12 | Open `chrome://extensions`. On the PlainSign card, click the blue on/off toggle so it turns **gray**. Return to CatDrop, refresh, and click **Free Mint**. Hold on the raw MetaMask request with its hex data. Click **Reject** in MetaMask. | “This page promises a free NFT. The wallet gives me a confirmation button and raw data, but it does not explain that the request can hand over my whole collection.” |
+| 0:12-0:22 | Return to `chrome://extensions`. Click PlainSign’s gray toggle so it turns **blue**. Click the circular **Reload** arrow on its card. Return to CatDrop and press **Ctrl+Shift+R**. | “PlainSign adds a warning layer before the wallet. It runs locally as a Chrome extension and does not need an account or backend.” |
+| 0:22-0:45 | Click **Free Mint**. Pause on the red **Danger** header and summary. Expand **Why?**. | “The same button now stops here first. PlainSign decodes setApprovalForAll and tells me, in plain English, that a personal wallet would gain permission to move every NFT I own.” |
+| 0:45-0:52 | Click **Reject**. Point to `Rejected (4001)` on the page. | “Reject returns the standard wallet error, so the site behaves normally and MetaMask never opens.” |
+| 0:52-1:12 | Click **Sign to verify wallet**. Hold on the red card, then expand **Why?**. | “PlainSign also checks signatures. This Permit2 request looks gasless, but it grants a long-lived, unlimited token permission that can be relayed later.” |
+| 1:12-1:20 | Click **Reject**. | “That matters because no on-chain transaction appears when I create the signature.” |
+| 1:20-1:38 | Click **Sign in**. Hold on the green card, then click **Reject** to keep the take moving. | “A normal sign-in message gets a green explanation because it cannot move assets. PlainSign distinguishes a login from an asset permission.” |
+| 1:38-1:53 | Click **Wrap 0.01 ETH**. Show the green card and any expected balance changes. Click **Reject** for a faucet-free recording, or Continue only if the wallet has Sepolia ETH. | “A known WETH wrap is also safe. When optional simulation is available, the card can show the expected ETH and WETH balance changes.” |
+| 1:53-2:00 | End on the card, then show the repository URL in the address bar. | “The rules are open JSON, every reason is visible, and the project is open source. PlainSign helps people understand before they sign.” |
 
-1. Click **Free Mint**. Expect **Danger**. Open **Why?** to show the personal-wallet
-   and full-collection warnings. Switch to **Technical** and show `created 0 days ago`
-   plus the decoded/enriched/rules timings. Click **Reject**; the page shows
-   `Rejected (4001)`.
-2. Click **Claim 1000 CLAIM**. Expect **Danger** and the reason **Unverified contract
-   source**. Click **Reject**.
-3. Click **Sign to verify wallet**. Expect **Danger** because the Permit2 signature
-   grants the attacker a long-lived, unlimited token permission. Click **Reject**.
-4. Click **Sign in**. Expect **Safe** and a plain SIWE login explanation. Continue only
-   for the demo, sign in MetaMask, and confirm the page receives a signature.
-5. Click **Wrap 0.01 ETH**. Expect **Safe** because the request targets Sepolia WETH.
-   Click **Continue to wallet**, confirm in MetaMask, and wait for the transaction hash.
-6. Expand **More tests**, then click **Sign hash**. Expect **Danger** and the reason
-   **Signing an opaque 32-byte hash**. Click **Reject**.
-7. Click **List my NFT for 0**. Expect **Danger** and the reason **Listing your NFTs
-   for ~0**. Click **Reject**.
+Expected core verdicts: **Danger, Danger, Safe, Safe** for Free Mint, Permit2, Sign in, and Wrap.
 
-The expected verdict sequence is **🔴 🔴 🔴 🟢 🟢 🔴 🔴**.
+## If a judge asks to see the rules (30 seconds)
 
-## Local fallback
+| Time | Screen and clicks | Narration |
+|---:|---|---|
+| 0:00-0:08 | Open the prepared GitHub tab at `src/risk/rules.json`. | “The verdict does not come from a black-box model. This JSON file is the source of truth.” |
+| 0:08-0:20 | Use **Ctrl+F**, type `approval_for_all`, press Enter, and highlight its title, detail, and weight. | “For example, full-collection permission to an unknown address adds a critical reason. The explanation shown to the user comes directly from this rule and the decoded request.” |
+| 0:20-0:30 | Scroll briefly to `allowlisted_target`, then return to the README rules table. | “Known protocols on their real domains can reduce risk. Anyone can audit the rule, test it, and propose a change.” |
 
-1. Run `npm run demo:local` from the project folder.
-2. Wait for `✅ Chain ready`, `✅ Contracts deployed`, `✅ Victim funded`, and
-   `✅ Demo dApp: http://localhost:5173`.
-3. Open `http://localhost:5173`, connect MetaMask to **Hardhat Local** (RPC
-   `http://127.0.0.1:8545`, chain ID `31337`), and repeat the seven-button sequence.
+## Recording recovery notes
 
-Any connected local wallet receives demo-only gas automatically. The local WETH
-deployment is recognized as the safe wrap target; DemoNFT, ClaimToken, and FakeMint are
-never allowlisted.
-
-## Automated verification
-
-- `npm run test:e2e` runs the seven-button local fallback plus interception coverage,
-  including an instant-danger `eth_sign` request.
-- `npm run test:e2e:sepolia` runs the seven-button page against the committed Sepolia
-  deployment with the configured victim mock wallet. It checks live contract age and
-  verification signals, a sub-2-second uncached analysis, and a sub-200-ms cache hit.
+- If the PlainSign card does not appear after re-enabling it, reload the extension card again and hard-refresh CatDrop.
+- If MetaMask opens before PlainSign during the raw opener, that is expected because PlainSign is disabled for that shot.
+- If the wallet is on the wrong network, select Sepolia, refresh CatDrop, and reconnect.
+- If Wrap lacks test ETH, reject from PlainSign; the green verdict is enough for the recording.

@@ -47,6 +47,15 @@ describe("risk engine", () => {
     );
   });
 
+  it("defaults unknown requests to caution", () => {
+    const result = evaluate(riskContext({ kind: "unknown_function" }));
+    expect(result.score).toBe(20);
+    expect(result.verdict).toBe("caution");
+    expect(result.reasons.map((reason) => reason.id)).toContain(
+      "unknown_function",
+    );
+  });
+
   it("critical post-rule raises a below-threshold score", () => {
     const result = evaluate(
       riskContext(
