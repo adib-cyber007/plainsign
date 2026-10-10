@@ -1,0 +1,20 @@
+import { expect, test } from "@playwright/test";
+
+test("judges can compare real-rule sample verdicts without a wallet", async ({ page }) => {
+  await page.goto("http://127.0.0.1:5173/plainsign/review.html");
+  await expect(page.getByText("Sample preview.", { exact: false })).toBeVisible();
+  await expect(page.locator(".ps-verdict h1")).toHaveText("Danger");
+  await page.getByRole("button", { name: "Reject", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("4001");
+  await page.getByRole("button", { name: "Verify wallet" }).click();
+  await expect(page.locator(".ps-verdict h1")).toHaveText("Danger");
+  await page.getByRole("button", { name: "Sign in", exact: false }).click();
+  await expect(page.locator(".ps-verdict h1")).toHaveText("Safe");
+  await page.getByRole("button", { name: "Wrap ETH", exact: false }).click();
+  await expect(page.locator(".ps-verdict h1")).toHaveText("Safe");
+  await page.getByLabel("Network", { exact: true }).selectOption("11155111");
+  await expect(page.locator(".ps-verdict h1")).toHaveText("Safe");
+  await page.getByRole("button", { name: "Unknown request" }).click();
+  await expect(page.locator(".ps-verdict h1")).toHaveText("Caution");
+  expect(await page.evaluate(() => Boolean(window.ethereum))).toBe(false);
+});

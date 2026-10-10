@@ -378,6 +378,7 @@ export function App() {
         <p>“Five stars. Still waiting for the cat.” <span>— mintmaxi</span></p>
       </section>
       <footer className="site-footer">
+        <a href="./review.html">Explore sample verdicts without a wallet</a>
         <span>Want to test the guardrail?</span>
         <a href={releaseZipUrl}>Download the PlainSign extension (.zip)</a>
       </footer>
