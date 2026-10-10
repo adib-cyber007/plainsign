@@ -32,8 +32,8 @@ flowchart TB
   EXP -->|AnalysisResult| BRIDGE
   PROXY -->|Continue sends original args| WALLET[Real wallet provider]
   PROXY -->|Reject returns EIP-1193 error 4001| DAPP
-  ENR --> RPC[Public Sepolia RPC]
-  ENR --> BLOCKSCOUT[Blockscout Sepolia API]
+  ENR --> RPC[Chain registry: Ethereum mainnet / Sepolia RPC]
+  ENR --> BLOCKSCOUT[Chain-specific Blockscout API]
   SIM -. only when enabled and keyed .-> ALCHEMY[Alchemy simulation]
 ```
 
@@ -82,6 +82,10 @@ sequenceDiagram
 ```
 
 ## Analysis stages
+
+`src/config/chains.ts` is the network registry for RPC URLs, explorer API, testnet status, WETH address, and known protocols. Protocol records remain auditable in `allowlist.json`; local WETH follows the local deployment. Code and explorer metadata use the request's chain ID. Optional simulation continues to support Sepolia only.
+
+RPC failures leave address type unknown rather than inventing a personal-wallet classification. Independent denylist evidence still reaches the risk engine, and incomplete address checks impose a Caution floor without lowering Danger. The sample walkthrough reuses the decoder, rules, templates, and verdict card with explicitly simulated address metadata, without wallet calls or network requests.
 
 | Stage | Input | Output | Failure behavior |
 |---|---|---|---|

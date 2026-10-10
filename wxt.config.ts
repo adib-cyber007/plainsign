@@ -1,4 +1,5 @@
 import { defineConfig } from "wxt";
+import packageJson from "./package.json";
 
 export default defineConfig({
   modules: ["@wxt-dev/module-react"],
@@ -6,7 +7,7 @@ export default defineConfig({
     name: "PlainSign",
     description:
       "Explains Ethereum wallet signing requests in plain English before you approve them.",
-    version: "0.1.0",
+    version: packageJson.version,
     permissions: ["storage"],
     host_permissions: ["<all_urls>"],
     content_scripts: [

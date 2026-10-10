@@ -127,7 +127,7 @@ const moreActions: DemoAction[] = [
 ];
 
 const releaseZipUrl =
-  "https://github.com/adib-cyber007/plainsign/releases/latest/download/plainsign-0.1.0.zip";
+  "https://github.com/adib-cyber007/plainsign/releases/latest";
 
 export function App() {
   const { address, chainId, isConnected } = useAccount();

@@ -2,6 +2,20 @@
 
 All notable changes to PlainSign are documented here.
 
+## 0.2.0 - 2026-10-10
+
+### Added
+
+- Ethereum mainnet RPC and explorer support, plus a shared registry for network-specific WETH and protocol data.
+- A wallet-free sample walkthrough using the production decoder, rules and verdict card with labelled simulated metadata.
+- Read-only mainnet verification and a reproducible key-free submission package.
+- Crypto World's Fair pitch deck, startup presentation script, business hypotheses and explicit pre-existing-code disclosure.
+
+### Fixed
+
+- Known-drainer matches remain visible when RPC enrichment fails.
+- Incomplete address checks impose a Caution floor without lowering Danger or misclassifying unknown addresses as EOAs.
+
 ## 0.1.0 - 2026-09-11
 
 ### Added
