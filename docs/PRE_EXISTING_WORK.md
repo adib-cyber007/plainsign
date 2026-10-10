@@ -17,6 +17,7 @@ PlainSign began on September 9, 2026 for a different hackathon that the owner re
 - Protection against RPC outages hiding known-drainer evidence, plus a Caution floor for incomplete address checks.
 - A wallet-free sample walkthrough using the production decoder, rules and explanations, with simulated metadata clearly labelled.
 - Regression tests, read-only mainnet verification, and the competition-specific pitch, business model, recording scripts and submission package.
+- Public-build environment isolation and an artifact scan that prevents developer keys entering the release package.
 
 Git commits and the final diff are the source of truth for what was committed. The local deployment files and multicall fixture already had uncommitted changes when preparation began; do not attribute those earlier changes to this work without confirming their history. AI coding assistance was used. The owner should confirm the disclosure, participant contributions, earlier funding, and any other prior development before submitting.
 

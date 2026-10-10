@@ -14,6 +14,8 @@ Checked October 10, 2026 on Windows. Commands ran using the installed Node 24 ru
 | Mainnet explorer | Blockscout reports WETH9 as a verified contract |
 | Submission package | Version 0.2.0 extension ZIP, static site ZIP, deck, docs, logo and SHA-256 checksums generated |
 | Responsive sample walkthrough | Visually reviewed at desktop and 390px mobile width without horizontal overflow |
+| Public artifact audit | Pass: no developer secret values, E2E key, `.env` files or sourcemaps in the extension ZIP; site includes both pages/logo/denylist; checksums match |
+| Remote CI on Node 22 | [Passed for commit ae38794](https://github.com/adib-cyber007/plainsign/actions/runs/38050002598) |
 
 The mainnet check ran at `2026-10-10T11:43:17.834Z`. The first PublicNode endpoint failed in this environment; the fallback succeeded. The raw report is generated at `output/submission/mainnet-check.json` by `npm run verify:mainnet`. This checks integration reachability and contract identity, not an audit or proof of detection accuracy.
 
@@ -36,6 +38,8 @@ npm run submission:package
 ```
 
 `submission:package` rebuilds the extension with optional API keys and E2E flags disabled, rebuilds the site for Sepolia, copies the PDF/docs/logo, and creates SHA-256 checksums. Run it **after** E2E/screenshots because those commands build with test settings. Existing local deployment files are preserved separately from the preparation commits.
+
+WXT's dotenv expansion can restore developer values over empty-string overrides. The package command uses non-empty whitespace that runtime key readers trim to disabled, then scans both generated asset trees for sensitive values from local environment files before creating the public package. A failing scan stops packaging without printing the secret.
 
 ## Limits and remaining checks
 
