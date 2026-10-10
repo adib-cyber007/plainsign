@@ -71,8 +71,10 @@ describe("enrich", () => {
       getBlockscoutInfo: async () => ({}),
       timeoutMs: 5,
     });
-    expect(Object.keys(result)).toEqual([one]);
+    expect(Object.keys(result)).toEqual([one, two, three]);
     expect(result[one].isContract).toBe(true);
+    expect(result[two].isContract).toBeUndefined();
+    expect(result[three].isContract).toBeUndefined();
   });
 
   it("uses deterministic aa/cc address classes in E2E mock mode", async () => {
@@ -108,5 +110,18 @@ describe("enrich", () => {
       label: "Reported drainer",
       source: "Community report #1",
     });
+  });
+
+  it("preserves a known drainer warning when RPC fails, without inventing an EOA", async () => {
+    const result = await enrich([one], 1, "https://example.test", {
+      cache: { get: async () => undefined, set: async () => undefined },
+      getCode: async () => { throw new Error("RPC offline"); },
+      getBlockscoutInfo: async () => ({}),
+      getCommunityDenylist: async () => [{
+        address: one, chains: [1], label: "Reported drainer", source: "Reviewed report",
+      }],
+    });
+    expect(result[one].isContract).toBeUndefined();
+    expect(result[one].denylisted?.label).toBe("Reported drainer");
   });
 });
