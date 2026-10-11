@@ -1,6 +1,6 @@
 # PlainSign: Crypto World's Fair form copy
 
-Prepared October 10, 2026. Team facts, videos, funding history and registration remain pending with the owner. Match the actual portal's field limits. Read [submission readiness](SUBMISSION_READINESS.md) before pasting.
+Updated October 11, 2026. Team names and college were supplied by the owner. Registration, eligibility, funding and rights confirmations remain pending. Match the actual portal's field limits. Read [submission readiness](SUBMISSION_READINESS.md) before pasting.
 
 ## Product name and tagline
 
@@ -24,6 +24,8 @@ A new sample walkthrough lets judges compare five requests using the same decode
 
 The project is an inspectable warning layer. Heuristics and best-effort injected-provider interception cannot guarantee that a site or request is safe. The original prototype and its existing features predate this competition; the development disclosure identifies the new work separately.
 
+CatDrop is a disclosed security-training demonstration on Sepolia or a local test network, with fictional promotional content and deliberately risky example requests. It is not a real mint or an asset offer. Judges should use an empty test wallet and reject example requests.
+
 ## Problem and insight
 
 Users need to understand what a request authorizes, not just its function name. An approval and a login can both look like a routine confirmation, while a gasless signature can be reused later. Our product focuses on that moment of decision and makes the underlying rules inspectable.
@@ -33,6 +35,10 @@ Users need to understand what a request authorizes, not just its function name. 
 Ethereum L1 (chain 1) public code reads, contract metadata, WETH and known-protocol configuration; Sepolia test contracts and end-to-end demo. Chrome MV3, WXT, TypeScript, React, Shadow DOM, viem, EIP-1193, best-effort EIP-6963, EIP-712, Blockscout, Vitest, Playwright, Hardhat and GitHub Pages. Optional Alchemy simulation supports Sepolia only.
 
 Select the Ethereum L1 track if offered in the portal. Mainnet evidence is read-only; no mainnet contract deployment or production security audit is claimed.
+
+## Third-party code and rights disclosure
+
+PlainSign's own repository is MIT-licensed. It uses third-party open-source libraries, including React, viem, wagmi, TanStack Query, WXT and OpenZeppelin Contracts; their licenses and ownership remain with their respective authors. See [THIRD_PARTY.md](THIRD_PARTY.md) for versions, upstream references, and external services. Ethereum, Permit2, Seaport, WETH, MetaMask and Colosseum references describe interoperability or the competition and do not imply endorsement. Participant ownership, permissions for submitted likenesses, employer obligations and funding history still require owner confirmation.
 
 ## What changed during the event
 
@@ -56,7 +62,11 @@ Initial market: Ethereum wallet users and wallet/dApp teams evaluating request-a
 
 ## Founder-market fit and team
 
-Owner to supply: final team name, each participant's name, background and contribution, location, why this problem matters personally, university affiliation where applicable, and registration confirmation. Add truthful funding history and accelerator availability where the portal asks. The reminder is scheduled for October 11 at 5 PM IST.
+Team: **PlainSign** (selected with the owner's authorization).
+
+- **Mohamed Adib** — solo participant, student at **Sri Venkateswara College of Engineering**.
+
+The owner confirmed solo participation on October 11. Madhav Krishna is not included in this entry. Earlier experience, personal motivation, funding history, accelerator availability and registration remain unconfirmed. Do not invent these or infer university-award eligibility from the college name alone.
 
 ## Links and assets
 
@@ -67,8 +77,8 @@ Owner to supply: final team name, each participant's name, background and contri
 | New sample walkthrough | `review.html` in the prepared site; verify the public URL after deployment |
 | Deck | `docs/slides.pdf` |
 | Product graphic | `public/icon/128.png` |
-| Presentation video | Owner must record/publish a 2-3 minute presentation using `pitch-script.md` |
-| Product demo video | Owner must record/publish an at-most-3-minute demo using `demo-script.md` |
+| Presentation video | Prepared: 2:49, `demo-dapp/public/videos/presentation.mp4`; verify public `presentation.html` after deployment |
+| Product demo video | Prepared: 2:29, `demo-dapp/public/videos/product-demo.mp4`; verify public `product-demo.html` after deployment |
 
 ## Judge Q&A
 

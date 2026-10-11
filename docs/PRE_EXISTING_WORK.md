@@ -21,4 +21,10 @@ PlainSign began on September 9, 2026 for a different hackathon that the owner re
 
 Git commits and the final diff are the source of truth for what was committed. The local deployment files and multicall fixture already had uncommitted changes when preparation began; do not attribute those earlier changes to this work without confirming their history. AI coding assistance was used. The owner should confirm the disclosure, participant contributions, earlier funding, and any other prior development before submitting.
 
+## Work prepared October 11, 2026
+
+- A visible training-demo notice before wallet connection, explicit fictional mint-count labelling, and labelled fictional testimonials.
+- A review against the current official rules and FAQ, third-party code/services disclosure, and submission-package updates. Participant eligibility, permissions, funding, registration and published videos remain unconfirmed.
+- Full upstream notices for core runtime dependencies, a confirmed solo-participant slide, and captioned presentation/product-demo videos with synthetic narration. Demo footage uses the actual extension with an automated test wallet and explicitly simulated metadata; it is not a real-MetaMask rehearsal.
+
 The [official FAQ](https://colosseum.com/hackathon#faq) permits earlier code with disclosure and judges work completed during the event. New commits must use actual timestamps. Never backdate or rewrite earlier commits to imply in-window work.

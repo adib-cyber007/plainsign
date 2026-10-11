@@ -36,6 +36,9 @@ for (const directory of [root, path.join(root, "demo-dapp"), path.join(root, "co
     }
   }
 }
+const notices = spawnSync(process.execPath, [path.join(root, "scripts", "collect-license-notices.js")], { cwd: root, stdio: "inherit" });
+if (notices.error) throw notices.error;
+if (notices.status !== 0) throw new Error("Dependency notice collection failed.");
 for (const args of [["run", "build"], ["--prefix", "demo-dapp", "run", "build"]]) {
   const result = spawnSync(process.execPath, [npmCli, ...args], { cwd: root, env, stdio: "inherit" });
   if (result.error) throw result.error;
@@ -50,7 +53,7 @@ const zipName = `plainsign-${packageJson.version}.zip`;
 await cp(path.join(root, "dist", zipName), path.join(target, zipName));
 await cp(path.join(root, "docs", "denylist.json"), path.join(root, "demo-dapp", "dist", "denylist.json"));
 await cp(path.join(root, "docs", "slides.pdf"), path.join(target, "plainsign-pitch.pdf"));
-for (const file of ["SUBMISSION_READINESS.md", "submission.md", "demo-script.md", "pitch-script.md", "PRE_EXISTING_WORK.md", "VERIFICATION.md", "architecture.md", "slides.pdf", "slides.md", "denylist.json"]) {
+for (const file of ["SUBMISSION_READINESS.md", "submission.md", "demo-script.md", "pitch-script.md", "PRE_EXISTING_WORK.md", "HACKATHON_RULES_REVIEW.md", "THIRD_PARTY.md", "VIDEO_PUBLISHING.md", "video-narration.json", "VERIFICATION.md", "architecture.md", "slides.pdf", "slides.md", "denylist.json"]) {
   await cp(path.join(root, "docs", file), path.join(target, "docs", file));
 }
 await cp(path.join(root, "docs", "screenshots"), path.join(target, "docs", "screenshots"), { recursive: true });
@@ -74,8 +77,8 @@ for (const file of [zipName, "plainsign-pitch.pdf", "plainsign-site.zip"]) {
   hashes.push(`${createHash("sha256").update(bytes).digest("hex")}  ${file}`);
 }
 await writeFile(path.join(target, "SHA256SUMS.txt"), `${hashes.join("\n")}\n`);
-await writeFile(path.join(target, "START_HERE.md"), `# PlainSign submission package\n\n1. Read [the checklist](docs/SUBMISSION_READINESS.md).\n2. Extract ${zipName} and load its folder in Chrome using Load unpacked.\n3. Review [the pitch deck](plainsign-pitch.pdf) and [form copy](docs/submission.md).\n4. Use plainsign-site.zip for the updated GitHub Pages site under /plainsign/.\n5. Supply team facts, record and publish both videos, verify public links, and submit before the deadline.\n\nThe extension build contains no optional API keys or E2E mock flags. The site sample walkthrough deliberately uses labelled simulated metadata. SHA256SUMS.txt records the artifact hashes.\n`);
-console.info(`Submission files prepared in ${target}. Team, public video links, publication and portal submission remain owner tasks.`);
+await writeFile(path.join(target, "START_HERE.md"), `# PlainSign submission package\n\n1. Read [the checklist](docs/SUBMISSION_READINESS.md).\n2. Extract ${zipName} and load its folder in Chrome using Load unpacked.\n3. Review [the pitch deck](plainsign-pitch.pdf) and [form copy](docs/submission.md).\n4. plainsign-site.zip contains the site, presentation.html, product-demo.html and both captioned MP4s for deployment under /plainsign/.\n5. The entrant is Mohamed Adib alone, a student at Sri Venkateswara College of Engineering. Confirm registration and eligibility, verify the public video links and portal URL requirements, and submit before the deadline.\n\nThe extension build contains no optional API keys or E2E mock flags. The site sample walkthrough and recorded demo deliberately use labelled simulated metadata. Both videos use synthetic English narration. SHA256SUMS.txt records the artifact hashes.\n`);
+console.info(`Submission files prepared in ${target}. Registration, personal declarations, public-link verification and portal submission must still be checked.`);
 
 async function auditDirectory(directory) {
   for (const file of await readdir(directory, { withFileTypes: true })) {

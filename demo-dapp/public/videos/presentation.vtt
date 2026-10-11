@@ -1,0 +1,127 @@
+WEBVTT
+
+00:00.000 --> 02:48.600
+Synthetic narration · PlainSign · Mohamed Adib, solo entrant
+
+00:00.000 --> 00:02.860
+PlainSign explains wallet permissions before you sign them.
+
+00:02.860 --> 00:07.860
+A button labelled Free Mint can request permission to move an entire NFT collection.
+
+00:07.860 --> 00:12.500
+This presentation uses synthetic narration and shows the project entered by Mohamed Adib.
+
+00:13.150 --> 00:18.570
+The problem is the gap between a website's promise and a wallet request's actual meaning.
+
+00:18.570 --> 00:21.100
+Transaction data can be difficult to read.
+
+00:21.100 --> 00:23.990
+Gasless signatures can also authorize asset movement later.
+
+00:23.990 --> 00:26.520
+This wallet image is a representative illustration.
+
+00:27.170 --> 00:30.650
+PlainSign pauses supported requests before forwarding them to the wallet.
+
+00:30.650 --> 00:35.870
+It decodes the permission and shows a Safe, Caution or Danger verdict with explicit reasons.
+
+00:35.870 --> 00:40.040
+Reject stops the request using standard wallet error four thousand and one.
+
+00:40.690 --> 00:44.690
+The separate product demo exercises the extension with an automated test wallet.
+
+00:44.690 --> 00:48.700
+A collection approval and a long lived Permit Two signature trigger Danger.
+
+00:48.700 --> 00:53.370
+A normal sign in and a known wrapped Ether request illustrate lower risk patterns.
+
+00:53.370 --> 00:54.700
+No real assets move.
+
+00:55.350 --> 00:58.730
+The extension wraps supported injected Ethereum providers.
+
+00:58.730 --> 01:02.100
+Vee em decodes transactions and typed data.
+
+01:02.100 --> 01:04.510
+Public chain services enrich addresses.
+
+01:04.510 --> 01:07.400
+Open JSON rules determine the verdict.
+
+01:07.400 --> 01:10.300
+Continue forwards the original request unchanged.
+
+01:10.300 --> 01:12.710
+Optional simulation supports Sepolia only.
+
+01:13.360 --> 01:18.970
+The product focuses on the consequence of a request, including signatures that can be used later.
+
+01:18.970 --> 01:21.080
+Every reason comes from inspectable rules.
+
+01:21.080 --> 01:27.400
+Optional artificial intelligence can reword text, but cannot decide the verdict and is disabled in the public package.
+
+01:28.050 --> 01:31.330
+The goal is a clearer decision before wallet approval.
+
+01:31.330 --> 01:33.880
+There is no backend account or telemetry.
+
+01:33.880 --> 01:38.260
+These are heuristics, and a green verdict is not a safety guarantee.
+
+01:38.260 --> 01:40.080
+Provider interception is best effort.
+
+01:40.080 --> 01:42.630
+Independent security review remains a next step.
+
+01:43.280 --> 01:46.640
+The September prototype predates this competition and is disclosed.
+
+01:46.640 --> 01:56.720
+October work adds Ethereum mainnet metadata integration, preserves known drainer evidence during R P C outages, and adds a sample walkthrough using the shipped decoder and rules.
+
+01:56.720 --> 01:58.950
+Sample metadata is labelled as simulated.
+
+01:59.600 --> 02:03.650
+The consumer extension and decision rules stay free and open source.
+
+02:03.650 --> 02:10.260
+The proposed business is an integration package for wallet and application teams, with maintained rules and policy controls.
+
+02:10.260 --> 02:12.460
+Demand and pricing still need validation.
+
+02:12.460 --> 02:14.670
+No revenue or customers are claimed.
+
+02:15.320 --> 02:18.810
+Initial distribution would focus on Ethereum communities and educators.
+
+02:18.810 --> 02:26.570
+The next experiment is to observe five users, measure whether they understand requests, and record false alarms and completion time.
+
+02:26.570 --> 02:31.220
+Seeking two integration design partners is a future target, not existing traction.
+
+02:31.870 --> 02:37.650
+PlainSign's solo participant is Mohamed Adib, a student at Sri Venkateswara College of Engineering.
+
+02:37.650 --> 02:43.420
+The next milestones are independent security review, observed user testing and an integration pilot.
+
+02:43.420 --> 02:47.950
+The open repository and separate product demonstration make the implementation inspectable.

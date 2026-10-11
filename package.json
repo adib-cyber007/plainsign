@@ -22,6 +22,7 @@
     "typecheck": "tsc --noEmit",
     "package": "node scripts/package-extension.js",
     "submission:package": "node scripts/prepare-submission.js",
+    "videos:record": "node scripts/record-submission.mjs",
     "docs:rules": "node scripts/generate-rules-doc.js",
     "qr": "node scripts/generate-qr.js",
     "slides": "npm run qr && marp docs/slides.md --pdf --allow-local-files --output docs/slides.pdf",

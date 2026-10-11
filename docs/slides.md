@@ -188,11 +188,11 @@ Observe five users trying the demo. Measure correct explanations, false alarms, 
 <div class="split-even">
 <div>
 
-**PlainSign**<br>
-Open source at github.com/adib-cyber007/plainsign.
+**Mohamed Adib**<br>
+Student at Sri Venkateswara College of Engineering.
 
-**Before submission**<br>
-Add confirmed participant names, backgrounds and university affiliation.
+**PlainSign · Solo entrant**<br>
+Open source at github.com/adib-cyber007/plainsign.
 
 **Next product milestone**<br>
 Independent security review, observed user tests, then a wallet SDK pilot.

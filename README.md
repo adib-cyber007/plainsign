@@ -4,6 +4,8 @@
 
 [Live Sepolia demo](https://adib-cyber007.github.io/plainsign/) · [Download latest release](https://github.com/adib-cyber007/plainsign/releases/latest) · [Architecture](docs/architecture.md)
 
+[Presentation (2:49)](https://adib-cyber007.github.io/plainsign/presentation.html) · [Product demo (2:29)](https://adib-cyber007.github.io/plainsign/product-demo.html) · [Wallet-free samples](https://adib-cyber007.github.io/plainsign/review.html)
+
 ## The 60-second pitch
 
 A page can label a button “Free Mint” while asking your wallet for permission to move every NFT you own. Gasless signatures such as Permit2 can be just as powerful, but often look even less familiar.
@@ -15,6 +17,8 @@ There is no backend, paid service, account, or telemetry. Ethereum mainnet and S
 ## Crypto World's Fair submission
 
 The [submission package](docs/SUBMISSION_READINESS.md) links the deck, form answers, recording scripts, verification evidence, and remaining owner tasks. [Development history](docs/PRE_EXISTING_WORK.md) separates the September prototype from work completed during this competition.
+
+The [rules review](docs/HACKATHON_RULES_REVIEW.md) records the project checks and facts still needing owner confirmation. [Third-party code and services](docs/THIRD_PARTY.md) are disclosed separately. CatDrop is a security-training demo with fictional promotional content, deliberately risky example requests, and test-network assets only.
 
 The new **sample walkthrough** at `review.html` lets judges explore five requests with the shipped decoder and rules, without a wallet or extension. Sample chain metadata is explicitly simulated. Run `npm --prefix demo-dapp run dev` and open `http://127.0.0.1:5173/plainsign/review.html`. The production Pages workflow publishes this page alongside CatDrop after the changes are merged and deployed.
 
@@ -141,7 +145,7 @@ npm run package
 
 ## Team
 
-Built as **PlainSign**. The project owner will provide confirmed participant names, backgrounds, and university affiliation before the Crypto World's Fair submission. Team registration remains an owner task.
+**PlainSign:** Mohamed Adib, solo participant and student at Sri Venkateswara College of Engineering. These facts were supplied by the owner on October 11, 2026. Registration and participant eligibility still require confirmation.
 
 ## License
 
