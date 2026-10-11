@@ -73,12 +73,15 @@ The owner confirmed solo participation on October 11. Madhav Krishna is not incl
 | Field | Value |
 | --- | --- |
 | Repository | https://github.com/adib-cyber007/plainsign |
-| Existing Sepolia demo | https://adib-cyber007.github.io/plainsign/ |
-| New sample walkthrough | `review.html` in the prepared site; verify the public URL after deployment |
+| Sepolia training demo | https://adib-cyber007.github.io/plainsign/ |
+| Sample walkthrough | https://adib-cyber007.github.io/plainsign/review.html |
 | Deck | `docs/slides.pdf` |
 | Product graphic | `public/icon/128.png` |
-| Presentation video | Prepared: 2:49, `demo-dapp/public/videos/presentation.mp4`; verify public `presentation.html` after deployment |
-| Product demo video | Prepared: 2:29, `demo-dapp/public/videos/product-demo.mp4`; verify public `product-demo.html` after deployment |
+| Extension download | https://github.com/adib-cyber007/plainsign/releases/tag/v0.2.0 |
+| Presentation video (2:49) | https://adib-cyber007.github.io/plainsign/presentation.html |
+| Product demo video (2:29) | https://adib-cyber007.github.io/plainsign/product-demo.html |
+
+Verify the deployed watch pages before entering them in the portal. Direct MP4 fallbacks are `/plainsign/videos/presentation.mp4` and `/plainsign/videos/product-demo.mp4` on the same host. Portal host/embedding acceptance remains unconfirmed.
 
 ## Judge Q&A
 

@@ -29,7 +29,7 @@ Do not change names, dates, funding or development history to evade these condit
 ## Final submission gate
 
 1. Confirm the outstanding participant/rights/funding facts and finish registration. The Brave page inspected earlier was participant registration, not the project form; India and Chennai were prefilled and Ethereum L1 was selected.
-2. Publish the reviewed code/site/release, then test final URLs while signed out. The prepared branch and local package do not by themselves update the public demo.
+2. Test the final site, videos and release URLs while signed out. Code/release publication was approved October 11; the package's publication report records final deployment checks. Local files alone do not establish public accessibility.
 3. Rehearse with real MetaMask on Sepolia and check the recorded videos' public playback and duration. The existing recordings disclose their automated test environment.
 4. Fill the project form with the development and third-party disclosures, add registered teammates, and verify each required field.
 5. Submit before October 12, 2026 at 11:59 PM Pacific (**October 13 at 12:29 PM IST**), using the portal's current cutoff if updated. Save confirmation.

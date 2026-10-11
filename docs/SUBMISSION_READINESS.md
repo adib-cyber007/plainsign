@@ -19,14 +19,14 @@ Target: submit on **Monday, October 12, 2026**, ahead of the official cutoff of 
 | New product features | Mainnet registry, offline warning fix, sample walkthrough |
 | Build, tests, mainnet and package checks | [VERIFICATION.md](VERIFICATION.md) |
 
-## Owner actions still required
+## Final submission checks
 
-These remain pending intentionally. No eligibility, registration, public video or completed submission is assumed.
+The sole entrant is confirmed and the videos are recorded. Registration, eligibility declarations, portal URL acceptance and the submission receipt still require confirmation. Use the publication report in the final package for the latest deployed-link checks.
 
 - PlainSign's sole participant is Mohamed Adib, a student at Sri Venkateswara College of Engineering (owner-confirmed October 11). Confirm his registration, location, contributions and any further background requested by the portal. Madhav Krishna is excluded from the entry. The one-time 5 PM reminder was delivered and removed.
 - Confirm age/residency eligibility, rights to submitted materials, employer obligations, funding history and prior work. The FAQ limits eligibility to new startups without significant outside funding, without specifying a numeric threshold. Use only one team/product per participant. Keep content in English. The organizer makes eligibility decisions; code changes cannot resolve a participant or funding exclusion.
-- Both required videos are recorded with synthetic narration and captions. The product demo uses an automated test wallet and simulated chain metadata, visibly disclosed. Publish and verify both public links, then confirm the portal accepts the chosen video host/URL format. The [official FAQ](https://colosseum.com/hackathon) lists separate presentation and product-demo videos.
-- Merge and publish the prepared code/site update, and upload the new extension ZIP as a release asset. Until then the existing public release/demo shows the earlier version. The generated package includes the updated static site for deployment.
+- Both required videos are recorded with synthetic narration and captions. The product demo uses an automated test wallet and simulated chain metadata, visibly disclosed. Check the public [presentation](https://adib-cyber007.github.io/plainsign/presentation.html) and [product demo](https://adib-cyber007.github.io/plainsign/product-demo.html), then confirm the portal accepts the chosen video host/URL format. The [official FAQ](https://colosseum.com/hackathon) lists separate presentation and product-demo videos.
+- [Release 0.2.0](https://github.com/adib-cyber007/plainsign/releases/tag/v0.2.0) is public; its anonymous download and GitHub SHA-256 digest were verified October 11. Verify the deployed [sample walkthrough](https://adib-cyber007.github.io/plainsign/review.html) and training demo too. The generated package includes the static site and both videos.
 - Rehearse with real MetaMask and a throwaway Sepolia wallet. Confirm Danger, Danger, Safe, Safe for Free Mint, Permit2, sign-in and WETH, then Reject returning 4001. Do not use real assets or mainnet for demo transactions.
 - Select Ethereum L1 where offered, supply the development disclosure, fill truthful traction/founder answers, and submit. Claim University Award consideration only if the portal's criteria match the confirmed participants.
 - Save the submission confirmation and final URLs. No portal submission has been made by this preparation task.
