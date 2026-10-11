@@ -1,6 +1,6 @@
 import type { Address } from "viem";
 
-import type { AddressInfo, Intent } from "../types";
+import type { AddressInfo } from "../types";
 import { getAllowlistEntry } from "./allowlist";
 import { getBlockscoutInfo } from "./blockscout";
 import { EnrichmentCache } from "./cache";
@@ -19,23 +19,7 @@ export interface EnrichDeps {
   mock?: boolean;
 }
 
-export function collectAddresses(intent: Intent): Address[] {
-  const addresses = new Map<string, Address>();
-  const visit = (item: Intent): void => {
-    for (const address of [
-      item.to,
-      item.spender,
-      item.operator,
-      item.token,
-      item.recipient,
-    ]) {
-      if (address) addresses.set(address.toLowerCase(), address);
-    }
-    item.children?.forEach(visit);
-  };
-  visit(intent);
-  return [...addresses.values()];
-}
+export { collectAddresses } from "./addresses";
 
 export async function enrich(
   addresses: Address[],
@@ -69,17 +53,16 @@ export async function enrich(
         await cache.set(chainId, info);
         return [key, info] as const;
       } catch {
-        return undefined;
+        // Keep independent denylist evidence even when RPC is unavailable.
+        // An absent isContract means unknown, never a confirmed EOA.
+        return [key, { address, fetchedAt: now } as AddressInfo] as const;
       }
     }),
   );
   const denylist = await denylistPromise;
 
-  const successful = entries.filter(
-    (entry): entry is readonly [string, AddressInfo] => entry !== undefined,
-  );
   return Object.fromEntries(
-    successful.map(([key, info]) => {
+    entries.map(([key, info]) => {
       const listed = findCommunityDenylistEntry(
         denylist,
         info.address,

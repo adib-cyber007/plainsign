@@ -25,6 +25,7 @@ jobs:
           cache: npm
           cache-dependency-path: demo-dapp/package-lock.json
       - run: npm --prefix demo-dapp ci
+      - run: node scripts/collect-license-notices.js site
       - run: npm --prefix demo-dapp run build
         env:
           VITE_DEMO_CHAIN: "11155111"

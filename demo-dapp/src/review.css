@@ -1,0 +1,25 @@
+:root { color-scheme: dark; font-family: "Segoe UI", sans-serif; color: #f7f9fc; background: #09101c; --ps-ink:#f7f9fc; --ps-muted:#aab3c2; --ps-panel:#111827; --ps-panel-raised:#182233; --ps-line:#344054; --ps-safe:#27c58a; --ps-caution:#f5b942; --ps-danger:#ff5a68; }
+body { margin:0; }
+a { color:#b9d3ff; text-underline-offset:5px; }
+.review-shell { max-width:1200px; margin:auto; padding:28px 36px 40px; }
+.review-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:48px; }
+.review-header a:first-child { font-size:24px; color:white; font-weight:750; text-decoration:none; }
+.review-intro { display:flex; gap:60px; align-items:center; margin-bottom:28px; }
+.review-intro h1 { font-size:clamp(40px,5vw,64px); line-height:1.05; letter-spacing:-.04em; margin:0; }
+.review-intro p { color:#aab3c2; font-size:22px; line-height:1.6; }
+.preview-notice { color:#b7c8df; border-left:3px solid #b7c8df; padding:4px 18px; line-height:1.6; max-width:900px; margin:0 0 32px; }
+.review-layout { display:grid; grid-template-columns:300px minmax(0,1fr); gap:44px; align-items:start; }
+.sample-picker { display:flex; flex-direction:column; gap:8px; }
+.sample-picker label { color:#aab3c2; }
+.sample-picker select { padding:12px; border:1px solid #40506a; background:#111827; color:white; border-radius:8px; font:inherit; margin-bottom:14px; width:100%; }
+.sample-picker button { text-align:left; color:white; padding:16px; border:1px solid transparent; border-radius:8px; background:transparent; cursor:pointer; }
+.sample-picker button[aria-pressed=true] { background:#1a2a43; border-color:#719bd3; }
+.sample-picker strong { display:block; font-size:19px; margin-bottom:5px; }
+.sample-picker span { display:block; color:#aab3c2; line-height:1.45; }
+.sample-picker button:hover { background:#152237; }
+button:focus-visible, select:focus-visible, a:focus-visible { outline:3px solid #b9d3ff; outline-offset:3px; }
+.preview-result { min-width:0; }
+.preview-result .ps-card { max-height:none; width:100%; }
+.preview-outcome { color:#b9d3ff; font-size:15px; min-height:44px; line-height:1.6; margin:14px 2px; }
+.review-footer { border-top:1px solid #344054; margin-top:28px; padding-top:14px; color:#aab3c2; font-size:15px; line-height:1.6; }
+@media(max-width:780px) { .review-shell { padding:24px 18px; } .review-intro { display:block; } .review-intro p { font-size:18px; } .review-layout { grid-template-columns:1fr; gap:24px; } .sample-picker { display:grid; grid-template-columns:1fr 1fr; } .sample-picker label, .sample-picker select { grid-column:1 / -1; } .review-header { margin-bottom:32px; } }

@@ -13,3 +13,5 @@ contracts/typechain-types/
 demo-dapp/.env
 demo-dapp/dist/
 *.log
+tmp/
+output/

@@ -2,7 +2,9 @@
 
 **Understand a wallet request before you sign it.**
 
-[Live Sepolia demo](https://adib-cyber007.github.io/plainsign/) · [Download PlainSign 0.1.0](https://github.com/adib-cyber007/plainsign/releases/latest/download/plainsign-0.1.0.zip) · [Architecture](docs/architecture.md)
+[Live Sepolia demo](https://adib-cyber007.github.io/plainsign/) · [Download latest release](https://github.com/adib-cyber007/plainsign/releases/latest) · [Architecture](docs/architecture.md)
+
+[Presentation (2:49)](https://adib-cyber007.github.io/plainsign/presentation.html) · [Product demo (2:29)](https://adib-cyber007.github.io/plainsign/product-demo.html) · [Wallet-free samples](https://adib-cyber007.github.io/plainsign/review.html)
 
 ## The 60-second pitch
 
@@ -10,7 +12,15 @@ A page can label a button “Free Mint” while asking your wallet for permissio
 
 PlainSign is a Chrome extension that pauses supported Ethereum transaction and signature requests before the wallet popup. It decodes the request, checks the addresses involved, applies deterministic rules from an open JSON file, and shows a plain-English verdict: **Safe**, **Caution**, or **Danger**. Reject returns the standard wallet error, while Continue sends the original request to the wallet unchanged.
 
-There is no backend, paid service, account, or telemetry. Optional Alchemy simulation can add expected balance changes; the rest works with public Sepolia RPC and Blockscout.
+There is no backend, paid service, account, or telemetry. Ethereum mainnet and Sepolia use their own public RPC, Blockscout metadata, and protocol addresses from one chain registry. Optional Sepolia Alchemy simulation can add expected balance changes.
+
+## Crypto World's Fair submission
+
+The [submission package](docs/SUBMISSION_READINESS.md) links the deck, form answers, recording scripts, verification evidence, and remaining owner tasks. [Development history](docs/PRE_EXISTING_WORK.md) separates the September prototype from work completed during this competition.
+
+The [rules review](docs/HACKATHON_RULES_REVIEW.md) records the project checks and facts still needing owner confirmation. [Third-party code and services](docs/THIRD_PARTY.md) are disclosed separately. CatDrop is a security-training demo with fictional promotional content, deliberately risky example requests, and test-network assets only.
+
+The new **sample walkthrough** at `review.html` lets judges explore five requests with the shipped decoder and rules, without a wallet or extension. Sample chain metadata is explicitly simulated. Run `npm --prefix demo-dapp run dev` and open `http://127.0.0.1:5173/plainsign/review.html`. The production Pages workflow publishes this page alongside CatDrop after the changes are merged and deployed.
 
 Optional Gemini rewording can simplify only the explanation text; verdicts, scores, and reasons remain deterministic, and its bundled `VITE_LLM_KEY` must be a restricted disposable demo key.
 
@@ -24,7 +34,7 @@ Optional Gemini rewording can simplify only the explanation text; verdicts, scor
 
 Use a test wallet only. The public demo uses the Sepolia test network and valueless test assets.
 
-1. Download [plainsign-0.1.0.zip](https://github.com/adib-cyber007/plainsign/releases/latest/download/plainsign-0.1.0.zip) from the latest GitHub Release.
+1. Open the [latest GitHub Release](https://github.com/adib-cyber007/plainsign/releases/latest) and download its PlainSign extension ZIP. The prepared 0.2.0 build is also available locally after `npm run submission:package`.
 2. Extract the ZIP to a folder you can keep. In Chrome, open `chrome://extensions`.
 3. Turn on **Developer mode**, click **Load unpacked**, select the extracted folder, and confirm the PlainSign card has no red **Errors** button.
 4. Install or unlock MetaMask in a throwaway Chrome profile. Enable test networks and select **Sepolia**.
@@ -121,19 +131,21 @@ npm run package
 - Verdicts are transparent heuristics, not security guarantees.
 - Chrome with MetaMask is the primary tested path. EIP-6963 wallet discovery is best-effort.
 - Transaction simulation is optional and Sepolia-only. Signatures are decoded, not simulated.
-- Unknown functions and typed data default to Caution because PlainSign cannot prove their meaning.
+- Unknown functions, typed data, and incomplete address checks default to Caution. Known-drainer matches survive an RPC outage.
 - Demo contracts live on Sepolia and hold only test assets.
 - The extension is distributed as an unpacked hackathon build, not through the Chrome Web Store.
 
-## Roadmap
+## Shipped features and roadmap
 
 - Dangerous token and NFT permission warnings offer **Revoke instead**, which proposes a zero-permission transaction while rejecting the original request.
 - PlainSign fetches its auditable [community drainer list](docs/denylist.json) from GitHub Pages and falls back to the bundled seed if the network is unavailable.
 - Add more chains while preserving the same open-rule and no-backend design.
+- Ethereum mainnet enrichment is now configured alongside Sepolia and the local demo. Mainnet simulation remains unavailable.
+- Next: independent security review, five observed usability tests, and a wallet SDK pilot. No adoption or revenue is claimed yet.
 
 ## Team
 
-Built by **[TEAM NAME]** for a hackathon. Replace this placeholder with the final team name and participant names before submission.
+**PlainSign:** Mohamed Adib, solo participant and student at Sri Venkateswara College of Engineering. These facts were supplied by the owner on October 11, 2026. Registration and participant eligibility still require confirmation.
 
 ## License
 

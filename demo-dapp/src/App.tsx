@@ -127,7 +127,7 @@ const moreActions: DemoAction[] = [
 ];
 
 const releaseZipUrl =
-  "https://github.com/adib-cyber007/plainsign/releases/latest/download/plainsign-0.1.0.zip";
+  "https://github.com/adib-cyber007/plainsign/releases/latest";
 
 export function App() {
   const { address, chainId, isConnected } = useAccount();
@@ -263,6 +263,14 @@ export function App() {
 
   return (
     <div className="site-shell">
+      <aside className="demo-notice" aria-label="Security training demo">
+        <strong>Security training demo — Sepolia / local test networks only.</strong>
+        <span>
+          This page deliberately requests risky approvals to demonstrate PlainSign.
+          Use an empty test wallet and reject the example requests. Mint counts,
+          countdowns and testimonials are fictional; there is no real offer.
+        </span>
+      </aside>
       <header className="site-header">
         <a className="brand" href="#top" aria-label="CatDrop home">
           <span className="brand-mark">CD</span>
@@ -308,7 +316,7 @@ export function App() {
             <span>Mint closes in</span>
             <strong>{countdown}</strong>
           </div>
-          <p className="social-proof">1,204 minted today</p>
+          <p className="social-proof">Fictional example: 1,204 minted today</p>
           <h1>Free cats.<br />Right meow.</h1>
           <p className="hero-lede">
             The most exclusive cat collection nobody asked for. Connect now and
@@ -372,12 +380,13 @@ export function App() {
         </section>
       </main>
 
-      <section className="testimonials" aria-label="Suspicious testimonials">
+      <section className="testimonials" aria-label="Fictional testimonials for the security demo">
         <p>“No roadmap. No utility. Perfect.” <span>— jpegfan420</span></p>
         <p>“The countdown restarted, so I knew it was legit.” <span>— 0xDiamondHands</span></p>
         <p>“Five stars. Still waiting for the cat.” <span>— mintmaxi</span></p>
       </section>
       <footer className="site-footer">
+        <a href="./review.html">Explore sample verdicts without a wallet</a>
         <span>Want to test the guardrail?</span>
         <a href={releaseZipUrl}>Download the PlainSign extension (.zip)</a>
       </footer>

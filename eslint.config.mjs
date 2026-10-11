@@ -13,6 +13,7 @@ export default tseslint.config(
       "contracts/typechain-types/**",
       "demo-dapp/dist/**",
       "dist/**",
+      "output/**",
       "node_modules/**",
       "playwright-report/**",
     ],

@@ -1,0 +1,15 @@
+This is PlainSign's actual extension running with an automated test wallet and simulated chain metadata. The narration is synthetic. No real assets move. The examples are security training requests on a test network.
+
+CatDrop clearly identifies its fictional offer and risky examples. Connecting the test wallet enables the requests. Each action reaches the extension before it can reach the wallet provider. This recording uses a disposable test account.
+
+Free Mint requests full collection approval. PlainSign shows Danger and explains that the receiving address would gain permission to move every NFT in this collection. The reasons expose the risky permission. This is the production decoder and rule interface, using simulated test metadata.
+
+Choosing Reject returns wallet error four thousand and one. CatDrop displays the rejection. The test wallet receives no signing or transaction request for this action. The user can stop here without forwarding the dangerous permission.
+
+Sign to verify wallet creates a Permit Two typed data request. PlainSign identifies a long lived, unlimited token permission and shows Danger. A gasless signature can authorize later asset movement. Reject prevents the signature request from reaching the test wallet.
+
+A normal sign in message gets a different explanation and a Safe verdict under the rules. The decoded message is a login rather than an asset permission. Safe means no major warning signs were found, and does not guarantee that a website is trustworthy.
+
+A known wrapped Ether deposit also receives Safe in this controlled example. The card explains the exchange of Ether for wrapped Ether. The recording rejects the request so no transaction is sent. Mainnet integration is read only here, while optional simulation is Sepolia only.
+
+The separate sample walkthrough lets judges compare requests without installing a wallet. It uses the same decoder and rules, with clearly simulated metadata. The September prototype is disclosed separately from the October mainnet integration and outage protection. Source code is available in the PlainSign repository.

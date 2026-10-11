@@ -42,7 +42,7 @@ export interface SimulationResult {
   provider: "alchemy" | "none"; error?: string;
 }
 export interface AddressInfo {
-  address: Address; isContract: boolean; isVerified?: boolean; contractName?: string;
+  address: Address; isContract?: boolean; isVerified?: boolean; contractName?: string;
   ageDays?: number; allowlisted?: { protocol: string; domains: string[] };
   denylisted?: { label: string; source: string }; fetchedAt: number;
 }

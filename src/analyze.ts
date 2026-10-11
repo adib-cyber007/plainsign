@@ -73,6 +73,22 @@ export async function analyze(
       addresses: addressInfo,
       now: Math.floor(now(deps) / 1_000),
     });
+    const incomplete = addresses.some(
+      (address) => addressInfo[address.toLowerCase()]?.isContract === undefined,
+    );
+    if (incomplete) {
+      risk.reasons.push({
+        id: "address_checks_incomplete",
+        weight: 0,
+        severity: "warn",
+        title: "Address checks incomplete",
+        detail: "Some addresses could not be checked on this network. The request may carry risks PlainSign could not detect.",
+      });
+      if (risk.verdict === "safe") {
+        risk.verdict = "caution";
+        risk.score = Math.max(25, risk.score);
+      }
+    }
     const rulesMs = now(deps) - evaluateStartedAt;
     report(deps, "evaluate", evaluateStartedAt);
 

@@ -1,0 +1,44 @@
+# Third-party code, services and submission assets
+
+Reviewed October 11, 2026 for the disclosure required by section 9 of the [Crypto World's Fair Official Rules](https://colosseum.com/legal/Crypto%20World%27s%20Fair%20Hackathon%20Rules.pdf). This inventory records direct dependencies and visible integrations. It is not an exhaustive transitive-dependency, redistribution-license or ownership audit, and does not establish blanket rights clearance.
+
+## Direct open-source dependencies
+
+Versions and license identifiers below were checked against the local lockfiles and installed package metadata. The lockfiles are the reproducible version evidence: [extension lockfile](../package-lock.json), [demo lockfile](../demo-dapp/package-lock.json), and [contracts lockfile](../contracts/package-lock.json). Upstream links identify the source projects and their license notices; these libraries remain owned by their respective copyright holders.
+
+| Component | Locked version | Declared license | Use and upstream reference |
+| --- | --- | --- | --- |
+| React and React DOM | 18.3.1 | MIT | Extension/demo UI; [React license](https://github.com/react/react/blob/v18.3.1/LICENSE) |
+| viem | 2.56.3 | MIT | Ethereum encoding, decoding and RPC interaction in all three workspaces; [viem source/license](https://github.com/wevm/viem/blob/main/src/LICENSE) |
+| WXT | 0.19.29 | MIT | Extension build framework; [WXT license](https://github.com/wxt-dev/wxt/blob/main/LICENSE) |
+| `@wxt-dev/module-react` | 1.2.2 | MIT | WXT React integration; [upstream package metadata](https://github.com/wxt-dev/wxt/blob/main/packages/module-react/package.json) |
+| wagmi | 2.19.5 | MIT | Demo wallet connection; [wagmi license](https://github.com/wevm/wagmi/blob/main/LICENSE) |
+| TanStack React Query | 5.102.8 | MIT | Demo query state; [TanStack Query license](https://github.com/TanStack/query/blob/main/LICENSE) |
+| OpenZeppelin Contracts | 5.6.1 | MIT | Demo NFT/token primitives; [versioned license](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v5.6.1/LICENSE) |
+
+The repository's own [MIT license](../LICENSE) does not replace dependency licenses or confer ownership of their code. MIT copyright and permission notices must accompany copies or substantial portions of the covered software. Check the final distributable for applicable upstream notices, including bundled/transitive code, rather than relying on this inventory alone.
+
+Build, test and document tooling also comes from third parties, including TypeScript, Vite, Hardhat, Solidity, Vitest, Playwright, ESLint, Tailwind, Marp and packaging utilities. Their exact versions and dependencies are recorded in the three lockfiles and their declarations in [extension](../package.json), [demo](../demo-dapp/package.json) and [contracts](../contracts/package.json) package manifests. They are not represented as PlainSign inventions.
+
+## Packaged notices
+
+`scripts/collect-license-notices.js` preserves full upstream license text for the React/React DOM/viem runtime dependency graphs and listed framework packages, plus the site's wagmi core and TanStack Query graphs. The generated notices are shipped in the extension and site as `THIRD_PARTY_NOTICES.txt`. The collector fails when a required notice is missing. This is scoped coverage, not a claim that every optional dependency or asset's provenance has been independently audited.
+
+## Protocols and external services
+
+- **Ethereum and wallets:** Ethereum mainnet, Sepolia, EIP-1193/EIP-712 and MetaMask references describe interoperability. PlainSign does not own these standards, networks or wallet products. The configured protocol names/addresses include Uniswap Permit2, Universal Router, OpenSea Seaport, WETH and USDC; see [chain registry](../src/config/chains.ts) and [protocol configuration](../src/config/allowlist.json). Primary protocol references: [Permit2](https://developers.uniswap.org/docs/protocols/permit2/overview), [Seaport](https://github.com/ProjectOpenSea/seaport), and [canonical WETH](https://github.com/gnosis/canonical-weth). Naming an integration does not imply partnership, endorsement or that the named protocol is malicious.
+- **RPC/explorer:** The chain registry configures [PublicNode](https://www.publicnode.com/), [dRPC](https://drpc.org/) and [Blockscout APIs](https://docs.blockscout.com/devs/apis). These independently operated services supply public chain/explorer data; PlainSign does not own their infrastructure or guarantee availability or accuracy. Their service terms continue to apply.
+- **Optional Alchemy:** [Simulation code](../src/simulate/alchemy.ts) uses Alchemy's Sepolia endpoint for `alchemy_simulateAssetChanges` and an `eth_simulateV1` fallback when configured with a key. This is an external integration, not a PlainSign simulation engine or a mainnet simulation claim. See [Alchemy documentation](https://www.alchemy.com/docs).
+- **Optional Google Gemini:** [Explanation code](../src/explain/llm.ts) can send structured request/risk context to Gemini for text rewording. It does not choose the deterministic verdict. [Gemini API terms](https://ai.google.dev/gemini-api/terms) apply when enabled. The prepared public package disables this optional key and Alchemy's optional key; packaging logic is in [prepare-submission.js](../scripts/prepare-submission.js).
+- **GitHub Pages:** Hosts the project demo and remote denylist document. It is third-party hosting, subject to GitHub's service terms; see [Pages documentation](https://docs.github.com/en/pages).
+
+## Demo data, contracts and media
+
+- The bundled [denylist](denylist.json) currently contains **one PlainSign demo attacker seed**, scoped to local Hardhat and Sepolia. [Denylist code](../src/enrich/denylist.ts) fetches the project's Pages document and falls back to that seed. It is not a licensed commercial threat feed, an independently verified incident database or evidence of broad real-world drainer coverage.
+- [DemoNFT](../contracts/contracts/DemoNFT.sol) imports OpenZeppelin ERC721, Base64 and Strings. The local [WETH9 demo contract](../contracts/contracts/WETH9.sol) implements familiar wrapped-ETH behavior and carries an MIT SPDX header. The inspected source alone does not establish its original author or derivation history. Do not claim WETH9 or the wrapped-ETH concept as PlainSign's invention; the owner must confirm source provenance and any required attribution.
+- The logo at [public/icon/128.png](../public/icon/128.png) and submitted visual assets require owner confirmation of authorship or permission. Their presence in the repository is not proof of ownership or clearance. Confirm permissions for any names, likenesses, third-party marks or externally sourced material before submission.
+- [Screenshot automation](../tests/screenshots/capture.spec.ts) captures PlainSign overlays using a mock wallet. It renders `hex-popup.png` from custom HTML, including a fox emoji: this is a **representative wallet illustration**, not a real MetaMask screenshot or recorded wallet interaction. The existing screenshot files' exact generation history and all media permissions remain to be confirmed by the owner. A final product video should distinguish mock/sample views from the real MetaMask rehearsal.
+
+## Owner facts still required
+
+Confirm contributor ownership/permissions, employer or contractual restrictions, third-party asset provenance, and any intellectual-property filings or searches that need disclosure. No patent filing/search status is established by this review. See [development history](PRE_EXISTING_WORK.md) for the separate disclosure of work that predates the competition. Include this inventory with the submission materials and provide the administrator the applicable ownership/status information; the final entrant declarations must be based on confirmed owner facts.

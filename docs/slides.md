@@ -33,11 +33,11 @@ style: |
 
 <!-- _class: title -->
 
-<p class="eyebrow">Wallet security before approval</p>
+<p class="eyebrow">Crypto World's Fair 2026 · Ethereum L1</p>
 
 # PlainSign
 
-<p class="sub">Understand every Ethereum transaction and signature before you sign it.</p>
+<p class="sub">Understand wallet permissions before you sign them.</p>
 
 ---
 
@@ -138,16 +138,64 @@ Every score and reason is auditable in `rules.json`.
 
 ---
 
-## Roadmap
+## New work for Crypto World's Fair
+
+**Ethereum L1 support**<br>
+Mainnet RPC, contract metadata, and network-specific protocol addresses.
+
+**Warnings survive an RPC outage**<br>
+Known-drainer evidence stays visible. Incomplete address checks receive Caution.
+
+**A demo judges can open immediately**<br>
+Five sample requests run through the shipped decoder and rules without a wallet.
+
+<p class="small">Earlier work, including the interceptor, Revoke instead and drainer feed, is disclosed separately. Sample metadata is simulated. Mainnet verification reads public chain data only.</p>
+
+---
+
+## A free extension with a paid integration path
+
+**Free for individuals**<br>
+Open rules and a local warning layer lower the cost of trying PlainSign.
+
+**Proposed wallet and dApp SDK**<br>
+Charge teams for integration support, maintained rule packages, and policy controls.
+
+**Validate before pricing**<br>
+Interview wallet builders and test whether teams will pay for easier integration.
+
+<p class="small">Business model is a hypothesis. No revenue, customer, or adoption claims are made.</p>
+
+---
+
+## Distribution starts with understandable evidence
+
+**First users**<br>
+Ethereum wallet users and community educators who can test deceptive approvals.
+
+**First partners**<br>
+Wallet and dApp teams that want an inspectable request-analysis module.
+
+**Next validation milestone**<br>
+Observe five users trying the demo. Measure correct explanations, false alarms, and completion time. Seek two SDK design partners.
+
+<p class="small">These are planned experiments. The sample walkthrough and automated tests demonstrate functionality, not market traction.</p>
+
+---
+
+## Team and the next milestone
 
 <div class="split-even">
 <div>
 
-**Revoke dangerous permissions**
+**Mohamed Adib**<br>
+Student at Sri Venkateswara College of Engineering.
 
-**Use community drainer lists with provenance**
+**PlainSign · Solo entrant**<br>
+Open source at github.com/adib-cyber007/plainsign.
 
-**Expand to more EVM chains**
+**Next product milestone**<br>
+Independent security review, observed user tests, then a wallet SDK pilot.
 
 <p class="repo">github.com/adib-cyber007/plainsign</p>
 </div>

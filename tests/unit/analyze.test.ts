@@ -21,6 +21,20 @@ const intent: Intent = {
 };
 
 describe("analyze", () => {
+  it.each(["safe", "danger"] as const)("keeps incomplete address checks conservative for %s results", async (verdict) => {
+    const result = await analyze({ ...request, chainId: 999999 }, {
+      decode: async () => intent,
+      enrich: async () => ({}),
+      simulate: async () => ({ ok: false, provider: "none", changes: [] }),
+      evaluate: () => ({ score: verdict === "danger" ? 100 : 0, verdict, reasons: [] }),
+      reword: async (_intent, _simulation, _risk, explanation) => explanation,
+      debug: vi.fn(),
+    });
+    expect(result.risk.verdict).toBe(verdict === "safe" ? "caution" : "danger");
+    expect(result.risk.score).toBe(verdict === "safe" ? 25 : 100);
+    expect(result.risk.reasons.some((reason) => reason.id === "address_checks_incomplete")).toBe(true);
+  });
+
   it("runs the happy path in order and records stage diagnostics", async () => {
     const stages: string[] = [];
     const debugTable = vi.fn();

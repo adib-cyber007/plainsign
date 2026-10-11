@@ -46,6 +46,17 @@ a:focus-visible {
   );
 }
 
+.demo-notice {
+  display: grid;
+  gap: 6px;
+  padding: 16px max(20px, calc((100% - 1180px) / 2));
+  border-bottom: 3px solid #101014;
+  background: #fff9ed;
+  color: #101014;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 .site-header {
   display: flex;
   align-items: center;

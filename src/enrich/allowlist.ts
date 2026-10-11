@@ -1,38 +1,18 @@
 import type { Address } from "viem";
 
-import localDeployment from "../../contracts/deployments/31337.json";
-import allowlistJson from "../config/allowlist.json";
+import { getChainConfig, type KnownProtocol } from "../config/chains";
 
-export interface AllowlistEntry {
-  protocol: string;
-  domains: string[];
-}
-
-type AllowlistConfig = Record<string, Record<string, AllowlistEntry>>;
-
-const configuredAllowlist = allowlistJson as AllowlistConfig;
-const localWeth = localDeployment.WETH9?.toLowerCase();
-const allowlist: AllowlistConfig = {
-  ...configuredAllowlist,
-  "31337": localWeth
-    ? {
-        [localWeth]: {
-          protocol: "Wrapped Ether (WETH, local)",
-          domains: ["*"],
-        },
-      }
-    : {},
-};
+export type AllowlistEntry = KnownProtocol;
 
 export function getAllowlistEntry(
   chainId: number,
   address: Address,
 ): AllowlistEntry | undefined {
-  return allowlist[String(chainId)]?.[address.toLowerCase()];
+  return getChainConfig(chainId)?.protocols[address.toLowerCase()];
 }
 
 export function getAllowlistedAddresses(chainId: number): Address[] {
-  return Object.keys(allowlist[String(chainId)] ?? {}).filter((address): address is Address =>
+  return Object.keys(getChainConfig(chainId)?.protocols ?? {}).filter((address): address is Address =>
     /^0x[0-9a-fA-F]{40}$/.test(address),
   );
 }
