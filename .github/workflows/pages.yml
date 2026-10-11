@@ -23,7 +23,12 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: demo-dapp/package-lock.json
+          cache-dependency-path: |
+            package-lock.json
+            demo-dapp/package-lock.json
+      # review.html imports the shared decoder/rules/UI from the repository root.
+      # Their module resolution requires the root runtime dependencies too.
+      - run: npm ci
       - run: npm --prefix demo-dapp ci
       - run: node scripts/collect-license-notices.js site
       - run: npm --prefix demo-dapp run build
