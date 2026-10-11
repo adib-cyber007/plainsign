@@ -9,6 +9,9 @@
 - The recording asserted Danger for collection approval/Permit2, Safe for sign-in/WETH, and zero forwarded wallet calls after Reject. Actual extension code ran with an automated test wallet and simulated chain metadata, explicitly labelled; no real assets moved.
 - Core runtime license text is collected into extension/site notices during submission packaging. Personal eligibility, funding and asset/code provenance still need owner confirmation.
 - Local watch pages passed video metadata, playback and seeking checks for both clips, with no horizontal overflow at 390px. Desktop/mobile layouts were visually reviewed. Encoded audio is present at mean -20.3 dBFS, with peaks below -2 dBFS. Root TypeScript and ESLint passed after the recording tools were added.
+- [CI for the complete preparation](https://github.com/adib-cyber007/plainsign/actions/runs/38138008824) and [the merged application code](https://github.com/adib-cyber007/plainsign/actions/runs/38148717163) passed on Node 22.
+- [Release 0.2.0](https://github.com/adib-cyber007/plainsign/releases/tag/v0.2.0) is public. Anonymous extension download succeeded; SHA-256 `ee99a0fc5c663b6d1169419e58def298aa9425121768992a3fb538c9d509ffb5` matches GitHub's asset digest.
+- The first Pages deployment failed because the sample walkthrough imports root decoder/UI files but the job installed only demo dependencies. The repair installs both root and demo dependencies, matching successful CI. Check the final package's publication report for deployment and public-playback results.
 
 ## October 10 baseline
 
@@ -56,6 +59,6 @@ WXT's dotenv expansion can restore developer values over empty-string overrides.
 ## Limits and remaining checks
 
 - The sample walkthrough uses the real decoder/rules/templates and explicitly simulated metadata. It does not demonstrate a live wallet connection.
-- The existing public Pages site and 0.1.0 release have not yet been replaced by the prepared version. Publish, then verify the new page and download while signed out.
+- Verify the deployed Pages site and 0.2.0 release download while signed out; see the final package's publication report for the latest results.
 - Confirm the real-MetaMask Sepolia walkthrough, published video durations, team registration, complete owner facts, and portal receipt.
 - Security heuristics, provider interception and remote denylist trust still need independent review before production use.
