@@ -36,6 +36,6 @@ The compositor balances volume and applies a mild filter to low-frequency noise.
 ## Current status
 
 - Eight redesigned slides and speaker notes are ready locally. Each slide has been rendered and visually inspected. The PowerPoint is editable; the PDF uses the inspected slide renders.
-- The latest choice is a free local voice clone. The reference recording and final listening review remain pending. Cloned narration must be described as AI-generated speech.
+- The latest choice is a free local voice clone. Two reference takes have been saved; the second was selected after local recording-level, transcription and pacing checks. Its 11–26-second section produced a short cloned preview. Mohamed's listening review and the full narration remain pending. Cloned narration must be described as AI-generated speech.
 - The currently published videos still contain the earlier synthetic voice. Do not describe them as human narrated.
 - Participant registration and the remaining eligibility/rights declarations still need Mohamed's confirmation before submission.

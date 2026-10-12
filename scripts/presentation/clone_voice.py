@@ -26,7 +26,7 @@ parser.add_argument("--prepare", action="store_true", help="Download/load model 
 parser.add_argument("--engine-check", action="store_true", help="Create a labelled engine test using the model's stock voice")
 parser.add_argument("--generate", action="store_true", help="Generate all narration; default is a short preview")
 parser.add_argument("--sample", type=Path, help="An explicit recording of Mohamed, instead of the saved studio sample")
-parser.add_argument("--start", type=float, default=0, help="Start of a clean 15-second reference section")
+parser.add_argument("--start", type=float, help="Start of a clean 15-second reference section; defaults to the selected take's reference")
 parser.add_argument("--cpu", action="store_true", help="Use CPU instead of the NVIDIA GPU")
 args = parser.parse_args()
 
@@ -35,11 +35,16 @@ if not (args.prepare or args.engine_check):
     if sample is None:
         manifest = ROOT / "output/human-audio/selected-takes.json"
         selected = json.loads(manifest.read_text()) if manifest.exists() else {}
-        filename = selected.get("clone-01", {}).get("filename")
+        take = selected.get("clone-01", {})
+        filename = take.get("filename")
         if not filename or Path(filename).name != filename or not filename.startswith("clone-01-"):
             raise SystemExit("Record and save your sample first at http://127.0.0.1:5185/?mode=clone")
         sample = manifest.parent / filename
+        if args.start is None:
+            args.start = float(take.get("referenceStart", 0))
     sample = sample.resolve(strict=True)
+    if args.start is None:
+        args.start = 0
     if args.start < 0:
         raise SystemExit("Reference start must be zero or greater.")
     reference = WORK / f"reference-{time.time_ns()}.wav"

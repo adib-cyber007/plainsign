@@ -19,7 +19,7 @@ uv pip install --python output/voice-clone/venv/Scripts/python.exe --torch-backe
 & output/voice-clone/venv/Scripts/python.exe scripts/presentation/clone_voice.py
 ```
 
-The last command requires a saved sample and generates only a short preview. `--sample PATH` accepts an explicitly supplied recording instead. `--start SECONDS` chooses a cleaner reference section; `--cpu` is available if GPU memory is insufficient. `--engine-check` tests the engine's stock voice and deliberately labels its output **not Mohamed's voice**.
+The last command requires a saved sample and generates only a short preview. `--sample PATH` accepts an explicitly supplied recording instead. `--start SECONDS` chooses a cleaner reference section; otherwise the recorder manifest's selected `referenceStart` is used, or zero if none is set. `--cpu` is available if GPU memory is insufficient. `--engine-check` tests the engine's stock voice and deliberately labels its output **not Mohamed's voice**.
 
 Listen to the preview for resemblance, accent, skipped words and natural pacing. A clone still produces AI-generated speech and may sound artificial. If needed, try another clean section before generating the full narration. Retain the model's built-in watermark.
 
@@ -39,4 +39,6 @@ The model's [official source and examples](https://github.com/resemble-ai/chatte
 
 The pinned model files passed hash verification. Local CUDA generation and reference-audio conditioning both passed on this laptop, with Hugging Face and Transformers loading set to offline. The conditioning check used a 10-second generated stock voice reference and produced a non-silent 5.48-second, 24 kHz mono WAV. It is explicitly labelled **not Mohamed's voice** in the filename and adjacent provenance JSON. No participant recording was used or uploaded. The recorder's microphone controls and single-sample mode passed browser checks; lint, formatting and Python syntax checks passed.
 
-Mohamed's real sample, resemblance/pronunciation review, completed narration, captions and replacement public videos remain pending.
+Mohamed subsequently saved two real samples. The second was selected using local recording-level checks, sentence timing and a more complete recognition of the provided script. A clean 15-second section beginning at 11 seconds was retained as the reference. Both originals remain intact. The selected reference produced a 10.92-second cloned preview; local recognition recovered its intended message. Reports and timestamps are in the ignored `output/voice-clone/take-review/` directory. Automated recognition does not establish perceptual voice resemblance or natural delivery.
+
+The optional local transcription check used [OpenAI Whisper](https://github.com/openai/whisper), an MIT-licensed tool, with its `base.en` checkpoint verified against the official download hash. It ran locally; the recordings were not uploaded. Mohamed's listening review, completed narration, captions and replacement public videos remain pending.
