@@ -1,5 +1,7 @@
 # Record PlainSign in your own voice
 
+**Latest choice:** Mohamed requested a free voice clone. Use [the single-sample workflow](VOICE_CLONE.md) for that. The steps below remain available for a fully human narration.
+
 The redesigned pitch has eight slides and a conversational script in its speaker notes. Its focus is the hidden permission behind “Free Mint,” followed by the working product, disclosed event work and proposed business model. The editable deck and a PDF review copy are in `output/pitch-v2/`.
 
 ## Record short takes
@@ -34,6 +36,6 @@ The compositor balances volume and applies a mild filter to low-frequency noise.
 ## Current status
 
 - Eight redesigned slides and speaker notes are ready locally. Each slide has been rendered and visually inspected. The PowerPoint is editable; the PDF uses the inspected slide renders.
-- Human recording and final listening review remain pending. A clone would still create AI-generated narration, so it does not satisfy a preference for a real recording.
+- The latest choice is a free local voice clone. The reference recording and final listening review remain pending. Cloned narration must be described as AI-generated speech.
 - The currently published videos still contain the earlier synthetic voice. Do not describe them as human narrated.
 - Participant registration and the remaining eligibility/rights declarations still need Mohamed's confirmation before submission.

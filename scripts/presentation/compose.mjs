@@ -1,4 +1,4 @@
-// Assemble human-recorded takes. Writes review copies only, never public assets.
+// Assemble real recordings or labelled cloned narration into local review videos.
 /* global window, document */
 import { spawnSync } from "node:child_process";
 import { createServer } from "node:http";
@@ -8,10 +8,20 @@ import { chromium } from "@playwright/test";
 
 const root = path.resolve(import.meta.dirname, "../..");
 const args = process.argv.slice(2);
+const cloned = args.includes("--cloned");
 const kind = args.includes("--demo") ? "demo" : "presentation";
-const audioDir = path.join(root, "output/human-audio");
-const build = path.join(root, `output/human-video-build/${kind}`);
-const output = path.join(root, "output/human-videos");
+const audioDir = path.join(
+  root,
+  cloned ? "output/cloned-audio" : "output/human-audio",
+);
+const build = path.join(
+  root,
+  `output/${cloned ? "cloned" : "human"}-video-build/${kind}`,
+);
+const output = path.join(
+  root,
+  cloned ? "output/cloned-videos" : "output/human-videos",
+);
 const narration = JSON.parse(
   await readFile(path.join(root, "docs/human-narration.json"), "utf8"),
 )[kind];
@@ -29,7 +39,9 @@ const keys = narration.map(
 const missing = keys.filter((key) => !selected[key]);
 if (missing.length) {
   console.error(
-    `Record and save these takes first: ${missing.join(", ")}.\nRun node scripts/presentation/studio.mjs and open http://127.0.0.1:5185.`,
+    cloned
+      ? `Generate the missing cloned narration first: ${missing.join(", ")}.\nSave one voice sample, then run clone_voice.py --generate.`
+      : `Record and save these takes first: ${missing.join(", ")}.\nRun node scripts/presentation/studio.mjs and open http://127.0.0.1:5185.`,
   );
   process.exit(1);
 }
@@ -109,9 +121,17 @@ if (expected > 177 || (kind === "presentation" && expected < 120))
   );
 const final = path.join(
   output,
-  `${kind === "demo" ? "product-demo" : "presentation"}-human-${Date.now()}.mp4`,
+  `${kind === "demo" ? "product-demo" : "presentation"}-${cloned ? "cloned" : "human"}-${Date.now()}.mp4`,
 );
+async function writeDisclosure(text, alignment = 7) {
+  const ass = `[Script Info]\nPlayResX: 1920\nPlayResY: 1080\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\nStyle: Label,Segoe UI,25,&H00FFFFFF,&H00FFFFFF,&H0009101C,&H9009101C,0,0,0,0,100,100,0,0,3,5,0,${alignment},28,28,18,1\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\nDialogue: 0,0:00:00.00,0:03:00.00,Label,,0,0,0,,${text}\n`;
+  await writeFile(path.join(build, "disclosure.ass"), ass);
+  return `ass=output/${cloned ? "cloned" : "human"}-video-build/${kind}/disclosure.ass`;
+}
 if (kind === "presentation") {
+  const disclosure = cloned
+    ? await writeDisclosure("Narration: AI clone of Mohamed Adib's voice", 9)
+    : null;
   for (let i = 0; i < segments.length; i++) {
     const row = segments[i];
     run("ffmpeg", [
@@ -129,6 +149,7 @@ if (kind === "presentation") {
       ),
       "-i",
       row.audio,
+      ...(disclosure ? ["-vf", disclosure] : []),
       "-af",
       "apad=pad_dur=0.4",
       "-t",
@@ -302,9 +323,9 @@ if (kind === "presentation") {
       `Demo is ${duration}s including actions. Shorten a take before publishing.`,
     );
   const label =
-    "Controlled test · automated wallet · simulated metadata · no assets moved";
-  const ass = `[Script Info]\nPlayResX: 1920\nPlayResY: 1080\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\nStyle: Label,Segoe UI,25,&H00FFFFFF,&H00FFFFFF,&H0009101C,&H9009101C,0,0,0,0,100,100,0,0,3,5,0,7,28,28,18,1\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\nDialogue: 0,0:00:00.00,0:03:00.00,Label,,0,0,0,,${label}\n`;
-  await writeFile(path.join(build, "disclosure.ass"), ass);
+    "Controlled test · automated wallet · simulated metadata · no assets moved" +
+    (cloned ? " · AI voice clone" : "");
+  const disclosure = await writeDisclosure(label);
   const inputs = segments.flatMap((row) => ["-i", row.audio]);
   const filters =
     segments
@@ -339,7 +360,7 @@ if (kind === "presentation") {
     "-i",
     audio,
     "-vf",
-    "scale=1920:1080,ass=output/human-video-build/demo/disclosure.ass",
+    `scale=1920:1080,${disclosure}`,
     "-c:v",
     "libx264",
     "-preset",
@@ -367,6 +388,7 @@ await writeFile(
     {
       duration,
       kind,
+      voiceType: cloned ? "AI-generated voice clone" : "Human recording",
       selectedTakes: keys.map((key) => selected[key]),
       script: narration,
       subtitles: "Pending review against actual speech",

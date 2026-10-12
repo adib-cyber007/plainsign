@@ -12,6 +12,9 @@ const origin = "http://127.0.0.1:5185";
 const narration = JSON.parse(
   await readFile(path.join(root, "docs/human-narration.json"), "utf8"),
 );
+narration.clone = JSON.parse(
+  await readFile(path.join(root, "docs/voice-clone-sample.json"), "utf8"),
+);
 await mkdir(audioDir, { recursive: true });
 let selected = {};
 try {
@@ -62,10 +65,10 @@ const server = createServer(async (req, res) => {
         res.writeHead(403).end();
         return;
       }
-      const match = /^\/api\/takes\/(presentation|demo)\/([1-8])$/.exec(
+      const match = /^\/api\/takes\/(presentation|demo|clone)\/([1-8])$/.exec(
         pathname,
       );
-      if (!match) {
+      if (!match || Number(match[2]) > narration[match[1]].length) {
         res.writeHead(404).end();
         return;
       }
@@ -115,7 +118,7 @@ const server = createServer(async (req, res) => {
     }
     if (
       req.method === "GET" &&
-      /^\/api\/audio\/(presentation|demo)-0[1-8]$/.test(pathname)
+      /^\/api\/audio\/(presentation|demo|clone)-0[1-8]$/.test(pathname)
     ) {
       const take = selected[pathname.split("/").at(-1)];
       if (!take) {

@@ -3,7 +3,10 @@ const $ = (id) => document.getElementById(id);
 const { narration, selected, token } = await (
   await fetch("/api/config")
 ).json();
-let kind = "presentation",
+let kind =
+    new URLSearchParams(window.location.search).get("mode") === "clone"
+      ? "clone"
+      : "presentation",
   index = 0,
   recorder,
   stream,
@@ -19,16 +22,24 @@ function view() {
   $("title").textContent = row.title;
   $("position").textContent = `TAKE ${index + 1} OF ${rows.length}`;
   $("script").textContent = row.text;
+  $("kind").value = kind;
   $("target").textContent =
-    `Aim for about ${row.targetSeconds} seconds. ${kind === "presentation" ? "Keep the whole presentation between 2 and 3 minutes." : "Keep the full demo under 3 minutes."}`;
+    kind === "clone"
+      ? "Read at your natural pace for about 30–45 seconds. Keep a consistent distance from the microphone."
+      : `Aim for about ${row.targetSeconds} seconds. ${kind === "presentation" ? "Keep the whole presentation between 2 and 3 minutes." : "Keep the full demo under 3 minutes."}`;
   $("slide").src =
-    `/slide-${kind === "presentation" ? index + 1 : Math.min(index + 1, 3)}.png`;
+    `/slide-${kind === "clone" ? 1 : kind === "presentation" ? index + 1 : Math.min(index + 1, 3)}.png`;
   $("slide").alt =
     kind === "presentation"
       ? `Slide ${index + 1}`
       : "Product reference from the presentation";
   $("progress").textContent =
     `${rows.filter((_, i) => selected[`${kind}-${String(i + 1).padStart(2, "0")}`]).length} of ${rows.length} takes saved`;
+  $("recording-help").textContent =
+    kind === "clone"
+      ? "Record this one sample for your voice clone. Speak naturally in a quiet room, with no music or other speakers."
+      : "Find a quiet room. Keep the microphone a hand’s width away. Read once, then speak as if explaining the project to a friend.";
+  $("next").hidden = kind === "clone";
   $("segments").replaceChildren(
     ...rows.map((row, i) => {
       const b = document.createElement("button");
@@ -169,7 +180,9 @@ $("save").onclick = async () => {
     blob = undefined;
     view();
     $("status").textContent =
-      "Saved on this computer. You can move to the next take.";
+      kind === "clone"
+        ? "Sample saved on this computer. Tell me it is ready so we can create and test your voice clone."
+        : "Saved on this computer. You can move to the next take.";
   } catch (error) {
     $("status").textContent =
       `Save failed: ${error.message}. Download a copy or try Save again.`;
