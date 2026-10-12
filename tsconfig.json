@@ -7,5 +7,14 @@
     "resolveJsonModule": true,
     "types": ["chrome", "node", "vitest/globals"]
   },
-  "exclude": ["contracts", "demo-dapp"]
+  "exclude": [
+    "node_modules",
+    ".output",
+    "dist",
+    "coverage",
+    "output",
+    "tmp",
+    "contracts",
+    "demo-dapp"
+  ]
 }

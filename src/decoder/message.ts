@@ -26,6 +26,16 @@ export function decodeMessage(input: unknown, method: MessageMethod): Intent {
     }
 
     const decoded = decodePossibleHex(encoded);
+    // Arbitrary hashes can be valid UTF-8 (including NULs or printable bytes).
+    // Treat every 32-byte hex payload conservatively before interpreting text.
+    if (decoded.isThirtyTwoByteHex) {
+      return {
+        kind: "raw_hash",
+        method,
+        functionName: "personal_sign",
+        raw: input,
+      };
+    }
     const siwe = decoded.text ? parseSiweMessage(decoded.text) : undefined;
     if (siwe) {
       return {
@@ -35,15 +45,6 @@ export function decodeMessage(input: unknown, method: MessageMethod): Intent {
         deadline: siwe.expirationTime,
         functionName: "personal_sign",
         raw: { input, message: decoded.text, siwe },
-      };
-    }
-
-    if (decoded.isThirtyTwoByteHex && decoded.text === undefined) {
-      return {
-        kind: "raw_hash",
-        method,
-        functionName: "personal_sign",
-        raw: input,
       };
     }
 

@@ -18,6 +18,7 @@ import { seaportAbi } from "../../src/decoder/abis/seaport";
 import { universalRouterAbi } from "../../src/decoder/abis/universalRouter";
 import { wethAbi } from "../../src/decoder/abis/weth";
 import { serialize } from "../../src/bridge/protocol";
+import { CHAINS } from "../../src/config/chains";
 import { decodeMessage } from "../../src/decoder/message";
 import { decodeTransaction, type TransactionLike } from "../../src/decoder/tx";
 import { decodeTypedData } from "../../src/decoder/typedData";
@@ -181,12 +182,12 @@ await tx("18-permit2-transfer", {
   data: encode(permit2Abi, "transferFrom", [A, B, 12n, C]),
 });
 await tx("19-weth-deposit", {
-  to: A,
+  to: CHAINS[11155111].wethAddress,
   value: 10n ** 16n,
   data: encode(wethAbi, "deposit"),
 });
 await tx("20-weth-withdraw", {
-  to: A,
+  to: CHAINS[11155111].wethAddress,
   data: encode(wethAbi, "withdraw", [10n ** 16n]),
 });
 await tx("21-router", {

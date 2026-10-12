@@ -7,6 +7,7 @@ import {
 } from "viem";
 
 import type { Intent } from "../types";
+import { getChainConfig } from "../config/chains";
 import { erc20Abi } from "./abis/erc20";
 import { erc721Abi } from "./abis/erc721";
 import { erc1155Abi } from "./abis/erc1155";
@@ -101,7 +102,7 @@ function decodeTransactionUnsafe(tx: TransactionLike, chainId: number): Intent {
     };
   }
 
-  if ((data === "0x" || data.length < 10) && value > 0n) {
+  if (data === "0x" && value > 0n) {
     return {
       kind: "native_transfer",
       method: "eth_sendTransaction",
@@ -355,6 +356,14 @@ function decodeSpecialTransaction(
   }
 
   const weth = tryDecodeCall(wethAbi, data);
+  // A selector identifies a function signature, not the contract's behavior.
+  // Only the registered WETH on this network can promise a 1:1 wrap/unwrap.
+  if (
+    weth &&
+    tx.to.toLowerCase() !== getChainConfig(chainId)?.wethAddress.toLowerCase()
+  ) {
+    return unknownIntent(tx, data, "This is not the known WETH contract on this network.");
+  }
   if (weth?.functionName === "deposit") {
     return {
       ...base,

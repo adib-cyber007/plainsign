@@ -2,9 +2,9 @@
 
 **Understand a wallet request before you sign it.**
 
-[Live Sepolia demo](https://adib-cyber007.github.io/plainsign/) · [Download latest release](https://github.com/adib-cyber007/plainsign/releases/latest) · [Architecture](docs/architecture.md)
+[Try without a wallet](https://adib-cyber007.github.io/plainsign/review.html) · [90-second judge guide](docs/JUDGE_GUIDE.md) · [Download latest release](https://github.com/adib-cyber007/plainsign/releases/latest)
 
-[Presentation (2:45)](https://adib-cyber007.github.io/plainsign/presentation.html) · [Product demo (1:59)](https://adib-cyber007.github.io/plainsign/product-demo.html) · [Wallet-free samples](https://adib-cyber007.github.io/plainsign/review.html)
+[Submitted pitch (1:45)](https://youtu.be/FY_4VIk0aSY) · [Product demo (1:59)](https://youtu.be/4_deIAYTzSo) · [Pitch deck](https://adib-cyber007.github.io/plainsign/plainsign-pitch.pdf) · [Sepolia training demo](https://adib-cyber007.github.io/plainsign/)
 
 ## The 60-second pitch
 
@@ -16,11 +16,11 @@ There is no backend, paid service, account, or telemetry. Ethereum mainnet and S
 
 ## Crypto World's Fair submission
 
-The [submission package](docs/SUBMISSION_READINESS.md) links the deck, form answers, recording scripts, verification evidence, and remaining owner tasks. [Development history](docs/PRE_EXISTING_WORK.md) separates the September prototype from work completed during this competition.
+**Submitted October 12, 2026 at 6:52 PM IST, project 17231, entered for judging.** See [current status](docs/SUBMISSION_STATUS.md). The [submission package](docs/SUBMISSION_READINESS.md) links the deck, submitted video URLs, form copy and verification evidence. [Development history](docs/PRE_EXISTING_WORK.md) separates the September prototype from work completed during this competition.
 
-The [rules review](docs/HACKATHON_RULES_REVIEW.md) records the project checks and facts still needing owner confirmation. [Third-party code and services](docs/THIRD_PARTY.md) are disclosed separately. CatDrop is a security-training demo with fictional promotional content, deliberately risky example requests, and test-network assets only.
+The [rules review](docs/HACKATHON_RULES_REVIEW.md) records the project checks and owner-confirmed declarations. [Third-party code and services](docs/THIRD_PARTY.md) are disclosed separately. CatDrop is a security-training demo with fictional promotional content, deliberately risky example requests, and test-network assets only.
 
-The new **sample walkthrough** at `review.html` lets judges explore five requests with the shipped decoder and rules, without a wallet or extension. Sample chain metadata is explicitly simulated. Run `npm --prefix demo-dapp run dev` and open `http://127.0.0.1:5173/plainsign/review.html`. The production Pages workflow publishes this page alongside CatDrop after the changes are merged and deployed.
+The **sample walkthrough** at `review.html` lets judges explore requests with the shipped decoder and rules, without a wallet or extension. The 0.2.1 candidate adds a sixth example: a contract imitating WETH's wrap function receives Caution. Sample chain metadata is explicitly simulated. Run `npm --prefix demo-dapp run dev` and open `http://127.0.0.1:5173/plainsign/review.html`. The candidate requires publication before its changes appear at the public link.
 
 Optional Gemini rewording can simplify only the explanation text; verdicts, scores, and reasons remain deterministic, and its bundled `VITE_LLM_KEY` must be a restricted disposable demo key.
 
@@ -34,7 +34,7 @@ Optional Gemini rewording can simplify only the explanation text; verdicts, scor
 
 Use a test wallet only. The public demo uses the Sepolia test network and valueless test assets.
 
-1. Open the [latest GitHub Release](https://github.com/adib-cyber007/plainsign/releases/latest) and download its PlainSign extension ZIP. The prepared 0.2.0 build is also available locally after `npm run submission:package`.
+1. Open the [latest GitHub Release](https://github.com/adib-cyber007/plainsign/releases/latest) and download its PlainSign extension ZIP. The local 0.2.1 candidate is prepared in `output/submission-0.2.1/` by `npm run submission:package`; audit it with `npm run submission:audit`.
 2. Extract the ZIP to a folder you can keep. In Chrome, open `chrome://extensions`.
 3. Turn on **Developer mode**, click **Load unpacked**, select the extracted folder, and confirm the PlainSign card has no red **Errors** button.
 4. Install or unlock MetaMask in a throwaway Chrome profile. Enable test networks and select **Sepolia**.
@@ -145,7 +145,7 @@ npm run package
 
 ## Team
 
-**PlainSign:** Mohamed Adib, solo participant and student at Sri Venkateswara College of Engineering. These facts were supplied by the owner on October 11, 2026. Registration and participant eligibility still require confirmation.
+**PlainSign:** Mohamed Adib, solo entrant and student at Sri Venkateswara College of Engineering. Registration and declarations are owner-confirmed complete on October 12. Madhav Krishna helped polish the project and is disclosed as a contributor, not an entrant. AI assistance and third-party services are disclosed in the submitted materials.
 
 ## License
 

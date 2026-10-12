@@ -12,6 +12,7 @@ import type {
   Explanation,
   Intent,
   RiskReason,
+  RiskResult,
   SimulationResult,
 } from "./types";
 
@@ -48,6 +49,7 @@ export async function analyze(
 ): Promise<AnalysisResult> {
   const startedAt = now(deps);
   let latestIntent: Intent | undefined;
+  let latestRisk: RiskResult | undefined;
   let timer: ReturnType<typeof setTimeout> | undefined;
 
   const pipeline = (async (): Promise<AnalysisResult> => {
@@ -89,6 +91,7 @@ export async function analyze(
         risk.score = Math.max(25, risk.score);
       }
     }
+    latestRisk = risk;
     const rulesMs = now(deps) - evaluateStartedAt;
     report(deps, "evaluate", evaluateStartedAt);
 
@@ -137,6 +140,7 @@ export async function analyze(
       latestIntent,
       now(deps) - startedAt,
       error,
+      latestRisk,
     );
     report(deps, "degraded", startedAt);
     return degraded;
@@ -150,6 +154,7 @@ export function createDegradedResult(
   intent: Intent | undefined,
   durationMs: number,
   error?: unknown,
+  completedRisk?: RiskResult,
 ): AnalysisResult {
   const fallbackIntent = intent ?? fallbackIntentFor(request, error);
   const simulation: SimulationResult = {
@@ -158,6 +163,15 @@ export function createDegradedResult(
     changes: [],
     error: errorMessage(error),
   };
+  // Keep established warnings if a later stage fails, and retain locally
+  // detectable dangers even when enrichment never completes.
+  const risk = completedRisk ?? evaluate({
+    request,
+    intent: fallbackIntent,
+    simulation,
+    addresses: {},
+    now: Math.floor(Date.now() / 1_000),
+  });
   const explanation: Explanation = {
     summary: DEGRADED_EXPLANATION,
     beginner: [DEGRADED_EXPLANATION],
@@ -173,9 +187,10 @@ export function createDegradedResult(
     intent: fallbackIntent,
     simulation,
     risk: {
-      score: 25,
-      verdict: "caution",
-      reasons: [analysisFailedReason],
+      ...risk,
+      score: Math.max(25, risk.score),
+      verdict: risk.verdict === "safe" ? "caution" : risk.verdict,
+      reasons: [...risk.reasons, analysisFailedReason],
     },
     explanation,
     durationMs,

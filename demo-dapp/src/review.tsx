@@ -27,6 +27,7 @@ const samples = [
   { id: "permit", title: "Verify wallet", detail: "An unlimited Permit2 signature with a long expiry" },
   { id: "login", title: "Sign in", detail: "A readable login message" },
   { id: "wrap", title: "Wrap ETH", detail: "Exchange 0.01 ETH for WETH" },
+  { id: "fake-wrap", title: "Imitation WETH", detail: "The same wrap call sent to a different contract" },
   { id: "unknown", title: "Unknown request", detail: "A function the decoder cannot recognize" },
 ] as const;
 type SampleId = typeof samples[number]["id"];
@@ -58,8 +59,8 @@ function sampleResult(id: SampleId, chainId: 1 | 11155111) {
   } else {
     const tx: TransactionLike = id === "mint"
       ? { from: account, to: token, data: encodeFunctionData({ abi: erc721Abi, functionName: "setApprovalForAll", args: [operator, true] }) }
-      : id === "wrap"
-        ? { from: account, to: config.wethAddress, value: toHex(parseEther("0.01")), data: encodeFunctionData({ abi: wethAbi, functionName: "deposit" }) }
+      : id === "wrap" || id === "fake-wrap"
+        ? { from: account, to: id === "wrap" ? config.wethAddress : token, value: toHex(parseEther("0.01")), data: encodeFunctionData({ abi: wethAbi, functionName: "deposit" }) }
         : { from: account, to: token, data: "0x12345678" as const };
     request.request.params = [tx];
     intent = decodeTransaction(tx, chainId);
@@ -74,18 +75,23 @@ function sampleResult(id: SampleId, chainId: 1 | 11155111) {
     id: request.id, intent, simulation, risk,
     explanation: explain(intent, simulation, risk, addresses, { chainId, now }), durationMs: 0,
   };
-  return { result, revoke: buildRevokeTransaction(request, intent) };
+  return { request, result, revoke: buildRevokeTransaction(request, intent) };
 }
 
 function Review() {
   const [sample, setSample] = useState<SampleId>("mint");
   const [chain, setChain] = useState<1 | 11155111>(1);
   const [outcome, setOutcome] = useState("");
-  const { result, revoke } = useMemo(() => sampleResult(sample, chain), [sample, chain]);
+  const { request, result, revoke } = useMemo(() => sampleResult(sample, chain), [sample, chain]);
   return <main className="review-shell">
-    <header className="review-header"><a href="./">PlainSign</a><a href="https://github.com/adib-cyber007/plainsign">View the code</a></header>
+    <header className="review-header"><a href="review.html">PlainSign</a><nav aria-label="Project resources">
+      <a href="product-demo.html">Watch the demo</a>
+      <a href="plainsign-pitch.pdf">Pitch deck</a>
+      <a href="https://github.com/adib-cyber007/plainsign">View the code</a>
+    </nav></header>
     <div className="review-intro"><h1>See what you’re<br />really signing.</h1><p>Try a request. Read the consequence.<br />Decide before your wallet opens.</p></div>
     <p className="preview-notice">Sample preview. No wallet, extension, or funds required. Chain metadata is simulated. Verdicts use the same decoder and open rules as the extension.</p>
+    <p className="review-guide">Start with <strong>Free Mint</strong> and choose Reject. Compare it with <strong>Sign in</strong>, then compare <strong>Wrap ETH</strong> with <strong>Imitation WETH</strong>: the destination matters as much as the function name.</p>
     <div className="review-layout">
       <section className="sample-picker" aria-label="Sample wallet requests">
         <label htmlFor="sample-chain">Network</label>
@@ -98,9 +104,15 @@ function Review() {
           onContinue={() => setOutcome("Preview: Continue would send the original request unchanged to your wallet. No wallet is connected here.")}
           onRevoke={() => setOutcome("Preview: reject the original approval and propose a separate zero-permission transaction. Revocation requires wallet confirmation and gas. It does not undo a previous signature.")} />
         <p className="preview-outcome" role="status">{outcome || "These buttons show what the extension would do. No request is sent."}</p>
+        <details key={`request-${sample}-${chain}`} className="request-inspector">
+          <summary>Inspect this sample request</summary>
+          <p>This is the input to the decoder. Address verification above is simulated; no chain service is queried.</p>
+          <pre aria-label="Sample request JSON">{JSON.stringify({ origin: request.origin, chainId: request.chainId, ...request.request }, null, 2)}</pre>
+          <a href="https://github.com/adib-cyber007/plainsign/blob/master/src/risk/rules.json">Read the risk rules</a>
+        </details>
       </section>
     </div>
-    <footer className="review-footer"><p>Safe means no major warning signs found in this request. These checks are heuristics, not a security guarantee.</p><a href="./">Try the extension with the Sepolia demo</a></footer>
+    <footer className="review-footer"><p>Safe means no major warning signs found in this request. These checks are heuristics, not a security guarantee.</p><a href="./">Try the extension with the Sepolia demo</a><a href="https://github.com/adib-cyber007/plainsign/releases/latest">Download the extension</a></footer>
   </main>;
 }
 

@@ -1,10 +1,10 @@
 # Publishing the two submission videos
 
-Updated October 12, 2026. Both watch pages were initially published October 11. Replacement media uses the redesigned eight-slide pitch and a local AI clone of Mohamed’s voice, with his permission. Portal URL acceptance remains unconfirmed.
+Updated October 12, 2026. The accepted submission uses the [1:45 YouTube pitch](https://youtu.be/FY_4VIk0aSY) and [1:59 YouTube demo](https://youtu.be/4_deIAYTzSo). The saved portal review retains both links. Pages watch pages and the longer 2:45 presentation are supplementary. Narration uses a disclosed local AI clone of Mohamed’s voice, with his permission.
 
 ## Colosseum requirements and uncertainty
 
-The [official FAQ](https://colosseum.com/hackathon), under “What is the required information in the submission portal?”, requires a **two-to-three-minute presentation video** and a **product-demo video no longer than three minutes**. Prepare two clearly named videos. The presentation should communicate the product/business; the demo should show how the product works.
+The [official FAQ](https://colosseum.com/hackathon) describes a two-to-three-minute presentation and a product demo no longer than three minutes. The actual portal inspected during submission imposed a **two-minute pitch limit** and **three-minute demo limit**. The saved 1:45 pitch and 1:59 demo satisfy those observed limits. Follow the actual form when its instructions differ from generic FAQ guidance.
 
 The reviewed public FAQ and [Official Rules](https://colosseum.com/legal/Crypto%20World%27s%20Fair%20Hackathon%20Rules.pdf) do not specify YouTube/Vimeo, an accepted URL-provider list, an MP4 codec, or a required founder-on-camera segment. This absence is not confirmation that the portal accepts every URL. Inspect the actual video-field instructions and validation before choosing its final values. If the portal restricts hosts or cannot embed a Pages link, use a supported host; retain the Pages copies as additional evidence.
 

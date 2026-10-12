@@ -207,6 +207,34 @@ async function clickShadow(page: Page, selector: string): Promise<void> {
 
 test.describe.configure({ mode: "serial" });
 
+for (const example of [
+  {
+    title: "lookalike WETH deposit",
+    args: { method: "eth_sendTransaction", params: [{ from: account, to: token, value: "0x2386f26fc10000", data: "0xd0e30db0" }] },
+    verdict: "Caution" as const,
+    reason: "Unrecognized action",
+  },
+  {
+    title: "UTF-8-decodable 32-byte hash",
+    args: { method: "personal_sign", params: [`0x${"00".repeat(32)}`, account] },
+    verdict: "Danger" as const,
+    reason: "Signing an opaque 32-byte hash",
+  },
+]) {
+  test(`warns about ${example.title} before the wallet receives it`, async () => {
+    await withTestPage("immediate", async (page) => {
+      await page.evaluate((args) => {
+        void window.ethereum?.request(args).catch(() => undefined);
+      }, example.args);
+      await waitForVerdict(page, example.verdict);
+      expect(await shadowText(page, ".ps-reasons")).toContain(example.reason);
+      expect((await walletState(page)).calls).toHaveLength(0);
+      await clickShadow(page, ".ps-reject");
+      await expect.poll(async () => (await walletState(page)).calls.length).toBe(0);
+    });
+  });
+}
+
 for (const mode of installModes) {
   test.describe(`wallet install mode: ${mode}`, () => {
     test("wraps the legacy provider and preserves MetaMask identity", async () => {
