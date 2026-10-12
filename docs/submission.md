@@ -20,7 +20,7 @@ PlainSign pauses supported EIP-1193 requests, decodes transaction calldata and E
 
 Ethereum mainnet and Sepolia use network-specific RPC, Blockscout and protocol configuration. A known-drainer match survives an RPC outage; incomplete address checks impose Caution. Optional simulation remains Sepolia-only. The extension has no backend, accounts or telemetry. Optional AI rewording never decides risk and is disabled in the prepared public build.
 
-A sample walkthrough lets judges compare requests using the same decoder, rules and explanations without installing anything. Its chain metadata is explicitly simulated. The local 0.2.1 candidate adds a sixth, imitation-WETH example. The extension's CatDrop demo exercises interception with a test wallet on Sepolia.
+A sample walkthrough lets judges compare requests using the same decoder, rules and explanations without installing anything. Its chain metadata is explicitly simulated. Published version 0.2.1 includes six examples, an imitation-WETH comparison and inspectable request JSON. The extension's CatDrop demo exercises interception with a test wallet on Sepolia.
 
 The project is an inspectable warning layer. Heuristics and best-effort injected-provider interception cannot guarantee that a site or request is safe. The original prototype and its existing features predate this competition; the development disclosure identifies the new work separately.
 
@@ -78,7 +78,7 @@ The owner confirmed solo participation and completed registration and declaratio
 | Deck PDF | https://adib-cyber007.github.io/plainsign/plainsign-pitch.pdf |
 | Editable deck | https://adib-cyber007.github.io/plainsign/plainsign-pitch.pptx |
 | Product graphic | `public/icon/128.png` |
-| Extension download | https://github.com/adib-cyber007/plainsign/releases/tag/v0.2.0 |
+| Extension download | https://github.com/adib-cyber007/plainsign/releases/tag/v0.2.1 |
 | Submitted pitch (1:45) | https://youtu.be/FY_4VIk0aSY |
 | Submitted product demo (1:59) | https://youtu.be/4_deIAYTzSo |
 | Supplementary presentation (2:45) | https://adib-cyber007.github.io/plainsign/presentation.html |
