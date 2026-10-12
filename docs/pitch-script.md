@@ -1,16 +1,35 @@
 # PlainSign presentation script
 
-Target: 2:40, English. This is the startup presentation, separate from the product demo. Use `slides.pdf`. Team names and college were confirmed by the owner on October 11. No customer, revenue, audit or user metrics are established.
+Eight-slide pitch. Final video: 2:45. Narration is a local AI clone of Mohamed Adib’s voice, with his permission. The editable PowerPoint contains the same speaker notes.
 
-| Time | Slide / narration |
-| --- | --- |
-| 0:00-0:15 | **PlainSign.** “A Free Mint button can ask for permission to move every NFT in a collection. PlainSign explains that permission before your wallet opens.” |
-| 0:15-0:35 | **Problem.** “Wallet requests contain calldata, typed data and signatures. A user sees a friendly website but may not understand the asset access underneath. Gasless signatures can authorize actions that happen later.” |
-| 0:35-0:55 | **Product.** “We pause supported wallet requests and decode the intent. Users see Safe, Caution or Danger, a plain explanation, and every rule behind it. Reject returns error 4001. Continue forwards the original request.” |
-| 0:55-1:15 | **Demo and innovation.** “The product demo shows a disguised collection approval and a long-lived Permit2 signature, followed by a normal login and WETH wrap. The same open rules distinguish them. Optional AI can reword an explanation, but it cannot choose the verdict.” |
-| 1:15-1:40 | **New event work.** “The original Sepolia prototype predates this event and is disclosed. During preparation we added Ethereum mainnet enrichment, kept known-drainer warnings available when RPC fails, and added a wallet-free walkthrough that uses the shipped decoder and rules. Its metadata is labelled as simulated.” |
-| 1:40-2:00 | **Business.** “The individual extension stays free and open source. Our business hypothesis is a paid integration package for wallet and dApp teams, with maintained rules and policy controls. We need partner interviews to validate demand and pricing.” |
-| 2:00-2:20 | **Distribution.** “We will start with Ethereum communities and educators. Next, we want to observe five users, measure their understanding and false alarms, and find two wallet or dApp design partners. Those are targets, not existing traction.” |
-| 2:20-2:40 | **Team and next step.** “PlainSign is entered by Mohamed Adib, a student at Sri Venkateswara College of Engineering, as a solo participant. The next milestone is independent security review, observed user tests and a wallet SDK pilot. The repository and demos make the product inspectable today.” |
+## 1. The Free Mint problem
 
-Record at 1080p with readable slides and a clear voice. Include the real product briefly in the presentation or link the separate demo. Verify the final duration and signed-out access. Avoid presenting the representative wallet illustration in the deck as a recording of MetaMask.
+The website says, Free Mint. But the request underneath can give someone permission to move every NFT in a collection. I'm Mohamed Adib, a student at Sri Venkateswara College of Engineering. This is PlainSign: a way to understand that permission before approving it.
+
+## 2. Before the wallet opens
+
+Here is the permission in this test example. PlainSign pauses the request and shows the address that would get access. It explains why that permission is dangerous. If I choose Reject, it returns the wallet's standard rejection error. The request never reaches the wallet. The Continue button forwards the original request unchanged. The separate demo shows that interception working.
+
+## 3. Signatures matter too
+
+A signature with no gas fee still deserves attention. This Permit2 example grants an unlimited token permission for a long time. A normal sign-in message has a different meaning. PlainSign decodes both and shows the difference. Green means no major warning signs were found under the rules; it is not a guarantee of safety.
+
+## 4. Open rules, visible reasons
+
+The decision comes from open rules. We decode the transaction or signature, add public chain information, and explain the rules that fired. This public version does not use AI to write the explanation. It has no backend account or telemetry. These are inspectable heuristics, and provider interception is best effort.
+
+## 5. Work completed for the event
+
+The September prototype came before this competition, and that history is disclosed. The October work adds public contract data from the main Ethereum network. It keeps warnings about known malicious addresses visible during an RPC outage. It also gives judges a walkthrough they can try without a wallet. The walkthrough uses simulated metadata. Mainnet validation uses public reads, not real asset transactions.
+
+## 6. The business hypothesis
+
+For individuals, the extension and rules stay free and open source. The proposed business is a software package that wallets and apps can add to their products. It would include maintained rules, policy controls, and support. I still need to test demand and pricing. I am not claiming customers or revenue today.
+
+## 7. The next proof
+
+The next test is simple: watch five people use the demo. Can they explain the permission before deciding? Where do warnings confuse them? How long does the decision take? Then I want to find two wallet or app teams for a small integration pilot. Those are planned experiments, not current traction.
+
+## 8. PlainSign
+
+The goal is to help people make a clear decision at the moment it matters. You can try the sample requests without installing a wallet, and inspect the code and rules in the repository. My next milestones are independent security review and observed user tests. PlainSign helps people understand the permission, then decide.

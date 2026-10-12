@@ -1,6 +1,6 @@
 # PlainSign: Crypto World's Fair form copy
 
-Updated October 11, 2026. Team names and college were supplied by the owner. Registration, eligibility, funding and rights confirmations remain pending. Match the actual portal's field limits. Read [submission readiness](SUBMISSION_READINESS.md) before pasting.
+Updated October 12, 2026. The owner authorized the team name choice and supplied his name and college. Registration, eligibility, funding and rights confirmations remain pending. Match the actual portal's field limits. Read [submission readiness](SUBMISSION_READINESS.md) before pasting.
 
 ## Product name and tagline
 
@@ -75,13 +75,14 @@ The owner confirmed solo participation on October 11. Madhav Krishna is not incl
 | Repository | https://github.com/adib-cyber007/plainsign |
 | Sepolia training demo | https://adib-cyber007.github.io/plainsign/ |
 | Sample walkthrough | https://adib-cyber007.github.io/plainsign/review.html |
-| Deck | `docs/slides.pdf` |
+| Deck PDF | https://adib-cyber007.github.io/plainsign/plainsign-pitch.pdf |
+| Editable deck | https://adib-cyber007.github.io/plainsign/plainsign-pitch.pptx |
 | Product graphic | `public/icon/128.png` |
 | Extension download | https://github.com/adib-cyber007/plainsign/releases/tag/v0.2.0 |
-| Presentation video (2:49) | https://adib-cyber007.github.io/plainsign/presentation.html |
-| Product demo video (2:29) | https://adib-cyber007.github.io/plainsign/product-demo.html |
+| Presentation video (2:45) | https://adib-cyber007.github.io/plainsign/presentation.html |
+| Product demo video (1:59) | https://adib-cyber007.github.io/plainsign/product-demo.html |
 
-Verify the deployed watch pages before entering them in the portal. Direct MP4 fallbacks are `/plainsign/videos/presentation.mp4` and `/plainsign/videos/product-demo.mp4` on the same host. Portal host/embedding acceptance remains unconfirmed.
+The replacement videos use a disclosed local AI clone of Mohamed’s voice, with his permission, and English captions. His original recordings remain private. Verify the deployed watch pages before entering them in the portal. Direct MP4 fallbacks are `/plainsign/videos/presentation.mp4` and `/plainsign/videos/product-demo.mp4` on the same host. Portal host/embedding acceptance remains unconfirmed.
 
 ## Judge Q&A
 

@@ -126,10 +126,12 @@ def chunks(text, limit=220):
 
 def synthesize(text, destination):
     pieces = []
-    for chunk in chunks(text):
-        with torch.inference_mode():
-            audio = model.generate(chunk, audio_prompt_path=str(reference))
-        pieces.extend([audio.detach().cpu().numpy().reshape(-1), np.zeros(round(model.sr * 0.16), dtype=np.float32)])
+    for sentence in re.split(r"(?<=[.!?])\s+", text):
+        for chunk in chunks(sentence):
+            spoken = chunk.replace("PlainSign", "Plain Sign").replace("CatDrop", "Cat Drop").replace("Permit2", "Permit Two")
+            with torch.inference_mode():
+                audio = model.generate(spoken, audio_prompt_path=str(reference))
+            pieces.extend([audio.detach().cpu().numpy().reshape(-1), np.zeros(round(model.sr * 0.38), dtype=np.float32)])
     result = np.concatenate(pieces)
     sf.write(destination, result, model.sr)
     return len(result) / model.sr

@@ -3,32 +3,32 @@
     {
       "title": "The Free Mint problem",
       "targetSeconds": 19,
-      "text": "A website says, Free Mint. But the request underneath can give someone permission to move every NFT in a collection. I'm Mohamed Adib, a student at Sri Venkateswara College of Engineering. This is PlainSign: a way to understand that permission before approving it."
+      "text": "The website says, Free Mint. But the request underneath can give someone permission to move every NFT in a collection. I'm Mohamed Adib, a student at Sri Venkateswara College of Engineering. This is PlainSign: a way to understand that permission before approving it."
     },
     {
       "title": "Before the wallet opens",
       "targetSeconds": 23,
-      "text": "Here is the permission in our controlled example. PlainSign pauses the request, explains who would receive access, and shows why it is dangerous. If I choose Reject, it returns the wallet's standard rejection error. The request never reaches the wallet. Continue sends the original request unchanged. The separate demo shows that interception working."
+      "text": "Here is the permission in this test example. PlainSign pauses the request and shows the address that would get access. It explains why that permission is dangerous. If I choose Reject, it returns the wallet's standard rejection error. The request never reaches the wallet. The Continue button forwards the original request unchanged. The separate demo shows that interception working."
     },
     {
       "title": "Signatures matter too",
       "targetSeconds": 19,
-      "text": "A gasless signature deserves the same attention. This Permit2 example grants an unlimited token permission for a long time. A normal sign-in message has a different meaning. PlainSign decodes both and shows the difference. Green means no major warning signs were found under the rules; it is not a guarantee of safety."
+      "text": "A signature with no gas fee still deserves attention. This Permit2 example grants an unlimited token permission for a long time. A normal sign-in message has a different meaning. PlainSign decodes both and shows the difference. Green means no major warning signs were found under the rules; it is not a guarantee of safety."
     },
     {
       "title": "Open rules, visible reasons",
       "targetSeconds": 19,
-      "text": "The decision comes from open rules. We decode the transaction or signature, add public chain information, and explain the rules that fired. The public build does not use AI to write the explanation. It has no backend account or telemetry. These are inspectable heuristics, and provider interception is best effort."
+      "text": "The decision comes from open rules. We decode the transaction or signature, add public chain information, and explain the rules that fired. This public version does not use AI to write the explanation. It has no backend account or telemetry. These are inspectable heuristics, and provider interception is best effort."
     },
     {
       "title": "Work completed for the event",
       "targetSeconds": 21,
-      "text": "The September prototype came before this competition, and that history is disclosed. The October work adds Ethereum mainnet metadata, keeps known-drainer warnings visible during an RPC outage, and gives judges a walkthrough they can try without a wallet. The walkthrough uses simulated metadata. Mainnet validation uses public reads, not real asset transactions."
+      "text": "The September prototype came before this competition, and that history is disclosed. The October work adds public contract data from the main Ethereum network. It keeps warnings about known malicious addresses visible during an RPC outage. It also gives judges a walkthrough they can try without a wallet. The walkthrough uses simulated metadata. Mainnet validation uses public reads, not real asset transactions."
     },
     {
       "title": "The business hypothesis",
       "targetSeconds": 20,
-      "text": "For individuals, the extension and rules stay free and open source. The business hypothesis is an integration package for wallets and apps: maintained rules, policy controls, and help adding the analysis to their product. I still need to validate demand and pricing. I am not claiming customers or revenue today."
+      "text": "For individuals, the extension and rules stay free and open source. The proposed business is a software package that wallets and apps can add to their products. It would include maintained rules, policy controls, and support. I still need to test demand and pricing. I am not claiming customers or revenue today."
     },
     {
       "title": "The next proof",
@@ -38,7 +38,7 @@
     {
       "title": "PlainSign",
       "targetSeconds": 17,
-      "text": "The goal is a clearer decision at the moment it matters. You can try the sample requests without installing a wallet, and inspect the code and rules in the repository. My next milestones are independent security review and observed user tests. PlainSign helps people understand the permission, then decide."
+      "text": "The goal is to help people make a clear decision at the moment it matters. You can try the sample requests without installing a wallet, and inspect the code and rules in the repository. My next milestones are independent security review and observed user tests. PlainSign helps people understand the permission, then decide."
     }
   ],
   "demo": [
@@ -58,19 +58,19 @@
       "title": "Free Mint",
       "scene": "free-mint",
       "targetSeconds": 22,
-      "text": "Free Mint actually requests permission to move every NFT in this collection. PlainSign shows Danger and names the address receiving that access. The reasons explain the full-collection permission and why giving it to a personal wallet is risky. This is the permission the button's label hides."
+      "text": "Free Mint actually requests permission to move every NFT in this collection. PlainSign marks the request as dangerous. It shows the address that would get access. The reasons explain why permission over the whole collection is risky. This is the permission the button's label hides."
     },
     {
       "title": "Reject",
       "scene": "reject",
       "targetSeconds": 14,
-      "text": "I choose Reject. The page reports error 4001. The test wallet receives no signing or transaction request for this action. That lets me stop before forwarding the permission."
+      "text": "I choose Reject. The page reports error four zero zero one. The test wallet receives no signing or transaction request for this action. That lets me stop before forwarding the permission."
     },
     {
       "title": "Permit2",
       "scene": "verify",
       "targetSeconds": 19,
-      "text": "Now, Sign to verify wallet. This is a Permit2 signature with an unlimited amount and a long expiry. PlainSign flags the permission and shows Danger. Signing is gasless, but it can still authorize asset movement later. I reject it."
+      "text": "Now, Sign to verify wallet. This is a Permit2 signature with an unlimited amount and a long expiry. PlainSign flags the permission and shows Danger. There is no gas fee for signing, but the signature can still allow assets to move later. I reject it."
     },
     {
       "title": "Sign in",
@@ -82,7 +82,7 @@
       "title": "Wrap ETH",
       "scene": "wrap",
       "targetSeconds": 17,
-      "text": "The known WETH deposit explains the exchange of ETH for wrapped ETH. This controlled example also receives Safe. I reject the request here, so no transaction is sent. Optional simulation supports Sepolia only."
+      "text": "The wrapped Ether deposit explains the exchange of Ether for wrapped Ether. This controlled example also receives Safe. I reject the request here, so no transaction is sent. Optional simulation supports Sepolia only."
     },
     {
       "title": "Try it yourself",

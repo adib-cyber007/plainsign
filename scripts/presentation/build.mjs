@@ -14,7 +14,7 @@ const skill =
   process.env.PLAINSIGN_PRESENTATION_SKILL ??
   path.join(
     os.homedir(),
-    ".codex/plugins/cache/openai-primary-runtime/presentations/26.1009.11318/skills/presentations",
+    ".codex/plugins/cache/openai-primary-runtime/presentations/26.1011.11113/skills/presentations",
   );
 const { Presentation, PresentationFile } = await import(
   pathToFileURL(
@@ -571,12 +571,10 @@ text(
 note(s, 7);
 foot(s, 8, true);
 
-const candidate = path.join(build, "candidate.pptx");
+const revision = process.env.PLAINSIGN_PITCH_REVISION ?? String(Date.now());
+const candidate = path.join(build, `candidate-${revision}.pptx`);
 await (await PresentationFile.exportPptx(p)).save(candidate);
-const final = path.join(
-  out,
-  `plainsign-pitch-${process.env.PLAINSIGN_PITCH_REVISION ?? "v2"}.pptx`,
-);
+const final = path.join(out, `plainsign-pitch-${revision}.pptx`);
 await finalizePresentation({
   workspaceDir: root,
   candidatePath: candidate,
@@ -601,7 +599,7 @@ await finalizePresentation({
   requiredNativeChartOwnerSlides: [],
   fontPolicy: { basis: "design", families: ["Segoe UI"] },
   verifyArtifactToolImport: true,
-  receiptPath: path.join(build, "validation.json"),
+  receiptPath: path.join(build, `validation-${revision}.json`),
 });
 for (let i = 0; i < p.slides.items.length; i++) {
   const blob = await p.export({

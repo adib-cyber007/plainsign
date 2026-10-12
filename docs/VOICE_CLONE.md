@@ -27,11 +27,12 @@ Listen to the preview for resemblance, accent, skipped words and natural pacing.
 
 ```powershell
 & output/voice-clone/venv/Scripts/python.exe scripts/presentation/clone_voice.py --generate
+& output/voice-clone/venv/Scripts/python.exe scripts/presentation/captions.py
 node scripts/presentation/compose.mjs --cloned
 node scripts/presentation/compose.mjs --cloned --demo
 ```
 
-Generated speech lives in ignored `output/cloned-audio/`. New videos go to `output/cloned-videos/`. The compositor preserves vocal pitch and speaking speed, checks durations, and includes an AI voice-clone disclosure on both videos. Review the actual speech, captions and disclosures before replacing public media. The public videos are still the earlier synthetic versions until replacement is complete.
+Generated speech lives in ignored `output/cloned-audio/`. New videos go to `output/cloned-videos/`. The compositor preserves vocal pitch and speaking speed, checks durations, and includes an AI voice-clone disclosure on both videos. Review the actual speech, captions and disclosures before replacing public media. The replacement videos use this workflow; the original microphone recordings and model files are excluded from public assets.
 
 The model's [official source and examples](https://github.com/resemble-ai/chatterbox) document local installation and reference-audio conditioning. The [model card](https://huggingface.co/ResembleAI/chatterbox-nano) identifies the MIT license and built-in watermarking. The setup retains upstream licensing in the isolated installation; include appropriate attribution when redistributing those components.
 
@@ -41,4 +42,6 @@ The pinned model files passed hash verification. Local CUDA generation and refer
 
 Mohamed subsequently saved two real samples. The second was selected using local recording-level checks, sentence timing and a more complete recognition of the provided script. A clean 15-second section beginning at 11 seconds was retained as the reference. Both originals remain intact. The selected reference produced a 10.92-second cloned preview; local recognition recovered its intended message. Reports and timestamps are in the ignored `output/voice-clone/take-review/` directory. Automated recognition does not establish perceptual voice resemblance or natural delivery.
 
-The optional local transcription check used [OpenAI Whisper](https://github.com/openai/whisper), an MIT-licensed tool, with its `base.en` checkpoint verified against the official download hash. It ran locally; the recordings were not uploaded. Mohamed's listening review, completed narration, captions and replacement public videos remain pending.
+The optional local transcription check used [OpenAI Whisper](https://github.com/openai/whisper), an MIT-licensed tool, with its `base.en` checkpoint verified against the official download hash. It ran locally; the recordings were not uploaded. Mohamed approved the short preview. All sixteen narration sections were then generated with sentence pauses. Local recognition checked the final audio, and caption reports bind each timing file to the selected audio hash. The replacement presentation is 164.718 seconds; the demo is 118.600 seconds. Recognition is an automated wording/timing check, not a claim of human listening review of every sentence.
+
+For the optional caption check, install `openai-whisper==20250625` in the same isolated environment. Run `captions.py --prepare` once to download the official `base.en` checkpoint; subsequent transcription is local. The current encoded videos preserve speaking speed and vocal pitch, include visible AI-clone disclosures, and ship matching WebVTT captions and readable transcripts.

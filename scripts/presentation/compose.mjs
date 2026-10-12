@@ -1,6 +1,7 @@
 // Assemble real recordings or labelled cloned narration into local review videos.
 /* global window, document */
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { createServer } from "node:http";
 import { readFile, writeFile, mkdir, mkdtemp } from "node:fs/promises";
 import path from "node:path";
@@ -84,6 +85,21 @@ for (let i = 0; i < keys.length; i++) {
   )
     throw new Error("Invalid selected take filename");
   const audio = path.join(build, `${keys[i]}.wav`);
+  let captions = [];
+  if (cloned) {
+    const report = JSON.parse(
+      await readFile(
+        path.join(audioDir, "captions", `${keys[i]}.json`),
+        "utf8",
+      ),
+    );
+    const hash = createHash("sha256")
+      .update(await readFile(path.join(audioDir, filename)))
+      .digest("hex");
+    if (report.sourceFilename !== filename || report.sourceSha256 !== hash)
+      throw new Error(`Refresh captions for ${keys[i]} before composition.`);
+    captions = report.cues;
+  }
   // Mild cleanup and volume balancing only. Keep timing and vocal pitch.
   run("ffmpeg", [
     "-y",
@@ -109,7 +125,9 @@ for (let i = 0; i < keys.length; i++) {
     throw new Error(`Check ${keys[i]}: invalid or unusually short/long audio`);
   segments.push({
     ...narration[i],
+    key: keys[i],
     audio,
+    captions,
     speechDuration,
     duration: speechDuration + 0.4,
   });
@@ -132,8 +150,10 @@ if (kind === "presentation") {
   const disclosure = cloned
     ? await writeDisclosure("Narration: AI clone of Mohamed Adib's voice", 9)
     : null;
+  let elapsed = 0;
   for (let i = 0; i < segments.length; i++) {
     const row = segments[i];
+    row.start = elapsed;
     run("ffmpeg", [
       "-y",
       "-loglevel",
@@ -170,6 +190,8 @@ if (kind === "presentation") {
       "160k",
       path.join(build, `part-${i + 1}.mp4`),
     ]);
+    row.duration = probe(path.join(build, `part-${i + 1}.mp4`));
+    elapsed += row.duration;
   }
   await writeFile(
     path.join(build, "concat.txt"),
@@ -207,6 +229,11 @@ if (kind === "presentation") {
   });
   run(npm, ["--prefix", "demo-dapp", "run", "build"], {
     shell: process.platform === "win32",
+    env: {
+      ...process.env,
+      VITE_DEMO_CHAIN: "11155111",
+      VITE_SEPOLIA_RPC: "https://ethereum-sepolia-rpc.publicnode.com",
+    },
   });
   const siteRoot = path.join(root, "demo-dapp/dist");
   const server = createServer(async (req, res) => {
@@ -235,7 +262,8 @@ if (kind === "presentation") {
       res.writeHead(404).end();
     }
   });
-  await new Promise((resolve) => server.listen(5173, "127.0.0.1", resolve));
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const baseUrl = `http://127.0.0.1:${server.address().port}/plainsign/`;
   let context, video, rawPath;
   try {
     const profile = await mkdtemp(path.join(build, "browser-")),
@@ -256,7 +284,7 @@ if (kind === "presentation") {
     const page = await context.newPage();
     video = page.video();
     const started = Date.now();
-    await page.goto("http://127.0.0.1:5173/plainsign/?walletChainId=0xaa36a7");
+    await page.goto(`${baseUrl}?walletChainId=0xaa36a7`);
     await page.waitForFunction(() => Boolean(window.__plainsign?.wrapped));
     const reject = () =>
       page.evaluate(() =>
@@ -275,6 +303,7 @@ if (kind === "presentation") {
         expected,
       );
     for (const row of segments) {
+      console.log(`Recording ${row.key}: ${row.scene}`);
       if (row.scene === "connect")
         await page.locator("#connect-wallet").click();
       if (row.scene === "free-mint") {
@@ -306,7 +335,7 @@ if (kind === "presentation") {
       }
       if (row.scene === "review") {
         await reject();
-        await page.goto("http://127.0.0.1:5173/plainsign/review.html");
+        await page.goto(`${baseUrl}review.html`);
         await page.locator(".preview-notice").waitFor();
       }
       row.start = (Date.now() - started) / 1000;
@@ -382,6 +411,46 @@ if (kind === "presentation") {
 const duration = probe(final);
 if (duration > 180 || (kind === "presentation" && duration < 120))
   throw new Error(`Final duration is outside requirements: ${duration}s`);
+function vttTime(seconds) {
+  const ms = Math.round(seconds * 1000);
+  return `${String(Math.floor(ms / 3600000)).padStart(2, "0")}:${String(Math.floor(ms / 60000) % 60).padStart(2, "0")}:${String(Math.floor(ms / 1000) % 60).padStart(2, "0")}.${String(ms % 1000).padStart(3, "0")}`;
+}
+const cues = segments.flatMap((row) =>
+  row.captions.map((cue) => ({
+    ...cue,
+    start: row.start + cue.start,
+    end: row.start + cue.end,
+  })),
+);
+for (let i = 0; i < cues.length; i++) {
+  const cue = cues[i];
+  if (
+    cue.start < 0 ||
+    cue.end <= cue.start ||
+    cue.end > duration + 0.05 ||
+    (i && cue.start < cues[i - 1].end - 0.01)
+  )
+    throw new Error("Caption timing needs review before publication.");
+}
+if (cues.length) {
+  await writeFile(
+    final.replace(/\.mp4$/, ".vtt"),
+    "WEBVTT\n\n" +
+      cues
+        .map(
+          (cue) =>
+            `${vttTime(cue.start)} --> ${vttTime(cue.end)}\n${cue.text}\n`,
+        )
+        .join("\n"),
+  );
+}
+await writeFile(
+  final.replace(/\.mp4$/, "-transcript.txt"),
+  `${kind === "demo" ? "PlainSign product demo" : "PlainSign presentation"}\nNarration: ${cloned ? "AI-generated clone of Mohamed Adib's voice, used with his permission" : "Human recording"}.\n\n` +
+    segments
+      .map((row) => `${vttTime(row.start)} — ${row.title}\n${row.text}\n`)
+      .join("\n"),
+);
 await writeFile(
   final + ".json",
   JSON.stringify(
@@ -391,7 +460,18 @@ await writeFile(
       voiceType: cloned ? "AI-generated voice clone" : "Human recording",
       selectedTakes: keys.map((key) => selected[key]),
       script: narration,
-      subtitles: "Pending review against actual speech",
+      timeline: segments.map((row) => ({
+        key: row.key,
+        title: row.title,
+        scene: row.scene,
+        start: row.start,
+        duration: row.duration,
+        speechDuration: row.speechDuration,
+        text: row.text,
+      })),
+      subtitles: cues.length
+        ? "Script-aligned WebVTT with local word timings"
+        : "Pending review against actual speech",
       published: false,
     },
     null,

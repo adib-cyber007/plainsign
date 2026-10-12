@@ -25,7 +25,7 @@
     "videos:record": "node scripts/record-submission.mjs",
     "docs:rules": "node scripts/generate-rules-doc.js",
     "qr": "node scripts/generate-qr.js",
-    "slides": "npm run qr && marp docs/slides.md --pdf --allow-local-files --output docs/slides.pdf",
+    "slides": "node scripts/presentation/build.mjs",
     "verify:all": "npm run lint && npm run typecheck && npm test && npm run build && npm run test:e2e",
     "env:sync": "node scripts/env-sync.js",
     "chain": "node scripts/run-workspace-script.js contracts chain",

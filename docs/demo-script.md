@@ -2,7 +2,7 @@
 
 Optional real-MetaMask rehearsal / replacement-recording script. Target runtime: **2:00**. Record at 1080p in the dedicated PlainSign Chrome profile. Use a throwaway MetaMask account on Sepolia. Close personal tabs and notifications before recording.
 
-The prepared submission already has separate captioned videos: a 2:49 presentation and 2:29 product demo, with synthetic narration and disclosed automated test-wallet/simulated metadata. Their actual narration is in [video-narration.json](video-narration.json). [Release 0.2.0](https://github.com/adib-cyber007/plainsign/releases/tag/v0.2.0) is public. This shot list is for the remaining real-MetaMask rehearsal or a replacement video; it is not evidence that such a rehearsal happened.
+The prepared submission already has separate captioned videos: a 2:45 presentation and 1:59 product demo, with a disclosed local AI clone of Mohamed’s voice and disclosed automated test-wallet/simulated metadata. Their actual narration is in [human-narration.json](human-narration.json). [Release 0.2.0](https://github.com/adib-cyber007/plainsign/releases/tag/v0.2.0) is public. This shot list is for the remaining real-MetaMask rehearsal or a replacement video; it is not evidence that such a rehearsal happened.
 
 ## Before recording
 

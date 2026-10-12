@@ -2,7 +2,7 @@
 
 **Latest choice:** Mohamed requested a free voice clone. Use [the single-sample workflow](VOICE_CLONE.md) for that. The steps below remain available for a fully human narration.
 
-The redesigned pitch has eight slides and a conversational script in its speaker notes. Its focus is the hidden permission behind “Free Mint,” followed by the working product, disclosed event work and proposed business model. The editable deck and a PDF review copy are in `output/pitch-v2/`.
+The redesigned pitch has eight slides and a conversational script in its speaker notes. Its focus is the hidden permission behind “Free Mint,” followed by the working product, disclosed event work and proposed business model. The editable deck is [plainsign-pitch.pptx](plainsign-pitch.pptx), with [slides.pdf](slides.pdf) as the review copy.
 
 ## Record short takes
 
@@ -36,6 +36,6 @@ The compositor balances volume and applies a mild filter to low-frequency noise.
 ## Current status
 
 - Eight redesigned slides and speaker notes are ready locally. Each slide has been rendered and visually inspected. The PowerPoint is editable; the PDF uses the inspected slide renders.
-- The latest choice is a free local voice clone. Two reference takes have been saved; the second was selected after local recording-level, transcription and pacing checks. Its 11–26-second section produced a short cloned preview. Mohamed's listening review and the full narration remain pending. Cloned narration must be described as AI-generated speech.
-- The currently published videos still contain the earlier synthetic voice. Do not describe them as human narrated.
+- The latest choice is a free local voice clone. Two reference takes have been saved; the second was selected after local recording-level, transcription and pacing checks. Its 11–26-second section produced a short cloned preview. Mohamed approved the short clone preview. All sixteen narration sections and both replacement videos are now generated. Cloned narration must be described as AI-generated speech.
+- The replacement videos are 2:45 and 1:59. They use a disclosed AI voice clone, not live human narration. Original recordings and model files remain private.
 - Participant registration and the remaining eligibility/rights declarations still need Mohamed's confirmation before submission.
