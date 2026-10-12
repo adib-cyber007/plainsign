@@ -7,11 +7,11 @@ Open the [wallet-free walkthrough](https://adib-cyber007.github.io/plainsign/rev
 3. Compare **Wrap ETH** with **Imitation WETH**. They share the same function selector, but only the registered WETH destination gets the wrap explanation. The imitation receives Caution.
 4. Choose **Inspect this sample request** to read the input, or **Technical** for decoded details. Follow **Read the risk rules** to inspect the decision logic.
 
-All six examples and request inspection are live in version 0.2.1. The accepted submission keeps the same product URL; its recorded demo predates these final decoder fixes.
+All six examples and request inspection are live in version 0.2.1. The [updated 2:41 demo](https://adib-cyber007.github.io/plainsign/product-demo.html) shows the final decoder fixes, including the imitation-WETH comparison and 32-byte signing warning. The accepted submission keeps the same product URL.
 
 ## See real interception
 
-The [submitted product demo](https://youtu.be/4_deIAYTzSo) shows the actual extension with an automated test wallet and simulated metadata. Reject returns 4001; Continue forwards the original request unchanged. No assets move in that recording. The [submitted pitch](https://youtu.be/FY_4VIk0aSY) explains the product and business hypothesis.
+The updated demo shows the actual extension with an automated test wallet and simulated metadata. Reject returns 4001; Continue forwards the original request unchanged. No assets move in the recording. The [original submitted demo](https://youtu.be/4_deIAYTzSo) remains available because the portal's main video fields are locked. The [submitted pitch](https://youtu.be/FY_4VIk0aSY) explains the product and business hypothesis.
 
 For an interactive extension check, install the [published release](https://github.com/adib-cyber007/plainsign/releases/latest), refresh the [Sepolia training demo](https://adib-cyber007.github.io/plainsign/), and connect an empty test wallet. Use Sepolia and reject risky examples. See the [README setup](../README.md#try-it-in-5-minutes). Chrome with MetaMask is the primary path; automated test-provider coverage does not establish a real-MetaMask rehearsal.
 

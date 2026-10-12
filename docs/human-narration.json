@@ -89,6 +89,24 @@
       "scene": "review",
       "targetSeconds": 16,
       "text": "Judges can compare these requests in the sample walkthrough without a wallet or extension. It uses the same decoder and rules, with simulated metadata clearly labelled. The repository includes the development history and the work added during this event."
+    },
+    {
+      "title": "New in 0.2.1: imitation WETH",
+      "scene": "compare-weth",
+      "targetSeconds": 22,
+      "text": "Here is the new comparison. A registered wrapped Ether destination gets the wrap explanation. The same call sent to an imitation contract gets Caution. Inspect this sample request shows the exact input. The destination matters as much as the function name."
+    },
+    {
+      "title": "New in 0.2.1: possible hash signing",
+      "scene": "raw-hash",
+      "targetSeconds": 13,
+      "text": "Now the real extension checks a thirty two byte message. It shows Danger even though the bytes can be read as text. A short payload like this may be a hash. PlainSign warns instead of calling it a normal sign in."
+    },
+    {
+      "title": "Reject and inspect the update",
+      "scene": "finish-update",
+      "targetSeconds": 9,
+      "text": "I reject this request. The test wallet receives nothing. Judges can try the six examples and inspect the open rules. The latest release is version zero point two point one."
     }
   ]
 }

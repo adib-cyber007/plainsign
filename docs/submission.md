@@ -83,7 +83,7 @@ The owner confirmed solo participation and completed registration and declaratio
 | Submitted product demo (1:59) | https://youtu.be/4_deIAYTzSo |
 | Supplementary presentation (2:45) | https://adib-cyber007.github.io/plainsign/presentation.html |
 
-The videos use a disclosed local AI clone of Mohamed’s voice, with his permission, and English captions. His original recordings remain private. The two YouTube URLs above were saved in the accepted submission. The longer Pages presentation is supplementary. Direct MP4 fallbacks are `/plainsign/videos/presentation.mp4` and `/plainsign/videos/product-demo.mp4` on the same host.
+The videos use a disclosed local AI clone of Mohamed’s voice, with his permission, and English captions. His original recordings remain private. The two YouTube URLs above were saved in the accepted submission and their main form fields are locked. The [refreshed 0.2.1 demo (2:41)](https://adib-cyber007.github.io/plainsign/product-demo.html) and longer Pages presentation are supplementary. Direct MP4 fallbacks are `/plainsign/videos/presentation.mp4` and `/plainsign/videos/product-demo.mp4` on the same host.
 
 ## Judge Q&A
 

@@ -304,6 +304,7 @@ if (kind === "presentation") {
       );
     for (const row of segments) {
       console.log(`Recording ${row.key}: ${row.scene}`);
+      row.start = (Date.now() - started) / 1000;
       if (row.scene === "connect")
         await page.locator("#connect-wallet").click();
       if (row.scene === "free-mint") {
@@ -338,8 +339,49 @@ if (kind === "presentation") {
         await page.goto(`${baseUrl}review.html`);
         await page.locator(".preview-notice").waitFor();
       }
-      row.start = (Date.now() - started) / 1000;
-      await page.waitForTimeout(row.duration * 1000);
+      if (row.scene === "compare-weth") {
+        await page.getByLabel("Network", { exact: true }).selectOption("11155111");
+        await page.getByRole("button", { name: "Wrap ETH" }).click();
+        if (await page.locator(".ps-verdict h1").innerText() !== "Safe")
+          throw new Error("Registered WETH sample did not receive Safe");
+        await page.waitForTimeout(row.duration * 260);
+        await page.getByRole("button", { name: "Imitation WETH" }).click();
+        if (await page.locator(".ps-verdict h1").innerText() !== "Caution")
+          throw new Error("Imitation WETH sample did not receive Caution");
+        await page.locator(".ps-verdict").evaluate((element) => {
+          window.scrollTo(0, element.getBoundingClientRect().top + window.scrollY - 80);
+        });
+        await page.waitForTimeout(row.duration * 290);
+        await page.getByText("Inspect this sample request", { exact: true }).click();
+        const input = JSON.parse(await page.getByLabel("Sample request JSON").innerText());
+        if (input.params[0].data !== "0xd0e30db0")
+          throw new Error("Imitation sample request selector changed");
+        await page.getByLabel("Sample request JSON").scrollIntoViewIfNeeded();
+      }
+      if (row.scene === "raw-hash") {
+        await page.goto(`${baseUrl}?walletChainId=0xaa36a7`);
+        await page.waitForFunction(() => Boolean(window.__plainsign?.wrapped));
+        await page.evaluate(() => {
+          window.__updatedDemoHashOutcome = undefined;
+          void window.ethereum.request({
+            method: "personal_sign",
+            params: ["0x" + "61".repeat(32), "0x1111111111111111111111111111111111111111"],
+          }).catch((error) => { window.__updatedDemoHashOutcome = error.code; });
+        });
+        await verdict("Danger");
+      }
+      if (row.scene === "finish-update") {
+        await reject();
+        await page.waitForFunction(() => window.__updatedDemoHashOutcome === 4001);
+        if ((await page.evaluate(() => window.__walletCalls.length)) !== 0)
+          throw new Error("Rejected hash-signing request reached the wallet");
+        await page.goto(`${baseUrl}review.html`);
+        await page.getByRole("button", { name: "Imitation WETH" }).click();
+        await page.getByText("Inspect this sample request", { exact: true }).click();
+        await page.getByLabel("Sample request JSON").scrollIntoViewIfNeeded();
+      }
+      const remaining = row.duration - ((Date.now() - started) / 1000 - row.start);
+      if (remaining > 0) await page.waitForTimeout(remaining * 1000);
     }
   } finally {
     if (context) await context.close();
@@ -352,7 +394,7 @@ if (kind === "presentation") {
       `Demo is ${duration}s including actions. Shorten a take before publishing.`,
     );
   const label =
-    "Controlled test · automated wallet · simulated metadata · no assets moved" +
+    "PlainSign 0.2.1 · controlled test · automated wallet · simulated metadata · no assets moved" +
     (cloned ? " · AI voice clone" : "");
   const disclosure = await writeDisclosure(label);
   const inputs = segments.flatMap((row) => ["-i", row.audio]);

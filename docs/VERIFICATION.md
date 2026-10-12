@@ -1,5 +1,12 @@
 # Submission verification
 
+## October 12 refreshed 0.2.1 demo
+
+- Recorded eleven scenes in 160.92 seconds, below the three-minute demo limit. The new scenes compare registered and imitation WETH, inspect request JSON, and show the actual extension marking a UTF-8-decodable 32-byte signing request Danger. Capture assertions passed, including rejection with error 4001 and zero wallet forwarding.
+- H.264/AAC 1920x1080, 13,805,296 bytes, 39 English caption cues and a matching transcript. New encoded frames were visually reviewed. Local production playback, middle seeking, loaded captions, no page errors and no horizontal overflow passed at 1280px and 390px. Audio mean was -19.2 dBFS and peak -1.4 dBFS. Automated speech checks do not establish a complete human listening review.
+- The video visibly labels the automated test wallet, simulated metadata, no asset movement and consented AI voice clone. Private recordings, model files and provenance JSON remain excluded from public assets. Production packaging restored the extension with test flags and optional API keys disabled.
+- An authenticated Colosseum check confirmed entry 17231 remains entered for judging, with the original pitch/demo URLs locked. Only the live-product link, access instructions and additional judge notes can change before the displayed deadline. Refreshed media is supplementary; it does not replace the locked original video.
+
 ## October 12 final product refinement — published 0.2.1
 
 - Fixed the root TypeScript scope: archived/generated media source under `output/` no longer introduces duplicate window declarations or missing Hardhat imports.

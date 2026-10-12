@@ -14,6 +14,7 @@ os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--prepare", action="store_true", help="Download the public Whisper base.en checkpoint only")
+parser.add_argument("--keys", nargs="+", help="Check only these narration keys, preserving other caption reports")
 args = parser.parse_args()
 
 import torch  # noqa: E402
@@ -31,6 +32,9 @@ model = whisper.load_model(str(checkpoint), device="cuda" if torch.cuda.is_avail
 audio_dir = ROOT / "output/cloned-audio"
 selected = json.loads((audio_dir / "selected-takes.json").read_text())
 narration = json.loads((ROOT / "docs/human-narration.json").read_text())
+available = {f"{kind}-{index:02}" for kind, rows in narration.items() for index, _ in enumerate(rows, 1)}
+if args.keys and not set(args.keys).issubset(available):
+    raise SystemExit("Unknown narration key in --keys")
 destination = audio_dir / "captions"
 destination.mkdir(exist_ok=True)
 
@@ -81,6 +85,8 @@ summary = []
 for kind, rows in narration.items():
     for index, row in enumerate(rows, 1):
         key = f"{kind}-{index:02}"
+        if args.keys and key not in args.keys:
+            continue
         take = selected[key]
         filename = take["filename"]
         if Path(filename).name != filename or not filename.startswith(key + "-"):
@@ -95,5 +101,5 @@ for kind, rows in narration.items():
         (destination / f"{key}.json").write_text(json.dumps(report, indent=2))
         summary.append({"key": key, "wordMatchRatio": round(ratio, 3), "recognizedText": result["text"]})
         print(f"Checked {key}: word match {ratio:.2f}", flush=True)
-(destination / "summary.json").write_text(json.dumps(summary, indent=2))
+(destination / ("summary-selected.json" if args.keys else "summary.json")).write_text(json.dumps(summary, indent=2))
 print(f"Speech checks and caption cues: {destination}", flush=True)

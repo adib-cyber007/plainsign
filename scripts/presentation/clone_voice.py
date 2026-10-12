@@ -25,10 +25,13 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--prepare", action="store_true", help="Download/load model only, without a voice sample")
 parser.add_argument("--engine-check", action="store_true", help="Create a labelled engine test using the model's stock voice")
 parser.add_argument("--generate", action="store_true", help="Generate all narration; default is a short preview")
+parser.add_argument("--keys", nargs="+", help="Generate only these narration keys, preserving other selected takes")
 parser.add_argument("--sample", type=Path, help="An explicit recording of Mohamed, instead of the saved studio sample")
 parser.add_argument("--start", type=float, help="Start of a clean 15-second reference section; defaults to the selected take's reference")
 parser.add_argument("--cpu", action="store_true", help="Use CPU instead of the NVIDIA GPU")
 args = parser.parse_args()
+if args.keys and not args.generate:
+    parser.error("--keys requires --generate")
 
 sample = args.sample
 if not (args.prepare or args.engine_check):
@@ -154,9 +157,14 @@ else:
     output.mkdir(parents=True, exist_ok=True)
     manifest = output / "selected-takes.json"
     selected = json.loads(manifest.read_text()) if manifest.exists() else {}
+    available = {f"{kind}-{index:02}" for kind, rows in narration.items() for index, _ in enumerate(rows, 1)}
+    if args.keys and not set(args.keys).issubset(available):
+        raise SystemExit("Unknown narration key in --keys")
     for kind, rows in narration.items():
         for index, row in enumerate(rows, 1):
             key = f"{kind}-{index:02}"
+            if args.keys and key not in args.keys:
+                continue
             filename = f"{key}-cloned-{time.time_ns()}.wav"
             duration = synthesize(row["text"], output / filename)
             selected[key] = {"filename": filename, "duration": duration, **provenance}

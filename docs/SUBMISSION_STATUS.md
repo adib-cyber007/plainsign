@@ -2,7 +2,7 @@
 
 Updated October 12, 2026.
 
-**Submitted: Colosseum project 17231, entered for judging.** The saved organizer receipt shows October 12 at 6:22 AM PDT, equivalent to **6:52 PM IST**. This document records the saved receipt; it is not a fresh authenticated portal check.
+**Submitted: Colosseum project 17231, entered for judging.** The organizer receipt shows October 12 at 6:22 AM PDT, equivalent to **6:52 PM IST**. An authenticated portal check on October 12 confirmed this status and that the main video fields are locked.
 
 | Submitted field | Saved value |
 | --- | --- |
@@ -21,6 +21,6 @@ Registration and the eligibility, rights and funding declarations are complete a
 
 `npm run submission:package` prepares a versioned local bundle at `output/submission-0.2.1/`; `npm run submission:audit` checks its integrity. The final handover includes the exact downloaded public extension, its verified checksum and a separate publication report. Rebuilding produces a new local package; that command alone does not publish it. The original receipt and submitted package remain in ignored `output/submission-2026-10-12/`; personal declarations, screenshots and raw portal exports are excluded from public packaging.
 
-The saved portal receipt says team, project details, videos, profiles and survey are locked. Before the deadline, only the live-product link, access instructions and additional judge notes remain editable. Any newly published product improvements should be described accurately in those allowed fields. Do not attempt a second entry or rewrite the accepted submission.
+The portal confirms team, project details, videos, profiles and survey are locked. Before the deadline, only the live-product link, access instructions and additional judge notes remain editable. The [refreshed 0.2.1 demo](https://adib-cyber007.github.io/plainsign/product-demo.html) is supplementary to the original locked video. It runs 160.92 seconds and adds the registered/imitation WETH comparison, inspectable input and an actual-extension 32-byte signing warning. Do not attempt a second entry or rewrite the accepted submission.
 
 The [official cutoff](https://colosseum.com/legal/Crypto%20World%27s%20Fair%20Hackathon%20Rules.pdf) is October 13, 2026 at **12:29 PM IST** (October 12 at 11:59 PM Pacific). The recorded demo uses an automated test wallet and simulated metadata; a real-MetaMask rehearsal remains unverified. Independent security review and observed user tests remain next steps.
