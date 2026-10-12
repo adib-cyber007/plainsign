@@ -1,6 +1,6 @@
 # Publishing the two submission videos
 
-Updated October 12, 2026. The accepted submission uses the [1:45 YouTube pitch](https://youtu.be/FY_4VIk0aSY) and [1:59 YouTube demo](https://youtu.be/4_deIAYTzSo). The saved portal review retains both links. Pages watch pages and the longer 2:45 presentation are supplementary. Narration uses a disclosed local AI clone of Mohamed’s voice, with his permission.
+Updated October 12, 2026. The accepted submission uses the [1:45 YouTube pitch](https://youtu.be/FY_4VIk0aSY) and [original 1:59 YouTube demo](https://youtu.be/4_deIAYTzSo). The authenticated portal review retains both links and locks the main video fields. The [refreshed 0.2.1 demo (2:41)](https://adib-cyber007.github.io/plainsign/product-demo.html) shows the imitation-WETH comparison, request JSON and 32-byte signing warning. Add its link only through permitted access instructions and judge notes. YouTube [does not replace video bytes at an existing URL](https://support.google.com/youtube/answer/55770?hl=en-uk); preserve the original upload. The longer 2:45 presentation remains supplementary. Narration uses a disclosed local AI clone of Mohamed’s voice, with his permission.
 
 ## Colosseum requirements and uncertainty
 
@@ -54,7 +54,7 @@ After deployment, open both watch pages and both MP4s while signed out; confirm 
 
 ## Recording source and local reproduction
 
-The replacement clips use `docs/human-narration.json`, the eight-slide PowerPoint builder and the real extension with `tests/e2e/mock-wallet.js`. See [VOICE_CLONE.md](VOICE_CLONE.md) for the pinned local model setup, reference selection and caption preparation.
+The clips use `docs/human-narration.json`, the eight-slide PowerPoint builder and the real extension with `tests/e2e/mock-wallet.js`. The refreshed demo has eleven narration sections; `--keys demo-09 demo-10 demo-11` on voice generation and caption checking updates only those sections while preserving selected earlier takes. See [VOICE_CLONE.md](VOICE_CLONE.md) for the pinned local model setup, reference selection and caption preparation.
 
 ```powershell
 & output/voice-clone/venv/Scripts/python.exe scripts/presentation/clone_voice.py --generate

@@ -4,7 +4,7 @@
 
 [Try without a wallet](https://adib-cyber007.github.io/plainsign/review.html) · [90-second judge guide](docs/JUDGE_GUIDE.md) · [Download latest release](https://github.com/adib-cyber007/plainsign/releases/latest)
 
-[Submitted pitch (1:45)](https://youtu.be/FY_4VIk0aSY) · [Product demo (1:59)](https://youtu.be/4_deIAYTzSo) · [Pitch deck](https://adib-cyber007.github.io/plainsign/plainsign-pitch.pdf) · [Sepolia training demo](https://adib-cyber007.github.io/plainsign/)
+[Submitted pitch (1:45)](https://youtu.be/FY_4VIk0aSY) · [Updated 0.2.1 demo (2:41)](https://adib-cyber007.github.io/plainsign/product-demo.html) · [Pitch deck](https://adib-cyber007.github.io/plainsign/plainsign-pitch.pdf) · [Sepolia training demo](https://adib-cyber007.github.io/plainsign/)
 
 ## The 60-second pitch
 
