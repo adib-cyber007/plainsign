@@ -1,6 +1,6 @@
 # PlainSign: Crypto World's Fair form copy
 
-Updated October 12, 2026. The owner authorized the team name choice and supplied his name and college. Registration, eligibility, funding and rights confirmations remain pending. Match the actual portal's field limits. Read [submission readiness](SUBMISSION_READINESS.md) before pasting.
+Updated October 12, 2026. **The project is already submitted and entered for judging.** See [current status](SUBMISSION_STATUS.md) for the saved receipt and exact portal video links. Registration and declarations are owner-confirmed complete. This is reference/form copy; most accepted form fields are locked.
 
 ## Product name and tagline
 
@@ -20,7 +20,7 @@ PlainSign pauses supported EIP-1193 requests, decodes transaction calldata and E
 
 Ethereum mainnet and Sepolia use network-specific RPC, Blockscout and protocol configuration. A known-drainer match survives an RPC outage; incomplete address checks impose Caution. Optional simulation remains Sepolia-only. The extension has no backend, accounts or telemetry. Optional AI rewording never decides risk and is disabled in the prepared public build.
 
-A new sample walkthrough lets judges compare five requests using the same decoder, rules and explanations without installing anything. Its chain metadata is explicitly simulated. The extension's CatDrop demo exercises real interception with a test wallet on Sepolia.
+A sample walkthrough lets judges compare requests using the same decoder, rules and explanations without installing anything. Its chain metadata is explicitly simulated. The local 0.2.1 candidate adds a sixth, imitation-WETH example. The extension's CatDrop demo exercises interception with a test wallet on Sepolia.
 
 The project is an inspectable warning layer. Heuristics and best-effort injected-provider interception cannot guarantee that a site or request is safe. The original prototype and its existing features predate this competition; the development disclosure identifies the new work separately.
 
@@ -38,7 +38,7 @@ Select the Ethereum L1 track if offered in the portal. Mainnet evidence is read-
 
 ## Third-party code and rights disclosure
 
-PlainSign's own repository is MIT-licensed. It uses third-party open-source libraries, including React, viem, wagmi, TanStack Query, WXT and OpenZeppelin Contracts; their licenses and ownership remain with their respective authors. See [THIRD_PARTY.md](THIRD_PARTY.md) for versions, upstream references, and external services. Ethereum, Permit2, Seaport, WETH, MetaMask and Colosseum references describe interoperability or the competition and do not imply endorsement. Participant ownership, permissions for submitted likenesses, employer obligations and funding history still require owner confirmation.
+PlainSign's own repository is MIT-licensed. It uses third-party open-source libraries, including React, viem, wagmi, TanStack Query, WXT and OpenZeppelin Contracts; their licenses and ownership remain with their respective authors. See [THIRD_PARTY.md](THIRD_PARTY.md) for versions, upstream references, and external services. Ethereum, Permit2, Seaport, WETH, MetaMask and Colosseum references describe interoperability or the competition and do not imply endorsement. Participant rights, permissions, employer obligations and funding declarations are owner-confirmed complete.
 
 ## What changed during the event
 
@@ -66,7 +66,7 @@ Team: **PlainSign** (selected with the owner's authorization).
 
 - **Mohamed Adib** — solo participant, student at **Sri Venkateswara College of Engineering**.
 
-The owner confirmed solo participation on October 11. Madhav Krishna is not included in this entry. Earlier experience, personal motivation, funding history, accelerator availability and registration remain unconfirmed. Do not invent these or infer university-award eligibility from the college name alone.
+The owner confirmed solo participation and completed registration and declarations. Madhav Krishna helped polish the project and is disclosed as a contributor, not an entrant. No significant outside funding was declared; no official university sponsorship is claimed. Earlier experience and personal motivation must not be invented. The saved submission has the accelerator application off.
 
 ## Links and assets
 
@@ -79,10 +79,11 @@ The owner confirmed solo participation on October 11. Madhav Krishna is not incl
 | Editable deck | https://adib-cyber007.github.io/plainsign/plainsign-pitch.pptx |
 | Product graphic | `public/icon/128.png` |
 | Extension download | https://github.com/adib-cyber007/plainsign/releases/tag/v0.2.0 |
-| Presentation video (2:45) | https://adib-cyber007.github.io/plainsign/presentation.html |
-| Product demo video (1:59) | https://adib-cyber007.github.io/plainsign/product-demo.html |
+| Submitted pitch (1:45) | https://youtu.be/FY_4VIk0aSY |
+| Submitted product demo (1:59) | https://youtu.be/4_deIAYTzSo |
+| Supplementary presentation (2:45) | https://adib-cyber007.github.io/plainsign/presentation.html |
 
-The replacement videos use a disclosed local AI clone of Mohamed’s voice, with his permission, and English captions. His original recordings remain private. Verify the deployed watch pages before entering them in the portal. Direct MP4 fallbacks are `/plainsign/videos/presentation.mp4` and `/plainsign/videos/product-demo.mp4` on the same host. Portal host/embedding acceptance remains unconfirmed.
+The videos use a disclosed local AI clone of Mohamed’s voice, with his permission, and English captions. His original recordings remain private. The two YouTube URLs above were saved in the accepted submission. The longer Pages presentation is supplementary. Direct MP4 fallbacks are `/plainsign/videos/presentation.mp4` and `/plainsign/videos/product-demo.mp4` on the same host.
 
 ## Judge Q&A
 

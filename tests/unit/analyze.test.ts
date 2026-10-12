@@ -128,9 +128,7 @@ describe("analyze", () => {
       debug: vi.fn(),
     });
     expect(result.risk.verdict).toBe("caution");
-    expect(result.risk.reasons.map((reason) => reason.id)).toEqual([
-      "analysis_failed",
-    ]);
+    expect(result.risk.reasons.map((reason) => reason.id)).toContain("analysis_failed");
     expect(result.explanation.summary).toBe(DEGRADED_EXPLANATION);
     expect(result.degraded).toContain("decoder exploded");
   });
@@ -142,7 +140,41 @@ describe("analyze", () => {
       debug: vi.fn(),
     });
     expect(result.risk.verdict).toBe("caution");
-    expect(result.risk.reasons[0].id).toBe("analysis_failed");
+    expect(result.risk.reasons.map((reason) => reason.id)).toContain("analysis_failed");
     expect(result.degraded).toContain("timed out");
+  });
+
+  it.each(["timeout", "error"])("preserves Danger when explanation rewording ends in %s", async (failure) => {
+    const result = await analyze(request, {
+      decode: async () => intent,
+      enrich: async () => ({}),
+      simulate: async () => ({ ok: false, provider: "none", changes: [] }),
+      evaluate: () => ({ score: 100, verdict: "danger", reasons: [{
+        id: "known_drainer", severity: "critical", weight: 0,
+        title: "Known drainer", detail: "Independent address evidence.",
+      }] }),
+      reword: async () => {
+        if (failure === "error") throw new Error("Rewording unavailable.");
+        return new Promise(() => undefined);
+      },
+      budgetMs: 10,
+      debug: vi.fn(),
+    });
+    expect(result.risk.verdict).toBe("danger");
+    expect(result.risk.score).toBe(100);
+    expect(result.risk.reasons.map((reason) => reason.id)).toEqual(expect.arrayContaining([
+      "known_drainer", "analysis_failed",
+    ]));
+  });
+
+  it("keeps a raw-signing Danger warning when enrichment stalls", async () => {
+    const result = await analyze({ ...request, request: { method: "eth_sign", params: [] } }, {
+      enrich: async () => new Promise(() => undefined),
+      simulate: async () => ({ ok: false, provider: "none", changes: [] }),
+      budgetMs: 10,
+      debug: vi.fn(),
+    });
+    expect(result.risk.verdict).toBe("danger");
+    expect(result.risk.reasons.map((reason) => reason.id)).toContain("eth_sign");
   });
 });

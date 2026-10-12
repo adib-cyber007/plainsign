@@ -2,6 +2,21 @@
 
 All notable changes to PlainSign are documented here.
 
+## 0.2.1 - 2026-10-12
+
+### Fixed
+
+- WETH wrap/unwrap explanations require the registered contract address for the active chain; lookalike calls and short unknown calldata receive Caution.
+- All 32-byte personal-sign hex payloads receive Danger, including hashes that happen to decode as UTF-8.
+- Analysis failures retain established Danger warnings and locally detectable raw-signing risks.
+- TypeScript excludes generated and archived output, allowing verification after media preparation.
+- Release automation includes upstream runtime license notices.
+
+### Added
+
+- An imitation-WETH comparison and inspectable request JSON in the wallet-free walkthrough, plus direct demo/deck navigation.
+- Regression checks for contract identity, hash signing, and warnings surviving failed explanation stages.
+
 ## 0.2.0 - 2026-10-10
 
 ### Added

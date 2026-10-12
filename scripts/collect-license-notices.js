@@ -35,4 +35,4 @@ async function collect(workspace, recursive, direct) {
 }
 
 if (process.argv[2] !== "site") await collect(".", ["react", "react-dom", "viem"], ["wxt", "@wxt-dev/module-react"]);
-await collect("demo-dapp", ["react", "react-dom", "viem", "@wagmi/core", "@tanstack/react-query"], ["wagmi", "@wagmi/connectors"]);
+if (process.argv[2] !== "extension") await collect("demo-dapp", ["react", "react-dom", "viem", "@wagmi/core", "@tanstack/react-query"], ["wagmi", "@wagmi/connectors"]);

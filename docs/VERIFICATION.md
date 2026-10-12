@@ -1,5 +1,18 @@
 # Submission verification
 
+## October 12 final product refinement — 0.2.1 candidate
+
+- Fixed the root TypeScript scope: archived/generated media source under `output/` no longer introduces duplicate window declarations or missing Hardhat imports.
+- Require the active chain's registered WETH address before explaining deposit/withdraw as a wrap. Unknown destinations, other-network WETH and short unknown calldata receive Caution.
+- All 32-byte personal-sign hex payloads receive Danger, even when the bytes decode as UTF-8. Failed or timed-out explanation stages preserve established risk evidence; raw signing remains Danger when enrichment stalls.
+- **205 unit tests across 30 files and 4 Hardhat contract tests passed. All 51 browser E2E tests passed**, including actual extension interception of imitation WETH and NUL-filled hashes, rejection before forwarding, unchanged Continue parameters, wallet discovery, strict CSP and the six-request walkthrough. Local runtime: Node 24.20.0 on Windows; CI targets Node 22. Browser/server execution required an unrestricted run and localhost proxy bypass in this environment.
+- The production walkthrough passed all six verdicts at 320, 390, 768 and 1280px, with inspectable JSON, error 4001 after Reject, no wallet connected, no page errors and no horizontal overflow. Desktop/mobile screenshots were visually reviewed. Demo, presentation and deck resource links returned HTTP 200.
+- Production extension/site builds and the sensitive-value scan passed. The versioned bundle audit passed: 11 extension files, 23 site files, runtime notices, both videos/captions/transcripts, decks matching source bytes and four SHA-256 checksums. An offline npm lockfile dry run passed. `output/submission-0.2.1/` contains the review bundle, audit and visual evidence.
+- Fresh read-only mainnet verification at `2026-10-12T16:04:20.569Z` passed through dRPC at block 26177467, with WETH bytecode 3124 bytes and verified WETH9 metadata from Blockscout. PublicNode failed and the configured fallback succeeded. No transaction was sent.
+- Published supplementary media was rechecked anonymously on October 12: HTTP 200, 1920×1080 metadata, audio-enabled playback, middle seeking and English caption cues passed for 164.718-second presentation and 118.600-second demo. Neither page overflowed at 390px. This does not establish anonymous YouTube playback or portal access.
+- The saved Colosseum receipt confirms project 17231 submitted at 6:52 PM IST. Submitted video URLs are the 1:45 YouTube pitch and 1:59 demo; the longer Pages presentation is supplementary. Registration/declarations are owner-confirmed complete. Real-MetaMask rehearsal and independent security review remain unverified.
+- **0.2.1 is a local candidate until published.** Historical CI/release evidence below applies to earlier commits and must not be presented as proof that this candidate is deployed.
+
 ## October 12 media revision
 
 - Replaced the eleven-slide pitch with eight native editable slides and current speaker notes. Rendered slides were visually reviewed; package/layout/import checks passed. Updating the notes preserved all eight inspected render hashes. The PDF uses those same renders.

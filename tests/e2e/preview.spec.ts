@@ -14,6 +14,12 @@ test("judges can compare real-rule sample verdicts without a wallet", async ({ p
   await expect(page.locator(".ps-verdict h1")).toHaveText("Safe");
   await page.getByLabel("Network", { exact: true }).selectOption("11155111");
   await expect(page.locator(".ps-verdict h1")).toHaveText("Safe");
+  await page.getByRole("button", { name: "Imitation WETH" }).click();
+  await expect(page.locator(".ps-verdict h1")).toHaveText("Caution");
+  await expect(page.locator(".ps-summary")).toContainText("cannot identify");
+  await page.getByText("Inspect this sample request", { exact: true }).click();
+  await expect(page.getByLabel("Sample request JSON")).toContainText("0xd0e30db0");
+  await expect(page.getByRole("link", { name: "Read the risk rules" })).toBeVisible();
   await page.getByRole("button", { name: "Unknown request" }).click();
   await expect(page.locator(".ps-verdict h1")).toHaveText("Caution");
   expect(await page.evaluate(() => Boolean(window.ethereum))).toBe(false);

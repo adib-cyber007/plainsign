@@ -1,4 +1,4 @@
-import { spawnSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { cp, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import path from "node:path";
@@ -11,7 +11,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const npmCli = process.env.npm_execpath;
 if (!npmCli)
   throw new Error("Run this script using npm run submission:package.");
-const target = path.join(root, "output", "submission");
+// Versioned packages preserve earlier publication reports and portal receipts.
+const target = path.join(root, "output", `submission-${packageJson.version}`);
 await mkdir(target, { recursive: true });
 await mkdir(path.join(target, "docs"), { recursive: true });
 // Prevent developer keys, private RPC tokens and test flags entering public assets.
@@ -116,6 +117,8 @@ await cp(
 );
 for (const file of [
   "SUBMISSION_READINESS.md",
+  "SUBMISSION_STATUS.md",
+  "JUDGE_GUIDE.md",
   "submission.md",
   "demo-script.md",
   "pitch-script.md",
@@ -176,12 +179,19 @@ for (const file of [
   hashes.push(`${createHash("sha256").update(bytes).digest("hex")}  ${file}`);
 }
 await writeFile(path.join(target, "SHA256SUMS.txt"), `${hashes.join("\n")}\n`);
+await writeFile(path.join(target, "BUILD_INFO.json"), `${JSON.stringify({
+  version: packageJson.version,
+  builtAt: new Date().toISOString(),
+  sourceCommit: execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim(),
+  localChanges: Boolean(execFileSync("git", ["status", "--porcelain"], { cwd: root, encoding: "utf8" }).trim()),
+  publication: "Local candidate; see docs/SUBMISSION_STATUS.md for the submitted/public versions.",
+}, null, 2)}\n`);
 await writeFile(
   path.join(target, "START_HERE.md"),
-  `# PlainSign submission package\n\n1. Read [the checklist](docs/SUBMISSION_READINESS.md).\n2. Extract ${zipName} and load its folder in Chrome using Load unpacked.\n3. Review [the eight-slide pitch](plainsign-pitch.pdf), [editable PowerPoint](plainsign-pitch.pptx), and [form copy](docs/submission.md).\n4. plainsign-site.zip contains the site, presentation.html, product-demo.html, deck downloads and both captioned MP4s for deployment under /plainsign/.\n5. The entrant is Mohamed Adib alone, a student at Sri Venkateswara College of Engineering. Confirm registration and eligibility, verify portal URL requirements, and submit before the deadline.\n\nThe extension build contains no optional API keys or E2E mock flags. The site sample walkthrough and recorded demo deliberately use labelled simulated metadata. Both videos use a local AI clone of Mohamed's voice with his permission; his original recordings and model files are excluded. SHA256SUMS.txt records the artifact hashes. No portal submission receipt has been obtained.\n`,
+  `# PlainSign ${packageJson.version} review package\n\nPlainSign is already entered for judging as Colosseum project 17231. The saved receipt records October 12, 2026 at 6:52 PM IST. This folder is a local product update; it does not establish publication of this version.\n\n1. Read [the current status](docs/SUBMISSION_STATUS.md) and [judge walkthrough](docs/JUDGE_GUIDE.md).\n2. Extract ${zipName} and load its folder in Chrome using Load unpacked.\n3. Review [the eight-slide pitch](plainsign-pitch.pdf), [editable PowerPoint](plainsign-pitch.pptx), and [form copy](docs/submission.md).\n4. plainsign-site.zip contains the site, six-request sample walkthrough, deck downloads and supplementary captioned MP4s for deployment under /plainsign/.\n5. Submitted videos: https://youtu.be/FY_4VIk0aSY (1:45 pitch) and https://youtu.be/4_deIAYTzSo (1:59 demo). Main form fields are locked; keep the accepted submission intact.\n\nThe extension build disables optional API keys and E2E flags. The sample walkthrough and recorded demo use labelled simulated metadata. Both videos use a local AI clone of Mohamed's voice with his permission; original recordings and model files are excluded. SHA256SUMS.txt records the artifact hashes. Run npm run submission:audit to validate this bundle.\n`,
 );
 console.info(
-  `Submission files prepared in ${target}. Registration, personal declarations, public-link verification and portal submission must still be checked.`,
+  `Review package prepared in ${target}. Run npm run submission:audit. Publication of this candidate is separate from the accepted portal submission.`,
 );
 
 async function auditDirectory(directory) {

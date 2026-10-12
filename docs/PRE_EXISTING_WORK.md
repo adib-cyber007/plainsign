@@ -1,6 +1,6 @@
 # PlainSign development disclosure
 
-Prepared October 10, 2026. Paste this disclosure into the submission's development-history field and link this document.
+Prepared October 10; updated October 12, 2026. The earlier-work disclosure was included in the accepted submission. See [current status](SUBMISSION_STATUS.md).
 
 PlainSign began on September 9, 2026 for a different hackathon that the owner reports was not submitted. The complete prototype predates Crypto World's Fair. The last pre-event commit is `71ac38c751b0c5df70e975708f68fb75e422e864`, dated September 12, 2026. Do not describe the entire project as built during this competition.
 
@@ -31,6 +31,7 @@ Git commits and the final diff are the source of truth for what was committed. T
 
 - Redesigned the presentation as eight editable slides with synchronized speaker notes, a PDF review copy and deck downloads on the watch page.
 - Replaced the stock synthetic narration with a user-approved local AI clone of Mohamed's recorded voice. Added sentence pauses, local wording/caption checks, updated transcripts and a fresh controlled product-demo capture. Original recordings and model files remain private.
-- Updated media packaging and reproduction tools. This is submission preparation, not a new wallet-security capability. Registration, eligibility/rights declarations, a real-MetaMask rehearsal and a portal submission receipt remain outstanding. See the dated publication report for current deployment checks.
+- Updated media packaging and reproduction tools. These media changes are submission preparation, not a new wallet-security capability. The saved October 12 receipt confirms submission; registration and declarations are owner-confirmed complete. A real-MetaMask rehearsal remains unverified.
+- Final 0.2.1 candidate: require the chain's known WETH destination before giving wrap/unwrap explanations, treat UTF-8-decodable 32-byte hashes conservatively, preserve risk evidence after an analysis-stage failure, and exclude archived output from TypeScript. Added an imitation-WETH sample, request inspection, regression tests, an artifact audit and corrected submission handover. These are later October 12 changes; they are local until published and were not in the recorded demo.
 
 The [official FAQ](https://colosseum.com/hackathon#faq) permits earlier code with disclosure and judges work completed during the event. New commits must use actual timestamps. Never backdate or rewrite earlier commits to imply in-window work.
