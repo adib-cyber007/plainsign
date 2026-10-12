@@ -1,15 +1,26 @@
-This is PlainSign's actual extension running with an automated test wallet and simulated chain metadata. The narration is synthetic. No real assets move. The examples are security training requests on a test network.
+PlainSign product demo
+Narration: AI-generated clone of Mohamed Adib's voice, used with his permission.
 
-CatDrop clearly identifies its fictional offer and risky examples. Connecting the test wallet enables the requests. Each action reaches the extension before it can reach the wallet provider. This recording uses a disposable test account.
+00:00:00.117 — Controlled demo
+This is PlainSign running in a controlled test. The extension is real; the wallet is automated and the chain metadata is simulated. No real assets move. CatDrop is a security-training page with deliberately risky examples.
 
-Free Mint requests full collection approval. PlainSign shows Danger and explains that the receiving address would gain permission to move every NFT in this collection. The reasons expose the risky permission. This is the production decoder and rule interface, using simulated test metadata.
+00:00:15.238 — Connect
+I connect the disposable test account. The notice makes clear that this is a fictional offer. Each supported request passes through PlainSign before it can reach the wallet.
 
-Choosing Reject returns wallet error four thousand and one. CatDrop displays the rejection. The test wallet receives no signing or transaction request for this action. The user can stop here without forwarding the dangerous permission.
+00:00:26.259 — Free Mint
+Free Mint actually requests permission to move every NFT in this collection. PlainSign marks the request as dangerous. It shows the address that would get access. The reasons explain why permission over the whole collection is risky. This is the permission the button's label hides.
 
-Sign to verify wallet creates a Permit Two typed data request. PlainSign identifies a long lived, unlimited token permission and shows Danger. A gasless signature can authorize later asset movement. Reject prevents the signature request from reaching the test wallet.
+00:00:43.986 — Reject
+I choose Reject. The page reports error four zero zero one. The test wallet receives no signing or transaction request for this action. That lets me stop before forwarding the permission.
 
-A normal sign in message gets a different explanation and a Safe verdict under the rules. The decoded message is a login rather than an asset permission. Safe means no major warning signs were found, and does not guarantee that a website is trustworthy.
+00:00:57.115 — Permit2
+Now, Sign to verify wallet. This is a Permit2 signature with an unlimited amount and a long expiry. PlainSign flags the permission and shows Danger. There is no gas fee for signing, but the signature can still allow assets to move later. I reject it.
 
-A known wrapped Ether deposit also receives Safe in this controlled example. The card explains the exchange of Ether for wrapped Ether. The recording rejects the request so no transaction is sent. Mainnet integration is read only here, while optional simulation is Sepolia only.
+00:01:14.898 — Sign in
+The sign-in example gets a different explanation. The decoded message is a login rather than an asset permission. It receives Safe under these rules. That verdict does not tell us that the website itself is trustworthy.
 
-The separate sample walkthrough lets judges compare requests without installing a wallet. It uses the same decoder and rules, with clearly simulated metadata. The September prototype is disclosed separately from the October mainnet integration and outage protection. Source code is available in the PlainSign repository.
+00:01:28.872 — Wrap ETH
+The wrapped Ether deposit explains the exchange of Ether for wrapped Ether. This controlled example also receives Safe. I reject the request here, so no transaction is sent. Optional simulation supports Sepolia only.
+
+00:01:43.552 — Try it yourself
+Judges can compare these requests in the sample walkthrough without a wallet or extension. It uses the same decoder and rules, with simulated metadata clearly labelled. The repository includes the development history and the work added during this event.

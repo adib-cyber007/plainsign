@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>PlainSign | Your voice</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="/">PlainSign</a><span>Your voice, one short take at a time</span>
+    </header>
+    <main>
+      <aside>
+        <label for="kind">Recording</label
+        ><select id="kind">
+          <option value="clone">Voice clone sample</option>
+          <option value="presentation">Presentation</option>
+          <option value="demo">Product demo</option>
+        </select>
+        <p id="progress">Loading script…</p>
+        <nav id="segments" aria-label="Takes"></nav>
+        <p class="help" id="recording-help">
+          Find a quiet room. Keep the microphone a hand’s width away. Read once,
+          then speak as if explaining the project to a friend.
+        </p>
+      </aside>
+      <section>
+        <div class="eyebrow" id="position"></div>
+        <h1 id="title">Your narration</h1>
+        <div class="workspace">
+          <div>
+            <p id="script"></p>
+            <p id="target" class="help"></p>
+          </div>
+          <figure>
+            <img id="slide" alt="Presentation slide" />
+            <figcaption>
+              Read the script, then focus on the meaning. Small pauses are
+              welcome.
+            </figcaption>
+          </figure>
+        </div>
+        <div class="controls">
+          <button id="record" class="primary">Record this take</button
+          ><button id="stop" disabled>Stop</button
+          ><strong id="timer" aria-live="off">0:00</strong
+          ><span id="mic">Microphone off</span>
+        </div>
+        <audio id="playback" controls></audio>
+        <div class="controls">
+          <button id="save" disabled>Save this take</button
+          ><button id="next">Next take</button
+          ><a id="backup" hidden>Download a copy</a>
+        </div>
+        <p id="status" role="status">
+          The microphone starts only when you choose Record. Listen before
+          saving.
+        </p>
+        <footer>
+          Recordings stay on this computer. Nothing uploads to an external
+          service. Your saved takes remain available after a refresh.
+        </footer>
+      </section>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

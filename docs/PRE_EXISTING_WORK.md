@@ -27,4 +27,10 @@ Git commits and the final diff are the source of truth for what was committed. T
 - A review against the current official rules and FAQ, third-party code/services disclosure, and submission-package updates. Participant eligibility, permissions, funding, registration and published videos remain unconfirmed.
 - Full upstream notices for core runtime dependencies, a confirmed solo-participant slide, and captioned presentation/product-demo videos with synthetic narration. Demo footage uses the actual extension with an automated test wallet and explicitly simulated metadata; it is not a real-MetaMask rehearsal.
 
+## Work prepared October 12, 2026
+
+- Redesigned the presentation as eight editable slides with synchronized speaker notes, a PDF review copy and deck downloads on the watch page.
+- Replaced the stock synthetic narration with a user-approved local AI clone of Mohamed's recorded voice. Added sentence pauses, local wording/caption checks, updated transcripts and a fresh controlled product-demo capture. Original recordings and model files remain private.
+- Updated media packaging and reproduction tools. This is submission preparation, not a new wallet-security capability. Registration, eligibility/rights declarations, a real-MetaMask rehearsal and a portal submission receipt remain outstanding. See the dated publication report for current deployment checks.
+
 The [official FAQ](https://colosseum.com/hackathon#faq) permits earlier code with disclosure and judges work completed during the event. New commits must use actual timestamps. Never backdate or rewrite earlier commits to imply in-window work.

@@ -4,7 +4,7 @@
 
 [Live Sepolia demo](https://adib-cyber007.github.io/plainsign/) · [Download latest release](https://github.com/adib-cyber007/plainsign/releases/latest) · [Architecture](docs/architecture.md)
 
-[Presentation (2:49)](https://adib-cyber007.github.io/plainsign/presentation.html) · [Product demo (2:29)](https://adib-cyber007.github.io/plainsign/product-demo.html) · [Wallet-free samples](https://adib-cyber007.github.io/plainsign/review.html)
+[Presentation (2:45)](https://adib-cyber007.github.io/plainsign/presentation.html) · [Product demo (1:59)](https://adib-cyber007.github.io/plainsign/product-demo.html) · [Wallet-free samples](https://adib-cyber007.github.io/plainsign/review.html)
 
 ## The 60-second pitch
 

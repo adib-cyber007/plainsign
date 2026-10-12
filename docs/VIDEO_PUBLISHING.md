@@ -1,6 +1,6 @@
 # Publishing the two submission videos
 
-Reviewed October 11, 2026. This is a publishing recommendation based on official documentation; no video was uploaded and no portal acceptance was established by this research.
+Updated October 12, 2026. Both watch pages were initially published October 11. Replacement media uses the redesigned eight-slide pitch and a local AI clone of Mohamed’s voice, with his permission. Portal URL acceptance remains unconfirmed.
 
 ## Colosseum requirements and uncertainty
 
@@ -32,7 +32,7 @@ Aim for each clip below 25 MiB while keeping UI text readable; that target is a 
 
 The existing [Pages workflow](../.github/workflows/pages.yml) deploys `demo-dapp/dist` on `master`; [Vite configuration](../demo-dapp/vite.config.ts) uses `/plainsign/`. Files must reach that deployed output, not merely exist in `output/submission`.
 
-Recommended proposed layout (these are **planned paths, not verified live URLs**):
+Stable deployment layout (see the final package’s publication report for the latest deployment verification):
 
 - `https://adib-cyber007.github.io/plainsign/presentation.html`: title, runtime, disclosure, embedded presentation player, direct MP4 fallback and transcript.
 - `https://adib-cyber007.github.io/plainsign/product-demo.html`: the same structure for the product demo.
@@ -44,7 +44,7 @@ A watch page offers the judge context and visible disclosures. A direct MP4 iden
 
 Neither reviewed public source explicitly mandates a label named “synthetic narration” or forbids automated test-wallet footage. Nevertheless, disclose both prominently in the video and watch page to prevent a misleading impression:
 
-> Synthetic narration. Product footage uses an automated test wallet on [actual network]. This demonstrates PlainSign's request interception and warnings; it is not a real-MetaMask rehearsal or a mainnet transaction.
+> Narration: AI clone of Mohamed Adib’s voice, used with permission. Product footage uses an automated test wallet, Sepolia request configuration and simulated chain metadata. No real assets move. This is a controlled test, not a real-MetaMask rehearsal or a mainnet transaction.
 
 Use only the network actually recorded. If showing the wallet-free walkthrough instead, say it uses simulated chain metadata and no wallet connection. Do not describe automated local tests as live Sepolia/mainnet wallet behavior. Identify representative wallet illustrations as illustrations. These are prudent transparency recommendations, not quoted additional rules or assurance that administrators will accept the recording. Owner review and a real-MetaMask rehearsal remain valuable validation.
 
@@ -54,14 +54,16 @@ After deployment, open both watch pages and both MP4s while signed out; confirm 
 
 ## Recording source and local reproduction
 
-The committed clips use `docs/video-narration.json`, `docs/slides.md` and the real extension with the test provider in `tests/e2e/mock-wallet.js`. On Windows with Microsoft Zira Desktop, FFmpeg/ffprobe and Playwright Chromium installed:
+The replacement clips use `docs/human-narration.json`, the eight-slide PowerPoint builder and the real extension with `tests/e2e/mock-wallet.js`. See [VOICE_CLONE.md](VOICE_CLONE.md) for the pinned local model setup, reference selection and caption preparation.
 
 ```powershell
-powershell -File scripts/render-narration.ps1
-npx marp docs/slides.md --images png --allow-local-files --output output/video-build/slide.png
-npm --prefix demo-dapp run build
-npm run videos:record
+& output/voice-clone/venv/Scripts/python.exe scripts/presentation/clone_voice.py --generate
+& output/voice-clone/venv/Scripts/python.exe scripts/presentation/captions.py
+node scripts/presentation/compose.mjs --cloned
+node scripts/presentation/compose.mjs --cloned --demo
 npm run submission:package
 ```
 
-The recorder writes the two MP4s, ASS captions and a demo timeline. The committed WebVTT files, posters and readable transcripts accompany this recording; refresh them from that timeline if narration or scenes change. Recording builds the extension with test flags; always run `submission:package` afterwards to restore a public build with test flags and optional API keys disabled. Recheck durations, caption timing and playback after any recording change.
+Review files are written under ignored `output/cloned-videos/`. The compositor keeps the original voice pitch and speed, verifies selected audio hashes for caption timing, and asserts the expected demo verdicts and zero wallet forwarding after Reject. Copy the reviewed MP4s, WebVTT captions, transcripts and new posters together into `demo-dapp/public/videos/`; refresh both watch-page runtimes and disclosures. Do not publish the private provenance JSON, original samples or model cache. The optional caption checker uses local Whisper recognition; it does not prove perceptual voice resemblance.
+
+Always run `submission:package` after recording to restore the production extension with test flags and optional API keys disabled. The `--released-zip PATH` option preserves the exact verified public 0.2.0 extension in a new submission package and rejects an unexpected checksum. The current narration source and deck replace the older Zira/Marp scripts, which remain historical tooling only.

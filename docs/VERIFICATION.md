@@ -1,5 +1,15 @@
 # Submission verification
 
+## October 12 media revision
+
+- Replaced the eleven-slide pitch with eight native editable slides and current speaker notes. Rendered slides were visually reviewed; package/layout/import checks passed. Updating the notes preserved all eight inspected render hashes. The PDF uses those same renders.
+- Mohamed selected a free local voice clone and approved its short preview. The second of his two saved recordings supplied a clean 15-second reference. All sixteen narration sections were generated locally; source recordings and model files remain ignored and excluded from public assets.
+- Local Whisper recognition checked the generated wording and aligned matching English caption cues. Caption reports bind timestamps to each selected audio hash. Automated recognition is not a claim of complete human listening review.
+- Presentation: 164.718 seconds; product demo: 118.600 seconds. Both are H.264/AAC 1920×1080, preserve voice pitch/speed, and visibly disclose AI voice cloning. WebVTT captions and readable transcripts match the revised narration.
+- Fresh demo capture asserted Danger for collection approval and Permit2, Safe for sign-in and WETH, error 4001 after Reject, and zero forwarded wallet requests after rejecting Free Mint. The actual extension ran with an automated test wallet and simulated metadata, visibly labelled; no assets moved.
+- Production extension/site packaging and its sensitive-value audit passed. The package preserves the verified public 0.2.0 extension checksum. ESLint, root TypeScript, demo TypeScript and Python syntax checks passed. Both revised watch pages passed audio-enabled playback, middle/end seeking, loaded captions and no-overflow checks at 1280px and 390px. Encoded audio mean levels were -18.9/-19.1 dBFS, with peaks at -1.4 dBFS. PDF and PPTX files are marked binary to preserve their bytes through Git checkout.
+- Final deployment, playback and CI evidence is recorded in the dated submission package’s publication report. Registration, eligibility/rights declarations, real-MetaMask rehearsal, portal URL acceptance and the submission receipt still require completion.
+
 ## October 11 update
 
 - ESLint and the demo's TypeScript check passed after the training notice changes. The existing seven-request demo E2E passed: Danger, Danger, Danger, Safe, Safe, Danger, Danger.

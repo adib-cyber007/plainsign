@@ -6,15 +6,15 @@ Reviewed October 11, 2026 for the disclosure required by section 9 of the [Crypt
 
 Versions and license identifiers below were checked against the local lockfiles and installed package metadata. The lockfiles are the reproducible version evidence: [extension lockfile](../package-lock.json), [demo lockfile](../demo-dapp/package-lock.json), and [contracts lockfile](../contracts/package-lock.json). Upstream links identify the source projects and their license notices; these libraries remain owned by their respective copyright holders.
 
-| Component | Locked version | Declared license | Use and upstream reference |
-| --- | --- | --- | --- |
-| React and React DOM | 18.3.1 | MIT | Extension/demo UI; [React license](https://github.com/react/react/blob/v18.3.1/LICENSE) |
-| viem | 2.56.3 | MIT | Ethereum encoding, decoding and RPC interaction in all three workspaces; [viem source/license](https://github.com/wevm/viem/blob/main/src/LICENSE) |
-| WXT | 0.19.29 | MIT | Extension build framework; [WXT license](https://github.com/wxt-dev/wxt/blob/main/LICENSE) |
-| `@wxt-dev/module-react` | 1.2.2 | MIT | WXT React integration; [upstream package metadata](https://github.com/wxt-dev/wxt/blob/main/packages/module-react/package.json) |
-| wagmi | 2.19.5 | MIT | Demo wallet connection; [wagmi license](https://github.com/wevm/wagmi/blob/main/LICENSE) |
-| TanStack React Query | 5.102.8 | MIT | Demo query state; [TanStack Query license](https://github.com/TanStack/query/blob/main/LICENSE) |
-| OpenZeppelin Contracts | 5.6.1 | MIT | Demo NFT/token primitives; [versioned license](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v5.6.1/LICENSE) |
+| Component               | Locked version | Declared license | Use and upstream reference                                                                                                                         |
+| ----------------------- | -------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| React and React DOM     | 18.3.1         | MIT              | Extension/demo UI; [React license](https://github.com/react/react/blob/v18.3.1/LICENSE)                                                            |
+| viem                    | 2.56.3         | MIT              | Ethereum encoding, decoding and RPC interaction in all three workspaces; [viem source/license](https://github.com/wevm/viem/blob/main/src/LICENSE) |
+| WXT                     | 0.19.29        | MIT              | Extension build framework; [WXT license](https://github.com/wxt-dev/wxt/blob/main/LICENSE)                                                         |
+| `@wxt-dev/module-react` | 1.2.2          | MIT              | WXT React integration; [upstream package metadata](https://github.com/wxt-dev/wxt/blob/main/packages/module-react/package.json)                    |
+| wagmi                   | 2.19.5         | MIT              | Demo wallet connection; [wagmi license](https://github.com/wevm/wagmi/blob/main/LICENSE)                                                           |
+| TanStack React Query    | 5.102.8        | MIT              | Demo query state; [TanStack Query license](https://github.com/TanStack/query/blob/main/LICENSE)                                                    |
+| OpenZeppelin Contracts  | 5.6.1          | MIT              | Demo NFT/token primitives; [versioned license](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v5.6.1/LICENSE)                         |
 
 The repository's own [MIT license](../LICENSE) does not replace dependency licenses or confer ownership of their code. MIT copyright and permission notices must accompany copies or substantial portions of the covered software. Check the final distributable for applicable upstream notices, including bundled/transitive code, rather than relying on this inventory alone.
 
@@ -33,6 +33,8 @@ Build, test and document tooling also comes from third parties, including TypeSc
 - **GitHub Pages:** Hosts the project demo and remote denylist document. It is third-party hosting, subject to GitHub's service terms; see [Pages documentation](https://docs.github.com/en/pages).
 
 ## Demo data, contracts and media
+
+- The replacement narration workflow uses Resemble AI's [Chatterbox Nano](https://huggingface.co/ResembleAI/chatterbox-nano), an MIT-licensed English voice-cloning model. Mohamed requested cloning his own voice and selected a free local option. The original reference recording and model files remain on this computer; model downloads use the network. Only the approved generated narration is included in the public videos. This produces AI-generated speech, not a live human recording. The replacement videos disclose the AI voice clone. Local caption timing and wording checks use MIT-licensed [OpenAI Whisper](https://github.com/openai/whisper), with its official `base.en` checkpoint. See the [voice-cloning workflow](VOICE_CLONE.md) for pinned source, model provenance and review steps. The cloner is media-production tooling, not a PlainSign product feature.
 
 - The bundled [denylist](denylist.json) currently contains **one PlainSign demo attacker seed**, scoped to local Hardhat and Sepolia. [Denylist code](../src/enrich/denylist.ts) fetches the project's Pages document and falls back to that seed. It is not a licensed commercial threat feed, an independently verified incident database or evidence of broad real-world drainer coverage.
 - [DemoNFT](../contracts/contracts/DemoNFT.sol) imports OpenZeppelin ERC721, Base64 and Strings. The local [WETH9 demo contract](../contracts/contracts/WETH9.sol) implements familiar wrapped-ETH behavior and carries an MIT SPDX header. The inspected source alone does not establish its original author or derivation history. Do not claim WETH9 or the wrapped-ETH concept as PlainSign's invention; the owner must confirm source provenance and any required attribution.
