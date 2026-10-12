@@ -4,10 +4,10 @@ Open the [wallet-free walkthrough](https://adib-cyber007.github.io/plainsign/rev
 
 1. Select **Free Mint**. Read the collection-wide permission, expand **Why?**, then choose **Reject**. The preview explains error 4001 and that the wallet would not receive the request.
 2. Compare **Verify wallet** with **Sign in**. The Permit2 example authorizes later token movement; a readable login message has a different consequence.
-3. Compare **Wrap ETH** with **Imitation WETH** in the 0.2.1 candidate. They share the same function selector, but only the registered WETH destination gets the wrap explanation. The imitation receives Caution.
+3. Compare **Wrap ETH** with **Imitation WETH**. They share the same function selector, but only the registered WETH destination gets the wrap explanation. The imitation receives Caution.
 4. Choose **Inspect this sample request** to read the input, or **Technical** for decoded details. Follow **Read the risk rules** to inspect the decision logic.
 
-The last two additions are part of the local 0.2.1 update until published. The accepted submission originally linked the five-request 0.2.0 walkthrough.
+All six examples and request inspection are live in version 0.2.1. The accepted submission keeps the same product URL; its recorded demo predates these final decoder fixes.
 
 ## See real interception
 

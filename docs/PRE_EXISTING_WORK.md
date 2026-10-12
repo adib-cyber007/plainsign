@@ -24,7 +24,7 @@ Git commits and the final diff are the source of truth for what was committed. T
 ## Work prepared October 11, 2026
 
 - A visible training-demo notice before wallet connection, explicit fictional mint-count labelling, and labelled fictional testimonials.
-- A review against the current official rules and FAQ, third-party code/services disclosure, and submission-package updates. Participant eligibility, permissions, funding, registration and published videos remain unconfirmed.
+- A review against the current official rules and FAQ, third-party code/services disclosure, and submission-package updates. Participant eligibility, permissions, funding, registration and published videos were unconfirmed at that point; the October 12 status supersedes those pending items.
 - Full upstream notices for core runtime dependencies, a confirmed solo-participant slide, and captioned presentation/product-demo videos with synthetic narration. Demo footage uses the actual extension with an automated test wallet and explicitly simulated metadata; it is not a real-MetaMask rehearsal.
 
 ## Work prepared October 12, 2026
@@ -32,6 +32,6 @@ Git commits and the final diff are the source of truth for what was committed. T
 - Redesigned the presentation as eight editable slides with synchronized speaker notes, a PDF review copy and deck downloads on the watch page.
 - Replaced the stock synthetic narration with a user-approved local AI clone of Mohamed's recorded voice. Added sentence pauses, local wording/caption checks, updated transcripts and a fresh controlled product-demo capture. Original recordings and model files remain private.
 - Updated media packaging and reproduction tools. These media changes are submission preparation, not a new wallet-security capability. The saved October 12 receipt confirms submission; registration and declarations are owner-confirmed complete. A real-MetaMask rehearsal remains unverified.
-- Final 0.2.1 candidate: require the chain's known WETH destination before giving wrap/unwrap explanations, treat UTF-8-decodable 32-byte hashes conservatively, preserve risk evidence after an analysis-stage failure, and exclude archived output from TypeScript. Added an imitation-WETH sample, request inspection, regression tests, an artifact audit and corrected submission handover. These are later October 12 changes; they are local until published and were not in the recorded demo.
+- Released 0.2.1: require the chain's known WETH destination before giving wrap/unwrap explanations, treat UTF-8-decodable 32-byte hashes conservatively, preserve risk evidence after an analysis-stage failure, and exclude archived output from TypeScript. Added an imitation-WETH sample, request inspection, regression tests, an artifact audit and corrected submission handover. These later October 12 changes were published after CI passed and are available at the existing product URL. They were not in the recorded demo.
 
 The [official FAQ](https://colosseum.com/hackathon#faq) permits earlier code with disclosure and judges work completed during the event. New commits must use actual timestamps. Never backdate or rewrite earlier commits to imply in-window work.

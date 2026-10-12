@@ -1,6 +1,6 @@
 # Submission verification
 
-## October 12 final product refinement — 0.2.1 candidate
+## October 12 final product refinement — published 0.2.1
 
 - Fixed the root TypeScript scope: archived/generated media source under `output/` no longer introduces duplicate window declarations or missing Hardhat imports.
 - Require the active chain's registered WETH address before explaining deposit/withdraw as a wrap. Unknown destinations, other-network WETH and short unknown calldata receive Caution.
@@ -11,7 +11,11 @@
 - Fresh read-only mainnet verification at `2026-10-12T16:04:20.569Z` passed through dRPC at block 26177467, with WETH bytecode 3124 bytes and verified WETH9 metadata from Blockscout. PublicNode failed and the configured fallback succeeded. No transaction was sent.
 - Published supplementary media was rechecked anonymously on October 12: HTTP 200, 1920×1080 metadata, audio-enabled playback, middle seeking and English caption cues passed for 164.718-second presentation and 118.600-second demo. Neither page overflowed at 390px. This does not establish anonymous YouTube playback or portal access.
 - The saved Colosseum receipt confirms project 17231 submitted at 6:52 PM IST. Submitted video URLs are the 1:45 YouTube pitch and 1:59 demo; the longer Pages presentation is supplementary. Registration/declarations are owner-confirmed complete. Real-MetaMask rehearsal and independent security review remain unverified.
-- **0.2.1 is a local candidate until published.** Historical CI/release evidence below applies to earlier commits and must not be presented as proof that this candidate is deployed.
+- **0.2.1 is published.** [PR #4 CI](https://github.com/adib-cyber007/plainsign/actions/runs/38275273635) passed on Node 22 for `0da6b88b59860655d82050285340908a53bc99db` before the approved merge. The release at `de7d2075d222e6818984fe083c92cacf5a39de60` passed the [release job](https://github.com/adib-cyber007/plainsign/actions/runs/38275962413) and [Pages deployment](https://github.com/adib-cyber007/plainsign/actions/runs/38275891135).
+- The [public 0.2.1 ZIP](https://github.com/adib-cyber007/plainsign/releases/download/v0.2.1/plainsign-0.2.1.zip) downloaded anonymously: 232801 bytes, SHA-256 `27ccb94fbf39c2f3a3e4ecb49f141f1df6c6d224b17bd3176cb7b12784a4f663`, matching GitHub's asset digest. The final handover preserves these exact bytes; its static-site ZIP remains a local production build.
+- Anonymous public-walkthrough verification at `2026-10-12T16:16:08.485Z` passed all six verdicts at 320/390/768/1280px, JSON inspection, Sepolia WETH comparison, rejection with 4001, no wallet, no page errors and no overflow. Demo/watch/deck/caption/notices/denylist URLs returned HTTP 200. Public screenshots were visually reviewed. Publication reports and screenshots are in `output/submission-0.2.1/`.
+
+Earlier entries below are historical snapshots. The current submission and publication status above supersedes their pending items.
 
 ## October 12 media revision
 

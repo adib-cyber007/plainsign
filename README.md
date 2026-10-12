@@ -20,7 +20,7 @@ There is no backend, paid service, account, or telemetry. Ethereum mainnet and S
 
 The [rules review](docs/HACKATHON_RULES_REVIEW.md) records the project checks and owner-confirmed declarations. [Third-party code and services](docs/THIRD_PARTY.md) are disclosed separately. CatDrop is a security-training demo with fictional promotional content, deliberately risky example requests, and test-network assets only.
 
-The **sample walkthrough** at `review.html` lets judges explore requests with the shipped decoder and rules, without a wallet or extension. The 0.2.1 candidate adds a sixth example: a contract imitating WETH's wrap function receives Caution. Sample chain metadata is explicitly simulated. Run `npm --prefix demo-dapp run dev` and open `http://127.0.0.1:5173/plainsign/review.html`. The candidate requires publication before its changes appear at the public link.
+The **sample walkthrough** at `review.html` lets judges explore six requests with the shipped decoder and rules, without a wallet or extension. Published version **0.2.1** includes a contract imitating WETH's wrap function: it receives Caution, while the registered WETH destination receives the wrap explanation. Expand **Inspect this sample request** to compare the inputs. Sample chain metadata is explicitly simulated. Run `npm --prefix demo-dapp run dev` and open `http://127.0.0.1:5173/plainsign/review.html` for local development.
 
 Optional Gemini rewording can simplify only the explanation text; verdicts, scores, and reasons remain deterministic, and its bundled `VITE_LLM_KEY` must be a restricted disposable demo key.
 
@@ -34,7 +34,7 @@ Optional Gemini rewording can simplify only the explanation text; verdicts, scor
 
 Use a test wallet only. The public demo uses the Sepolia test network and valueless test assets.
 
-1. Open the [latest GitHub Release](https://github.com/adib-cyber007/plainsign/releases/latest) and download its PlainSign extension ZIP. The local 0.2.1 candidate is prepared in `output/submission-0.2.1/` by `npm run submission:package`; audit it with `npm run submission:audit`.
+1. Open [release 0.2.1](https://github.com/adib-cyber007/plainsign/releases/tag/v0.2.1) and download its PlainSign extension ZIP. A local review bundle can be prepared in `output/submission-0.2.1/` by `npm run submission:package`; audit it with `npm run submission:audit`.
 2. Extract the ZIP to a folder you can keep. In Chrome, open `chrome://extensions`.
 3. Turn on **Developer mode**, click **Load unpacked**, select the extracted folder, and confirm the PlainSign card has no red **Errors** button.
 4. Install or unlock MetaMask in a throwaway Chrome profile. Enable test networks and select **Sepolia**.
